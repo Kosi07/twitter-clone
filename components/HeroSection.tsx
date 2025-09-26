@@ -1,7 +1,5 @@
-import { inter } from '@/hooks/useFonts';
 import Image from 'next/image';
 import twitt3rBird from '@/public/twitter-bird.png'
-import twitt3rAppIcon from '@/public/twitter-bird.png'
 
 const HeroSection = () => {
   return (
@@ -18,7 +16,7 @@ const HeroSection = () => {
             id='container'
             className='w-9/10 flex flex-col gap-10 items-center text-center'
         >
-            <h1 id='text-container' className={`${inter.className} text-4xl font-extrabold`}>
+            <h1 id='text-container' className={`text-4xl font-extrabold`}>
               Happening now
             </h1>
 
@@ -39,17 +37,18 @@ const HeroSection = () => {
               SignIn
             </div>
 
-            <button 
-              className='bg-gray-300 p-6 rounded-4xl flex flex-row gap-2 justify-center items-center'>
-              <p>Get the app</p>
+            <a 
+              className='bg-gray-300 p-6 rounded-4xl flex flex-row gap-2 justify-center items-center'
+              href='/home'>
+              <p>Skip to app</p>
               <Image 
-                src={twitt3rAppIcon}
+                src={twitt3rBird}
                 className={``}
                 alt='twitt3r app icon'
                 width={30}
                 height={30}
               />
-            </button>
+            </a>
         </div>
     </section>
   )

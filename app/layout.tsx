@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { sfpro } from '@/utils/useFonts';
 
 export const metadata: Metadata = {
   title: "twitter clone",
@@ -14,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased p-3`}
+        className={`antialiased ${sfpro.className} p-3 px-6 flex justify-center`}
       >
         {children}
       </body>
