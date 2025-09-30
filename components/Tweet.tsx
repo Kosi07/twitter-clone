@@ -40,7 +40,7 @@ const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter,
                   <span id='time' title={timeDetails} className='text-gray-500 w-1/10 text-center hover:cursor-pointer hover:underline'>{timeSinceTweet}m</span>
                 </div>
                 <div id='tweet-text' className='w-10/11 line-clamp-4 overflow-ellipsis'>{tweetText}</div>
-                <div id='counters-container' className='w-10/11 flex flex-row justify-between gap-4'>
+                <div id='counter-container' className='w-10/11 flex flex-row justify-between gap-4'>
                   <div className='flex flex-row items-center gap-1'>
                     <Image
                         alt=''

@@ -11,7 +11,7 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
 
   const [tweetInput, setTweetInput] = useState('');
 
-  const disabled = tweetInput.trim() === '';
+  const disabled: boolean = tweetInput.trim() === '';
 
   let newTweet;
 
@@ -20,7 +20,7 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
     console.log(tweetInput);
 
     newTweet = {
-      username: 'Random user',
+      username: 'Random User',
       handle: 'random',
       time: 0,
       timeDetails: Date(),
@@ -62,10 +62,10 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
         </div>
 
         <div 
-          className='flex flex-row justify-evenly gap-4 w-full'
+          className='flex flex-row gap-4 w-full p-1 h-[70vh]'
         >
-          <div className="profile w-9 h-9 bg-gradient-to-br from-black to-blue-400 rounded-[50%]"></div>
-          <div className='flex flex-col gap-8'>
+          <div className="profile min-w-9 h-9 bg-gradient-to-br from-black to-blue-400 rounded-[50%]"></div>
+          <div className=''>
             <input
                 type='text'
                 className='text-2xl w-9/10 p-2 border rounded-2xl'
@@ -74,11 +74,6 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
                 onChange={(e)=> {
                   setTweetInput(e.target.value);
                 }}
-            />
-
-            <input 
-                type='file'
-                className='border border-gray-400 rounded-2xl p-3 w-6/10 text-blue-400'
             />
           </div>
         </div>

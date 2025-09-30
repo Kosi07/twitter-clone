@@ -3,7 +3,7 @@ import "./globals.css";
 import { sfpro } from '@/utils/useFonts';
 
 export const metadata: Metadata = {
-  title: "twitter clone",
+  title: "Twitt3r",
   description: "A good-enough twitter clone",
 };
 
