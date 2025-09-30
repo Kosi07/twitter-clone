@@ -1,6 +1,6 @@
 //dummy data
 
-export const tweets : any [] = [
+export const tweets = [
         {
             username: 'Elon Musk',
             handle: 'elonmusk',

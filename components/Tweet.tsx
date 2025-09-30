@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import commentIcon from '@/public/comment.svg';
 import heartIcon from '@/public/heart.png';
-import { useEffect, useState } from 'react';
 
 const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter, likeCounter } : {
   username : string,
