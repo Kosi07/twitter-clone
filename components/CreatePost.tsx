@@ -2,12 +2,7 @@
 
 import { useState } from 'react';
 
-const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray }: {
-  shouldCreate : boolean,
-  setShouldCreate: any,
-  tweetsArray : any[],
-  setTweetsArray : any,
-}) => {
+const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray }) => {
 
   const [tweetInput, setTweetInput] = useState('');
 
@@ -21,7 +16,7 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
 
     newTweet = {
       username: 'Random User',
-      handle: 'random',
+      handle: 'random_user',
       time: 0,
       timeDetails: Date(),
       tweetText: tweetInput,

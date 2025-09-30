@@ -13,7 +13,7 @@ import Tweet from '@/components/Tweet';
 
 import { tweets } from '@/app/api/db';
 
-const page = () => {
+const Page = () => {
     
   const [shouldCreate, setShouldCreate] = useState(false);
 
@@ -65,4 +65,4 @@ const page = () => {
   )
 }
 
-export default page;
+export default Page;
