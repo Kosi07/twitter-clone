@@ -79,15 +79,19 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
                 value={tweetInput}
                 maxLength={180}
                 onChange={(e)=> {
+                  const scrollHeight = e.currentTarget.scrollHeight;
                   setTweetInput(e.target.value);
-                  e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px';
+                  console.log('textarea onChange');
+                  e.currentTarget.style.height = scrollHeight + 'px';
                 }}
             />
             
             {imgPreviewSrc && (
               <div className='relative'>
                 <button 
-                    className='py-2 px-3 border rounded-[50%] bg-gray-200/90 absolute top-0 right-0 text-black font-extrabold'
+                    className='py-2 px-3 border rounded-[50%] bg-gray-200/70 absolute top-2 right-2 text-black font-extrabold
+                            hover:bg-gray-900 hover:text-white hover:border-white hover:cursor-pointer
+                            active:bg-blue-400 active:text-white active:border-white duration-400'
                     onClick={()=> setImgPreviewSrc(null)}
                 >
                   X

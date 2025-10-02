@@ -11,12 +11,13 @@ I really just want to nail Twitter's frontend design.
 - [x] Get twitter bird svg in black and white.
 - [x] Get woff2 for inter.
 - [x] Homepage.
-- [x] <Tweet />
-- [x] <NavBar />
+- [x] Create a Tweet component
+- [x] NavBar component
 - [x] Made /home responsive.
-- [x] Create a <CreatePost />
+- [x] Create a CreatePost component
 - [ ] Use a font that feels much more like handwriting for the tweetText.
 - [x] The user should be able to post a tweet.
+- [ ] User can add emojis.
 
 
 Responsiveness
