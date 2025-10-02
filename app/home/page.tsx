@@ -44,12 +44,12 @@ const Page = () => {
         <CreatePost shouldCreate={shouldCreate} setShouldCreate={setShouldCreate} tweetsArray={tweetsArray} setTweetsArray={setTweetsArray} />
 
         <main>
-            {tweetsArray.map((tweet, index)=> <Tweet key={`tweet${index}`} username={tweet.username} handle={tweet.handle} time={tweet.time} timeDetails={tweet.timeDetails} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter}/>)}
+            {tweetsArray.map((tweet, index)=> <Tweet key={`tweet${index}`} username={tweet.username} handle={tweet.handle} time={tweet.time} timeDetails={tweet.timeDetails} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter} imgSrcs={tweet.imgSrcs}/>)}
         </main>
 
        <Image 
             alt=''
-            className='z-20 fixed right-1/9 bottom-1/6 bg-blue-400 rounded-[50%] p-1 shadow-lg'
+            className='z-20 fixed right-1/9 bottom-1/6 bg-blue-200 border rounded-[50%] p-1 shadow-lg'
             src={createPostIcon}
             width={50}
             height={50}
@@ -57,7 +57,7 @@ const Page = () => {
        />
 
         <div
-            className='w-full flex justify-center fixed bottom-0 left-1 right-1 bg-gray-50 h-25 border-t border-t-gray-400 p-2 rounded-xl'
+            className='w-full flex justify-center fixed bottom-0 left-1 right-1 bg-gray-50 h-14 border-t border-t-gray-400 p-2 rounded-xl'
         >
             <NavBar />
         </div>

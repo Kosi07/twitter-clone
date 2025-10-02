@@ -17,4 +17,15 @@ I really just want to nail Twitter's frontend design.
 - [x] Create a <CreatePost />
 - [ ] Use a font that feels much more like handwriting for the tweetText.
 - [x] The user should be able to post a tweet.
-- [ ] Ask AI how to implement localeStorage to store tweets
+
+
+Responsiveness
+- Click on profile to access aside
+- Swipe to right to access aside (in large screens, aside would be visible)
+
+- [x] NavBar icons should be highlighted depending on what icon you click
+
+- [x] User should be able to add images to tweets
+
+
+- [ ] Auth

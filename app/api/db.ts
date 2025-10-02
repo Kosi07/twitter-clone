@@ -1,5 +1,7 @@
 //dummy data
 
+import portugalTeam from '@/public/portugal-team2.jpeg'
+
 export const tweets = [
         {
             username: 'Elon Musk',
@@ -8,7 +10,8 @@ export const tweets = [
             timeDetails: Date(),
             tweetText: "Next I'm buying Coca-Cola ... to put the cocaine back in",
             commentCounter: 11000,
-            likeCounter: 800000
+            likeCounter: 800000,
+            imgSrcs: []
         },
 
         {
@@ -16,9 +19,10 @@ export const tweets = [
             handle: 'cr7',
             time: 7,
             timeDetails: Date(),
-            tweetText: 'SUIIII!!!!⚽ We did it!!!!!! We won the world cup! Thank you all so much for coming 🥰',
+            tweetText: 'SUIIII!!!!⚽ We did it!!!!!! We won the world cup! Thank you all so much for the support 🥰',
             commentCounter: 900000,
-            likeCounter: 3000000
+            likeCounter: 5100000,
+            imgSrcs: [portugalTeam],
         },
 
         {
@@ -28,6 +32,7 @@ export const tweets = [
             timeDetails: Date(),
             tweetText: 'Hope you enjoy our new vid 🥰',
             commentCounter: 11000,
-            likeCounter: 500000
+            likeCounter: 500000,
+            imgSrcs: [],
         },
 ]

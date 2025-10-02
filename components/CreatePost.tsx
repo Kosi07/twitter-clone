@@ -1,5 +1,9 @@
 'use client';
 
+import Image from 'next/image';
+import imageIcon from '@/public/image-icon.png';
+import emojiIcon from '@/public/smiling.png'
+
 import { useState } from 'react';
 
 const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray }: {
@@ -13,6 +17,8 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
 
   const disabled: boolean = tweetInput.trim() === '';
 
+  const [imgPreviewSrc, setImgPreviewSrc] = useState<string | null>(null);
+
   let newTweet;
 
   function handleTweet(){
@@ -24,9 +30,10 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
       handle: 'random_user',
       time: 0,
       timeDetails: Date(),
-      tweetText: tweetInput,
+      tweetText: tweetInput.trim(),
       commentCounter: 2,
       likeCounter: 12,
+      imgSrcs: [imgPreviewSrc],
     }
 
     setTweetsArray([newTweet, ...tweetsArray]); 
@@ -36,8 +43,8 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
 
   return (
     <div
-      className={`z-30 bg-gray-100 rounded-lg max-w-[690px] p-2
-          ${shouldCreate? 'fixed': ''} ${shouldCreate? 'inset-4': ''} ${shouldCreate? 'm-auto': ''}   ${shouldCreate? '': 'hidden'} ${shouldCreate? 'opacity-95': 'opacity-0'} duration-300 ease-in-out`}
+      className={`z-30 bg-gray-100 rounded-lg max-w-[690px] p-2 overflow-auto
+          ${shouldCreate? 'fixed inset-4 m-auto opacity-95': 'hidden opacity-0'} duration-300 ease-in-out`}
     >
         <div 
           className='buttons w-full flex flex-row justify-between p-4 mb-4'
@@ -62,23 +69,79 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
         </div>
 
         <div 
-          className='flex flex-row gap-4 w-full p-1 h-[70vh]'
+          className='flex flex-row gap-4 w-full p-4'
         >
-          <div className="profile min-w-9 h-9 bg-gradient-to-br from-black to-blue-400 rounded-[50%]"></div>
-          <div className=''>
-            <input
-                type='text'
-                className='text-2xl w-9/10 p-2 border rounded-2xl'
+          <div className="profile min-w-11 h-11 bg-gradient-to-br from-black to-blue-400 rounded-[50%]"></div>
+          <div className='flex flex-col'>
+            <textarea
+                className='text-2xl w-full p-2 focus:outline-none'
                 placeholder="What's happening?"
                 value={tweetInput}
+                maxLength={180}
                 onChange={(e)=> {
                   setTweetInput(e.target.value);
+                  e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px';
                 }}
             />
+            
+            {imgPreviewSrc && (
+              <div className='relative'>
+                <button 
+                    className='py-2 px-3 border rounded-[50%] bg-gray-200/90 absolute top-0 right-0 text-black font-extrabold'
+                    onClick={()=> setImgPreviewSrc(null)}
+                >
+                  X
+                </button>
+                <img
+                    src={imgPreviewSrc}
+                    className='w-full h-auto rounded-2xl'
+                />
+              </div>
+            )}
           </div>
+        </div>
+
+        <div className='p-4 flex flex-row gap-2'>
+          <label htmlFor='img-input'>
+          <Image 
+              alt='image icon'
+              className='h-11 w-11 p-1 rounded-[50%]
+                      hover:bg-blue-200 hover:p-2 duration-300'
+              src={imageIcon}
+              width={40}
+              height={40}
+              quality={100}
+              title='add image?'
+          />
+          </label>
+          <input 
+                type='file'
+                id='img-input'
+                className='w-40 border hidden'
+                accept='image/jpeg, image/png, image/webp, image/gif'
+                capture='user'
+                multiple={false}
+                onChange={(e)=>{
+                  console.log('input type file onChange');
+                  const file = e.target.files[0];
+                  setImgPreviewSrc(URL.createObjectURL(file));
+                  console.log(e.target.value) // .value is the file name
+                  e.target.value=''; //causes onChange to trigger even if the same img is selected immediately after it has been removed.
+                }}
+          />
+
+          <Image
+              alt='emoji icon'
+              className='h-11 w-11 p-1 rounded-[50%]
+                      hover:bg-blue-200 hover:p-2 duration-300'
+              src={emojiIcon}
+              width={40}
+              height={40}
+              title='add emoji?'
+          />
         </div>
     </div>
   )
 }
 
-export default CreatePost
+export default CreatePost;

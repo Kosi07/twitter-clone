@@ -1,8 +1,8 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import commentIcon from '@/public/comment.svg';
 import heartIcon from '@/public/heart.png';
 
-const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter, likeCounter } : {
+const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter, likeCounter, imgSrcs } : {
   username : string,
   handle : string,
   time : number,
@@ -10,6 +10,7 @@ const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter,
   tweetText : string,
   commentCounter : number,
   likeCounter : number,
+  imgSrcs: StaticImageData[],
 }) => {
 
   const timeSinceTweet = time;
@@ -38,7 +39,13 @@ const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter,
                   <span id='handle' className='text-gray-500 w-7/20 line-clamp-1 overflow-ellipsis hover:cursor-pointer hover:underline'>@{handle}</span>
                   <span id='time' title={timeDetails} className='text-gray-500 w-1/10 text-center hover:cursor-pointer hover:underline'>{timeSinceTweet}m</span>
                 </div>
+
                 <div id='tweet-text' className='w-10/11 line-clamp-4 overflow-ellipsis'>{tweetText}</div>
+
+                <div>
+                  {imgSrcs.map((imgSrc, index)=> <Image key={`Img${index}`} alt='' className='w-full h-auto rounded-2xl' src={imgSrc} quality={100} width={500} height={500} />)}
+                </div>
+
                 <div id='counter-container' className='w-10/11 flex flex-row justify-between gap-4'>
                   <div className='flex flex-row items-center gap-1'>
                     <Image
