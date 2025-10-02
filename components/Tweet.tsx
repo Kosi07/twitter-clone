@@ -15,11 +15,11 @@ const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter,
 
   const timeSinceTweet = time;
 
-  let cCounter = commentCounter>=1000000? (Math.round(commentCounter/1000000))+'M' : commentCounter; 
-  let lCounter = likeCounter>=1000000? (Math.round(likeCounter/1000000))+'M' : likeCounter;
+  commentCounter = commentCounter>=1000000? (Math.round(commentCounter/1000000))+'M' : commentCounter; 
+  likeCounter = likeCounter>=1000000? (Math.round(likeCounter/1000000))+'M' : likeCounter;
 
-  cCounter = commentCounter>=1000? (Math.round(commentCounter/1000))+'K' : commentCounter; 
-  lCounter = likeCounter>=1000? (Math.round(likeCounter/1000))+'K' : likeCounter;
+  commentCounter = commentCounter>=1000? (Math.round(commentCounter/1000))+'K' : commentCounter; 
+  likeCounter = likeCounter>=1000? (Math.round(likeCounter/1000))+'K' : likeCounter;
 
   // useEffect(()=>{
   //     const interval = setInterval(()=>{
@@ -55,7 +55,7 @@ const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter,
                         width={30}
                         height={30} 
                     />
-                    <span id='comment-counter' className='text-gray-500'>{cCounter}</span>
+                    <span id='comment-counter' className='text-gray-500'>{commentCounter}</span>
                   </div>
 
                   <div className='flex flex-row items-center gap-1'>
@@ -66,7 +66,7 @@ const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter,
                         width={30}
                         height={30}
                     />
-                    <span id='like-counter' className='text-gray-500'>{lCounter}</span>
+                    <span id='like-counter' className='text-gray-500'>{likeCounter}</span>
                   </div>
                 </div>
             </div>
