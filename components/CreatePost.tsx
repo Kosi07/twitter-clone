@@ -123,7 +123,6 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
                 id='img-input'
                 className='w-40 border hidden'
                 accept='image/jpeg, image/png, image/webp, image/gif'
-                capture='user'
                 multiple={false}
                 onChange={(e)=>{
                   console.log('input type file onChange');
