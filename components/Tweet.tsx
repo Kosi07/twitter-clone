@@ -31,20 +31,22 @@ const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter,
 
   return (
     <div className='w-10/11 border-b border-b-gray-400/20 sm:text-xl md:text-2xl'>
-        <div className='flex justify-between gap-4 w-full my-3 p-1'>
-            <div className="profilePic w-20 min-w-20 h-20 bg-gradient-to-br from-black to-blue-400 rounded-[50%]"></div>
-            <div className='flex flex-col gap-4 w-7/9'>
+        <div className='flex justify-between gap-2 w-full my-3 p-1'>
+            <div className="profilePic w-10 min-w-10 h-10 bg-gradient-to-br from-black to-blue-400 rounded-[50%]"></div>
+            <div className='flex flex-col gap-4 w-9/11'>
                 <div className='flex flex-row gap-1'>
                   <span id='username' className='font-bold w-11/20 line-clamp-1 overflow-ellipses'>{username}</span>
                   <span id='handle' className='text-gray-500 w-7/20 line-clamp-1 overflow-ellipsis hover:cursor-pointer hover:underline'>@{handle}</span>
                   <span id='time' title={timeDetails} className='text-gray-500 w-1/10 text-center hover:cursor-pointer hover:underline'>{timeSinceTweet}m</span>
                 </div>
 
-                <div id='tweet-text' className='w-10/11 line-clamp-4 overflow-ellipsis'>{tweetText}</div>
+                <div id='tweet-text' className='w-10/11 line-clamp-6 overflow-ellipsis'>{tweetText}</div>
 
+                {imgSrcs[0] &&
                 <div>
                   {imgSrcs.map((imgSrc, index)=> <Image key={`Img${index}`} alt='' className='w-full h-auto rounded-2xl' src={imgSrc} quality={100} width={500} height={500} />)}
                 </div>
+                }
 
                 <div id='counter-container' className='w-10/11 flex flex-row justify-between gap-4'>
                   <div className='flex flex-row items-center gap-1'>

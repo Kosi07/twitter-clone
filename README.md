@@ -17,12 +17,13 @@ I really just want to nail Twitter's frontend design.
 - [x] Create a CreatePost component
 - [ ] Use a font that feels much more like handwriting for the tweetText.
 - [x] The user should be able to post a tweet.
-- [ ] User can add emojis.
+- [ ] User can select emojis from an emoji selector.
 
 
 Responsiveness
 - Click on profile to access aside
 - Swipe to right to access aside (in large screens, aside would be visible)
+- Clicking an image makes the image go full screen.
 
 - [x] NavBar icons should be highlighted depending on what icon you click
 
