@@ -33,5 +33,7 @@ Responsiveness
 
 - [x] User should be able to like tweets.
 
+- [x] Somewhat responsive plus-icon
+
 
 - [ ] Auth
