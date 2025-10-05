@@ -1,5 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import twitt3rBird from '@/public/twitter-bird.png'
+
+import Link from 'next/link';
 
 const HeroSection = () => {
   return (
@@ -21,9 +25,13 @@ const HeroSection = () => {
             </h1>
 
             <div >
-              <div className='text-xl border mb-1'>
+              <Link 
+                  className='text-xl border mb-1 px-20'
+                  href='/sign-up'
+                  
+              >
                 SignUp
-              </div>
+              </Link>
              
               <p className='text-sm'>
                 By signing up, you agree to the <a className='text-blue-400'>Terms of Service</a> and <a className='text-blue-400'>Privacy Policy</a>, including <a className='text-blue-400'>Cookie Use</a>.

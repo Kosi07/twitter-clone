@@ -11,7 +11,7 @@ import NavBar from '@/components/NavBar';
 import CreatePost from '@/components/CreatePost';
 import Tweet from '@/components/Tweet';
 
-import { tweets } from '@/app/api/db';
+import { tweets } from '@/app/dummyData/dummyData';
 
 const Page = () => {
     
@@ -34,7 +34,7 @@ const Page = () => {
 
                 <Image
                     alt='twitter bird' 
-                    className='fill-blue-400 hover:cursor-pointer'
+                    className='hover:cursor-pointer'
                     src={twitterBird}
                     width={40}
                     height={45}
@@ -44,12 +44,13 @@ const Page = () => {
         <CreatePost shouldCreate={shouldCreate} setShouldCreate={setShouldCreate} tweetsArray={tweetsArray} setTweetsArray={setTweetsArray} />
 
         <main>
-            {tweetsArray.map((tweet, index)=> <Tweet key={`tweet${index}`} username={tweet.username} handle={tweet.handle} time={tweet.time} timeDetails={tweet.timeDetails} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter} imgSrcs={tweet.imgSrcs}/>)}
+            {tweetsArray.map((tweet)=> <Tweet key={tweet.handle+''+tweet.timeDetails} username={tweet.username} handle={tweet.handle} time={tweet.time} timeDetails={tweet.timeDetails} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter} imgSrcs={tweet.imgSrcs}/>)}
         </main>
 
        <Image 
             alt=''
-            className='z-20 fixed right-1/9 bottom-1/6 bg-blue-200 border rounded-[50%] p-1 shadow-lg'
+            className='z-20 fixed right-1/9 bottom-1/6 bg-blue-200 border rounded-[50%] p-1 shadow-gray-700 shadow-lg/50
+                    hover:scale-120 hover:p-0 active:p-0 active:scale-130 duration-400'
             src={createPostIcon}
             width={50}
             height={50}

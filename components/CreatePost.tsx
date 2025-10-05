@@ -126,10 +126,12 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
                 multiple={false}
                 onChange={(e)=>{
                   console.log('input type file onChange');
-                  const file = e.target.files[0];
-                  setImgPreviewSrc(URL.createObjectURL(file));
-                  console.log(e.target.value) // .value is the file name
-                  e.target.value=''; //causes onChange to trigger even if the same img is selected immediately after it has been removed.
+                  if(e.target.files){
+                    const file = e.target.files[0];
+                    setImgPreviewSrc(URL.createObjectURL(file));
+                    console.log(e.target.value) // .value is the file name
+                    e.target.value=''; //causes onChange to trigger even if the same img is selected immediately after it has been removed.
+                  }
                 }}
           />
 

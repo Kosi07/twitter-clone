@@ -25,9 +25,13 @@ Responsiveness
 - Swipe to right to access aside (in large screens, aside would be visible)
 - Clicking an image makes the image go full screen.
 
+- Darkmode.
+
 - [x] NavBar icons should be highlighted depending on what icon you click
 
 - [x] User should be able to add images to tweets
+
+- [x] User should be able to like tweets.
 
 
 - [ ] Auth
