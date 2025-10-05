@@ -12,7 +12,7 @@ const NavBar = () => {
     const [focusNotif, setFocusNotif] = useState(false);
     const [focusDM, setFocusDM] = useState(false);
 
-    const handleTap = () => {
+    const haptic = () => {
         if(navigator.vibrate){
             navigator.vibrate(50)
             console.log('Haptic')
@@ -31,7 +31,7 @@ const NavBar = () => {
             width={40}
             height={40}
             onClick={()=>{
-                handleTap();
+                haptic();
                 setFocusHome(true);
                 setFocusSearch(false);
                 setFocusNotif(false);
@@ -47,6 +47,7 @@ const NavBar = () => {
             width={40}
             height={40}
             onClick={()=>{
+                haptic();
                 setFocusHome(false);
                 setFocusSearch(true);
                 setFocusNotif(false);
@@ -62,6 +63,7 @@ const NavBar = () => {
             width={40}
             height={40}
             onClick={()=>{
+                haptic();
                 setFocusHome(false);
                 setFocusSearch(false);
                 setFocusNotif(true);
@@ -77,6 +79,7 @@ const NavBar = () => {
             width={40}
             height={40}
             onClick={()=>{
+                haptic();
                 setFocusHome(false);
                 setFocusSearch(false);
                 setFocusNotif(false);
