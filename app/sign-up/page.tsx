@@ -1,7 +1,6 @@
 'use client';
 
 import Footer from '@/components/Footer';
-import { authClient } from '@/lib/auth-client';
 
 import { FormEvent, useState } from 'react';
 
@@ -13,18 +12,6 @@ const Page = () => {
 
     const handleSignUp = async(e: FormEvent) => {
         e.preventDefault();
-
-        const { data, error } = await authClient.signUp.email({
-            name,
-            email,
-            password,
-        }) 
-
-        if (error) {
-            alert(error.message);
-        } else {
-            alert("Account created!");
-        }
     };
 
   return (
