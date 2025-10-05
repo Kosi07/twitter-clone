@@ -12,6 +12,13 @@ const NavBar = () => {
     const [focusNotif, setFocusNotif] = useState(false);
     const [focusDM, setFocusDM] = useState(false);
 
+    const handleTap = () => {
+        if(navigator.vibrate){
+            navigator.vibrate(10)
+            console.log('Haptic')
+        }
+    };
+
   return (
     <nav
         className='w-9/10 flex flex-row justify-between items-center'
@@ -24,6 +31,7 @@ const NavBar = () => {
             width={40}
             height={40}
             onClick={()=>{
+                handleTap();
                 setFocusHome(true);
                 setFocusSearch(false);
                 setFocusNotif(false);
