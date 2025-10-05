@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import twitterBird from '@/public/twitter-bird.png';
 import profileIcon from '@/public/profile.png';
-import createPostIcon from '@/public/plus.png'
 
 import NavBar from '@/components/NavBar';
 import CreatePost from '@/components/CreatePost';
@@ -26,12 +25,14 @@ const Page = () => {
   const [array, setArray] = useState([lastScrollY, currentScrollY]);
   
   useEffect(()=>{  //Understand the code inside. Don't really understand why useEffect is here. Claude just said it's better that way?...
+    if(window){
     window.addEventListener('scroll', ()=>{
         setArray([currentScrollY, window.scrollY]);
         setCurrentScrollY(window.scrollY);
         
         console.log(currentScrollY);
     })
+    }
   },[])
 
   return (
