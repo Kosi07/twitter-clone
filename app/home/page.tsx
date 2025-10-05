@@ -25,7 +25,7 @@ const Page = () => {
   const [array, setArray] = useState([lastScrollY, currentScrollY]);
   
   useEffect(()=>{  //Understand the code inside. Don't really understand why useEffect is here. Claude just said it's better that way?...
-    if(window){
+    if(window!==undefined){
     window.addEventListener('scroll', ()=>{
         setArray([currentScrollY, window.scrollY]);
         setCurrentScrollY(window.scrollY);
