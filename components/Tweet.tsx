@@ -82,7 +82,7 @@ const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter,
                                      }
                                 }
                       >
-                        <div className='absolute w-1/2 h-[18px] bg-red-500 rounded-t-full left-[10.8px] origin-bottom-left -rotate-45'></div>
+                        <div className='absolute w-1/2 h-[18px] bg-red-500 rounded-t-full left-[11px] origin-bottom-left -rotate-45'></div>
                         <div className='absolute w-1/2 h-[18px] bg-red-500 rounded-t-full left-0 origin-bottom-right rotate-45'></div>
                       </div>
                       :
