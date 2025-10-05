@@ -19,13 +19,13 @@ const Page = () => {
 
   const [tweetsArray, setTweetsArray] = useState([...tweets]);
 
-  const [currentScrollY, setCurrentScrollY] = useState(window.scrollY);  //Trying to implement "if user scrolls down, '+' icon turns transparent, if user scrolls up, it becomes opaque"
+  const [currentScrollY, setCurrentScrollY] = useState(0);  //Trying to implement "if user scrolls down, '+' icon turns transparent, if user scrolls up, it becomes opaque"
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const [array, setArray] = useState([lastScrollY, currentScrollY]);
   
   useEffect(()=>{  //Understand the code inside. Don't really understand why useEffect is here. Claude just said it's better that way?...
-    if(window!==undefined){
+    if(window){
     window.addEventListener('scroll', ()=>{
         setArray([currentScrollY, window.scrollY]);
         setCurrentScrollY(window.scrollY);
