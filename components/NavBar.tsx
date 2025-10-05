@@ -14,7 +14,7 @@ const NavBar = () => {
 
     const handleTap = () => {
         if(navigator.vibrate){
-            navigator.vibrate(300)
+            navigator.vibrate(50)
             console.log('Haptic')
         }
     };
