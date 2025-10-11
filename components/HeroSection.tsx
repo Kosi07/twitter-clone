@@ -26,24 +26,24 @@ const HeroSection = () => {
 
             <div >
               <Link 
-                  className='text-xl border mb-1 px-20'
+                  className='text-xl border m-1 px-20 py-2 rounded-xl'
                   href='/sign-up'
                   
               >
                 SignUp
               </Link>
              
-              <p className='text-sm'>
+              <p className='text-sm my-2'>
                 By signing up, you agree to the <a className='text-blue-400'>Terms of Service</a> and <a className='text-blue-400'>Privacy Policy</a>, including <a className='text-blue-400'>Cookie Use</a>.
               </p>
             </div>
 
             <div>
-              <p className='text-lg font-bold'>
+              <p className='text-lg font-bold my-2'>
                 Already have an account?
               </p>
               <Link 
-                  className='text-xl border px-10'
+                  className='text-xl border px-10 py-1 m-1 rounded-xl text-white bg-gray-800'
                   href='/sign-in'
                   
               >
@@ -52,8 +52,11 @@ const HeroSection = () => {
             </div>
 
             <a 
-              className='bg-gray-300 p-6 rounded-4xl flex flex-row gap-2 justify-center items-center'
-              href='/u/home'>
+              className='bg-gray-300/95 p-6 rounded-4xl flex flex-row gap-2 justify-center items-center from-red-200 to-blue-200
+                        hover:cursor-pointer hover:bg-gradient-to-b hover:scale-110 hover:p-7 active:scale-120 active:px-10 active:bg-gradient-to-b duration-300 ease-in'
+              href='/u/home'
+              id='skip-to-app'
+            >
               <p>Skip to app</p>
               <Image 
                 src={twitt3rBird}

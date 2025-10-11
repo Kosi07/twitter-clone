@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react"
 import Link from "next/link";
 
 const DMs = () => {
-  const { data: session } = useSession();
+  const { data: session } = useSession(); //Get useSession().data and store it in const session
   return (
     <>
       DMs

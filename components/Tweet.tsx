@@ -52,7 +52,7 @@ const Tweet = ({ username, handle, profilePic, time, timeDetails, tweetText, com
             
             <div className='flex flex-col gap-4 w-9/11'>
                 <div className='flex flex-row gap-1'>
-                  <span id='username' className='font-bold w-11/20 line-clamp-1 overflow-ellipses'>{username}</span>
+                  <span id='username' className='font-bold w-11/20 line-clamp-1 overflow-ellipses hover:cursor-pointer'>{username}</span>
                   <span id='handle' className='text-gray-500 w-7/20 line-clamp-1 overflow-ellipsis hover:cursor-pointer hover:underline'>@{handle}</span>
                   <span id='time' title={timeDetails} className='text-gray-500 w-1/10 text-center hover:cursor-pointer hover:underline'>{timeSinceTweet}m</span>
                 </div>

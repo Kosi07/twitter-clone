@@ -33,7 +33,7 @@ const Page = () => {
   const [lastScrollY, setLastScrollY] = useState(0);        //
   const [array, setArray] = useState([lastScrollY, currentScrollY]); //
   
-  useEffect(()=>{  //Understand the code inside. Don't really understand why useEffect is here. Claude just said it's better that way?...
+  useEffect(()=>{  //I understand the code inside. Don't really understand why useEffect is here. Claude just said it's better that way?...
     if(window){
     window.addEventListener('scroll', ()=>{
         setArray([currentScrollY, window.scrollY]);
