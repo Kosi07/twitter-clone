@@ -21,8 +21,8 @@ I really just want to nail Twitter's frontend design.
 
 
 Responsiveness
-- Click on profile to access aside
-- Swipe to right to access aside (in large screens, aside would be visible)
+- [x] Click on profile to access aside
+- [x] Swipe to right to access aside (in large screens, aside would be visible)
 - Clicking an image makes the image go full screen.
 
 - Darkmode.

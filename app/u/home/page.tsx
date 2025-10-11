@@ -42,6 +42,31 @@ const Page = () => {
     }
   },[])
 
+  useEffect(() => {
+    let start = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      start = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      const end = e.changedTouches[0].clientX;
+      const diff = end - start;
+
+      // Swipe right from left edge (open aside)
+      if (start < 50 && diff > 40) {
+        setOpenAside(true);
+      }
+      // Swipe left when aside is open (close aside)
+      if (openAside && diff < -40) {
+        setOpenAside(false);
+      }
+    };
+
+    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchend', handleTouchEnd);
+  }, [openAside]);
+
   return (
     <div className='w-full max-w-[700px] min-w-[280px] min-h-screen relative'>
         <header
