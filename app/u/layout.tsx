@@ -1,15 +1,19 @@
+'use client';
+
 import { sfpro } from '@/utils/useFonts';
 import NavBar from '@/components/NavBar';
 import { SessionProvider } from 'next-auth/react';
+import { NavBarContext } from '@/contexts/NavBarContext';
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-   
+  
   return (
     <SessionProvider>
+      <NavBarContext>
        <div
           className={`antialiased ${sfpro.className} py-3 px-6 flex flex-col items-center`}
        >
@@ -21,6 +25,8 @@ export default function RootLayout({
             <NavBar />
           </div>
        </div>
+      </NavBarContext>
     </SessionProvider>
   );
 }
+

@@ -1,9 +1,20 @@
 'use client';
 import { useSession } from "next-auth/react"
 import Link from "next/link";
+import { useContext, useEffect } from "react";
+import { NavContext } from '@/contexts/NavBarContext';
 
 const Notifications = () => {
   const { data: session } = useSession();
+
+  const { setFocusHome, setFocusSearch, setFocusNotif, setFocusDM } = useContext(NavContext);
+  
+  useEffect(()=>{
+      setFocusDM(false);
+      setFocusHome(false);
+      setFocusSearch(false);
+      setFocusNotif(true);
+    },[])
   return (
     <>
       Notifications

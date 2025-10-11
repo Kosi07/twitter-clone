@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import Image, { StaticImageData } from 'next/image';
 import twitterBird from '@/public/twitter-bird.png';
@@ -12,10 +12,20 @@ import Tweet from '@/components/Tweet';
 import { tweets } from '@/lib/dummyData';
 import Aside from '@/components/Aside';
 import { useSession } from 'next-auth/react';
+import { NavContext } from '@/contexts/NavBarContext';
 
 const Page = () => {
 
   const { data: session } = useSession();
+
+  const { setFocusHome, setFocusSearch, setFocusNotif, setFocusDM } = useContext(NavContext);
+  
+  useEffect(()=>{
+    setFocusDM(false);
+    setFocusHome(true);
+    setFocusSearch(false);
+    setFocusNotif(false);
+  },[])
     
   const [shouldCreate, setShouldCreate] = useState(false);
 

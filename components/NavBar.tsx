@@ -8,14 +8,12 @@ import DMIcon from '@/public/DMs.png'
 
 import Link from 'next/link';
 
-import { useState } from 'react';
+import { useContext } from 'react';
+import { NavContext } from '@/contexts/NavBarContext';
 
 const NavBar = () => {
 
-    const [focusHome, setFocusHome] = useState(true);
-    const [focusSearch, setFocusSearch] = useState(false);
-    const [focusNotif, setFocusNotif] = useState(false);
-    const [focusDM, setFocusDM] = useState(false);
+    const { focusHome, focusSearch, focusNotif, focusDM } = useContext(NavContext);
 
     const haptic = () => {
         if(navigator.vibrate){
@@ -37,10 +35,6 @@ const NavBar = () => {
                 height={40}
                 onClick={()=>{
                     haptic();
-                    setFocusHome(true);
-                    setFocusSearch(false);
-                    setFocusNotif(false);
-                    setFocusDM(false);
                 }}
             />
         </Link>
@@ -55,10 +49,6 @@ const NavBar = () => {
                 height={40}
                 onClick={()=>{
                     haptic();
-                    setFocusHome(false);
-                    setFocusSearch(true);
-                    setFocusNotif(false);
-                    setFocusDM(false);
                 }}
             />
         </Link>
@@ -73,10 +63,6 @@ const NavBar = () => {
                 height={40}
                 onClick={()=>{
                     haptic();
-                    setFocusHome(false);
-                    setFocusSearch(false);
-                    setFocusNotif(true);
-                    setFocusDM(false);
                 }}
             />
         </Link>
@@ -91,10 +77,6 @@ const NavBar = () => {
                 height={40}
                 onClick={()=>{
                     haptic();
-                    setFocusHome(false);
-                    setFocusSearch(false);
-                    setFocusNotif(false);
-                    setFocusDM(true);
                 }}
             />
         </Link>

@@ -2,8 +2,20 @@
 import { useSession } from "next-auth/react"
 import Link from "next/link";
 
+import { useContext, useEffect } from "react";
+import { NavContext } from '@/contexts/NavBarContext';
+
 const DMs = () => {
   const { data: session } = useSession(); //Get useSession().data and store it in const session
+
+  const { setFocusHome, setFocusSearch, setFocusNotif, setFocusDM } = useContext(NavContext);
+
+  useEffect(()=>{
+    setFocusDM(true);
+    setFocusHome(false);
+    setFocusSearch(false);
+    setFocusNotif(false);
+  },[])
   return (
     <>
       DMs
