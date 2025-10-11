@@ -5,7 +5,7 @@ import { signIn } from 'next-auth/react';
 
 import { useState } from 'react';
 
-const SignUp = () => {
+const SignIn = () => {
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -23,9 +23,9 @@ const SignUp = () => {
                 <div id='Google' className='flex flex-row gap-4'>
                     <button 
                         className='border p-2 rounded-xl hover:cursor-pointer'
-                        onClick={()=>console.log('Sign Up with Google')}
+                        onClick={()=>console.log('Sign In with Google')}
                     >
-                        Sign Up with Google
+                        Sign In with Google
                     </button>
 
                 </div>
@@ -33,9 +33,9 @@ const SignUp = () => {
                 <div id='X' className='flex flex-row gap-4'>
                     <button 
                         className='border p-2 rounded-xl hover:cursor-pointer'
-                        onClick={()=>console.log('Sign Up with X')}
+                        onClick={()=>console.log('Sign In with X')}
                     >
-                        Sign Up with X
+                        Sign In with X
                     </button>
 
                 </div>
@@ -45,7 +45,7 @@ const SignUp = () => {
                         className='border p-2 rounded-xl hover:cursor-pointer'
                         onClick={()=>signIn('github', { redirectTo: '/u/home' })}
                     >
-                        Sign Up with GitHub
+                        Sign In with GitHub
                     </button>
 
                 </div>
@@ -58,4 +58,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp;
+export default SignIn;

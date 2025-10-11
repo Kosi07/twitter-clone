@@ -10,7 +10,14 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    qualities: [100]
+    qualities: [100],
+
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+    ],
   }
 };
 

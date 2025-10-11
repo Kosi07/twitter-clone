@@ -1,16 +1,17 @@
 'use client';
 
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import imageIcon from '@/public/image-icon.png';
 import emojiIcon from '@/public/smiling.png'
 
 import { useState } from 'react';
 
-const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray }: {
+const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray, profilePic }: {
   shouldCreate : boolean,
   setShouldCreate: any,
   tweetsArray : any[],
   setTweetsArray : any,
+  profilePic : StaticImageData | string,
 }) => {
 
   const [tweetInput, setTweetInput] = useState('');
@@ -28,6 +29,7 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
     newTweet = {
       username: 'Random User',
       handle: 'random_user',
+      profilePic: profilePic,
       time: 0,
       timeDetails: Date(),
       tweetText: tweetInput.trim(),
@@ -71,7 +73,16 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
         <div 
           className='flex flex-row gap-4 w-full p-4'
         >
-          <div className="profile min-w-11 h-11 bg-gradient-to-br from-black to-blue-400 rounded-[50%]"></div>
+          <div id='profilePic' className='min-w-11 h-11'>
+            <Image 
+              src={profilePic}
+              className='rounded-full'
+              alt='profile picture'
+              width={50}
+              height={50}
+            />
+          </div>
+
           <div className='flex flex-col'>
             <textarea
                 className='text-2xl w-full p-2 focus:outline-none'

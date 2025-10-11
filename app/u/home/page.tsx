@@ -2,35 +2,42 @@
 
 import { useEffect, useState } from 'react';
 
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import twitterBird from '@/public/twitter-bird.png';
 import profileIcon from '@/public/profile.png';
 
-import NavBar from '@/components/NavBar';
 import CreatePost from '@/components/CreatePost';
 import Tweet from '@/components/Tweet';
 
-import { tweets } from '@/app/dummyData/dummyData';
+import { tweets } from '@/lib/dummyData';
 import Aside from '@/components/Aside';
+import { useSession } from 'next-auth/react';
 
 const Page = () => {
+
+  const { data: session } = useSession();
     
   const [shouldCreate, setShouldCreate] = useState(false);
 
   const [tweetsArray, setTweetsArray] = useState([...tweets]);
 
-  const [currentScrollY, setCurrentScrollY] = useState(0);  //Trying to implement "if user scrolls down, '+' icon turns transparent, if user scrolls up, it becomes opaque"
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const [profilePic, setProfilePic] = useState<StaticImageData|string>(profileIcon);
 
-  const [array, setArray] = useState([lastScrollY, currentScrollY]);
+  useEffect(()=>{
+            if(session?.user){setProfilePic(String(session.user.image))};
+            }, [session])
+
+  const [openAside, setOpenAside] = useState(false);
+
+  const [currentScrollY, setCurrentScrollY] = useState(0);  //Trying to implement "if user scrolls down, '+' icon turns transparent, if user scrolls up, it becomes opaque"
+  const [lastScrollY, setLastScrollY] = useState(0);        //
+  const [array, setArray] = useState([lastScrollY, currentScrollY]); //
   
   useEffect(()=>{  //Understand the code inside. Don't really understand why useEffect is here. Claude just said it's better that way?...
     if(window){
     window.addEventListener('scroll', ()=>{
         setArray([currentScrollY, window.scrollY]);
         setCurrentScrollY(window.scrollY);
-        
-        console.log(currentScrollY);
     })
     }
   },[])
@@ -40,12 +47,13 @@ const Page = () => {
         <header
              className='w-[100%] flex justify-between border-b border-b-gray-300 p-2 mb-4 rounded-xl sticky top-2 backdrop-blur-lg bg-gray-100/5'
         >
-                <Image 
+                <Image
                     alt='user profile icon'
-                    className='hover:cursor-pointer'
-                    src={profileIcon}
+                    className='rounded-full hover:cursor-pointer active:bg-gradient-to-b from-red-200 to-blue-200 active:scale-110 active:p-1 duration-300 ease'
+                    src={profilePic}
                     width={40}
                     height={45}
+                    onClick={()=>setOpenAside(true)}
                 />
 
                 <Image
@@ -57,12 +65,18 @@ const Page = () => {
                 />
         </header>
 
-        <CreatePost shouldCreate={shouldCreate} setShouldCreate={setShouldCreate} tweetsArray={tweetsArray} setTweetsArray={setTweetsArray} />
+        <CreatePost shouldCreate={shouldCreate} setShouldCreate={setShouldCreate} tweetsArray={tweetsArray} setTweetsArray={setTweetsArray} profilePic={profilePic} />
 
-        <Aside />
+        <Aside profilePic={profilePic} openAside={openAside} user={session?.user} />
+        <div 
+            id='overlay'
+            onClick={()=>setOpenAside(false)}
+            className={`fixed inset-0 z-25 bg-gray-500 opacity-90 ${openAside? '' : 'hidden'} duration-100 ease`}
+        >
+        </div>
 
         <main>
-            {tweetsArray.map((tweet)=> <Tweet key={tweet.handle+''+tweet.timeDetails} username={tweet.username} handle={tweet.handle} time={tweet.time} timeDetails={tweet.timeDetails} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter} imgSrcs={tweet.imgSrcs}/>)}
+            {tweetsArray.map((tweet)=> <Tweet key={tweet.handle+''+tweet.timeDetails} username={tweet.username} handle={tweet.handle} profilePic={tweet.profilePic} time={tweet.time} timeDetails={tweet.timeDetails} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter} imgSrcs={tweet.imgSrcs}/>)}
         </main>
 
        <div 
@@ -76,12 +90,6 @@ const Page = () => {
                 <div className='absolute w-9 h-3 bg-gray-200 -left-3 top-2.5 rounded-xs'></div>
             </div>
        </div>
-
-        <div
-            className='w-full flex justify-center fixed bottom-0 left-1 right-1 bg-gray-50 h-14 border-t border-t-gray-400 p-2 rounded-xl'
-        >
-            <NavBar />
-        </div>
     </div>
   )
 }

@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased ${sfpro.className} p-3 px-6 flex justify-center`}
+        className={`antialiased ${sfpro.className} py-3 px-6 flex flex-col justify-center`}
       >
         {children}
       </body>

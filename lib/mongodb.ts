@@ -3,10 +3,6 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 
 const uri = process.env.MONGODB_CONNECTION_STRING as string;
 
-if(!uri){
-    throw new Error('MongoDB URI not found!')
-}
-
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 export const client = await (new MongoClient(uri, {
   serverApi: {

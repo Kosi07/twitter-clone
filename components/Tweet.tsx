@@ -3,9 +3,10 @@ import commentIcon from '@/public/comment.svg';
 import heartIcon from '@/public/heart.png';
 import { useState } from 'react';
 
-const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter, likeCounter, imgSrcs } : {
+const Tweet = ({ username, handle, profilePic, time, timeDetails, tweetText, commentCounter, likeCounter, imgSrcs } : {
   username : string,
   handle : string,
+  profilePic: StaticImageData | string,
   time : number,
   timeDetails : string,
   tweetText : string,
@@ -39,7 +40,16 @@ const Tweet = ({ username, handle, time, timeDetails, tweetText, commentCounter,
   return (
     <div className='w-10/11 border-b border-b-gray-400/20 sm:text-xl md:text-2xl'>
         <div className='flex justify-between gap-2 w-full my-3 p-1'>
-            <div className="profilePic w-10 min-w-10 h-10 sm:w-15 sm:h-15 md:w-20 md:h-20 bg-gradient-to-br from-black to-blue-400 rounded-[50%]"></div>
+            <div id='profilePic' className='w-10 min-w-10 h-10 sm:w-15 sm:h-15 md:w-20 md:h-20'>
+              <Image 
+                  src={profilePic}
+                  className='rounded-full'
+                  alt='profile picture'
+                  width={100}
+                  height={100}
+              />
+            </div>
+            
             <div className='flex flex-col gap-4 w-9/11'>
                 <div className='flex flex-row gap-1'>
                   <span id='username' className='font-bold w-11/20 line-clamp-1 overflow-ellipses'>{username}</span>

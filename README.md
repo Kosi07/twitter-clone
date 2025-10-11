@@ -5,6 +5,7 @@ This is a [Twitter clone](https://twitt3r-clone.netlify.app/) project bootstrapp
 -  TailwindCSS
 -  TypeScript
 -  HTML
+- Deployed with Netlify
 
 ## ToDo
 I really just want to nail Twitter's frontend design.
@@ -15,7 +16,6 @@ I really just want to nail Twitter's frontend design.
 - [x] NavBar component
 - [x] Made /home responsive.
 - [x] Create a CreatePost component
-- [ ] Use a font that feels much more like handwriting for the tweetText.
 - [x] The user should be able to post a tweet.
 - [ ] User can select emojis from an emoji selector.
 
@@ -37,3 +37,6 @@ Responsiveness
 
 
 - [ ] Auth
+- [ ] Push user data to mongoDB
+- [ ] User should be able to change profile picture.
+- [ ] User should be able to message other users.

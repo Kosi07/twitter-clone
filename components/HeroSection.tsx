@@ -42,12 +42,18 @@ const HeroSection = () => {
               <p className='text-lg font-bold'>
                 Already have an account?
               </p>
-              SignIn
+              <Link 
+                  className='text-xl border px-10'
+                  href='/sign-in'
+                  
+              >
+                SignIn
+              </Link>
             </div>
 
             <a 
               className='bg-gray-300 p-6 rounded-4xl flex flex-row gap-2 justify-center items-center'
-              href='/home'>
+              href='/u/home'>
               <p>Skip to app</p>
               <Image 
                 src={twitt3rBird}
