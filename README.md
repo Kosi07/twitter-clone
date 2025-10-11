@@ -5,7 +5,8 @@ This is a [Twitter clone](https://twitt3r-clone.netlify.app/) project bootstrapp
 -  TailwindCSS
 -  TypeScript
 -  HTML
-- Deployed with Netlify
+- [Deployed with Netlify](https://twitt3r-clone.netlify.app/)
+- [Deployed with Vercel](https://tw1tt3r.vercel.app/)
 
 ## ToDo
 I really just want to nail Twitter's frontend design.
