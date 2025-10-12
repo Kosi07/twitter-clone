@@ -43,7 +43,7 @@ const HeroSection = () => {
                 Already have an account?
               </p>
               <Link 
-                  className='text-xl border px-10 py-1 m-1 rounded-xl text-white bg-gray-800'
+                  className='text-xl border px-10 py-1 m-1 rounded-xl text-white bg-gray-900'
                   href='/sign-in'
                   
               >

@@ -53,10 +53,10 @@ const NavBar = () => {
             />
         </Link>
 
-        <Link href='/u/notifications'>
+        <Link href='/u/notifications' className='relative'>
             <Image 
                 alt='notification icon'
-                className={`w-11 h-11 ${focusNotif? 'bg-gradient-to-b':''} from-red-200 to-blue-200 rounded-2xl
+                className={`w-12 h-12 ${focusNotif? 'bg-gradient-to-b':''} from-red-200 to-blue-200 rounded-2xl
                         hover:bg-gray-300 hover:rounded-[50%] hover:p-2 hover:scale-130 active:scale-150 active:p-3 active:rounded-full duration-300`}
                 src={notifIcon}
                 width={40}
@@ -65,12 +65,15 @@ const NavBar = () => {
                     haptic();
                 }}
             />
+            <span id='notification-counter' className='absolute top-0 right-0 px-1.5 rounded-full text-white bg-blue-600 font-[1000] text-[1rem]'>
+                2
+            </span>
         </Link>
 
         <Link href='/u/DMs'>
             <Image 
                 alt='message icon'
-                className={`w-11 h-11 ${focusDM? 'bg-gradient-to-b':''} from-red-200 to-blue-200 rounded-2xl
+                className={`w-12 h-12 ${focusDM? 'bg-gradient-to-b':''} from-red-200 to-blue-200 rounded-2xl
                         hover:bg-gray-300 hover:rounded-[50%] hover:p-2 hover:scale-120 active:scale-150 active:p-3 active:rounded-full duration-300`}
                 src={DMIcon}
                 width={40}
