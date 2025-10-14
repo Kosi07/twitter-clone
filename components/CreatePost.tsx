@@ -45,7 +45,7 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
 
   return (
     <div
-      className={`z-30 bg-gray-100 rounded-lg max-w-[690px] p-2 overflow-auto
+      className={`z-40 bg-gray-100 rounded-lg max-w-[690px] p-2 overflow-auto
           ${shouldCreate? 'fixed inset-4 m-auto opacity-95': 'hidden opacity-0'} duration-300 ease-in-out`}
     >
         <div 

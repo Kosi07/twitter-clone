@@ -22,8 +22,8 @@ const Tweet = ({ username, handle, profilePic, time, timeDetails, tweetText, com
   const timeSinceTweet = time;
 
   function formatCounter(counter:number){
-    if (counter >= 1000000){ return `${Math.round(counter/1000000)}M`}
-    if (counter >= 1000){ return `${Math.round(counter/1000)}K`}
+    if (counter >= 1000000){ return `${Math.floor(counter/1000000)}M`}
+    if (counter >= 1000){ return `${Math.floor(counter/1000)}K`}
     if (counter < 1000){ return counter }
   };
 
