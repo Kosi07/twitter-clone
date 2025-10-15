@@ -33,7 +33,7 @@ const SignIn = () => {
                         alt='google logo'
                         width={120}
                         height={120}
-                        onClick={()=>console.log('Sign In with Google')}
+                        onClick={()=>signIn('google', {redirectTo: '/u/home'})}
                     />
 
                     <div 
