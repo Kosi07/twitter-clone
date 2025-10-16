@@ -56,7 +56,7 @@ const SignIn = () => {
                         alt='x logo'
                         width={140}
                         height={140}
-                        onClick={()=>console.log('Sign In with X')}
+                        onClick={()=>signIn('twitter', {redirectTo: '/u/home'})}
                     />
 
                 </div>

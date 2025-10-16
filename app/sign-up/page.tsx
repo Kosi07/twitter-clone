@@ -56,7 +56,7 @@ const SignUp = () => {
                         alt='x logo'
                         width={90}
                         height={90}
-                        onClick={()=>console.log('Sign Up with X')}
+                        onClick={()=>signIn('twitter', {redirectTo: '/u/home'})}
                     />
 
                 </div>
