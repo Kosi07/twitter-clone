@@ -3,14 +3,15 @@
 import Image, { StaticImageData } from 'next/image';
 import imageIcon from '@/public/image-icon.png';
 import emojiIcon from '@/public/smiling.png'
+import { tweetType } from '@/lib/dummyData';
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray, profilePic }: {
   shouldCreate : boolean,
-  setShouldCreate: any,
-  tweetsArray : any[],
-  setTweetsArray : any,
+  setShouldCreate: Dispatch<SetStateAction<boolean>>,
+  tweetsArray : tweetType[],
+  setTweetsArray : Dispatch<SetStateAction<tweetType[]>>,
   profilePic : StaticImageData | string,
 }) => {
 
@@ -107,9 +108,12 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
                 >
                   X
                 </button>
-                <img
+                <Image
                     src={imgPreviewSrc}
+                    alt=''
                     className='w-full h-auto rounded-2xl'
+                    width={500}
+                    height={500}
                 />
               </div>
             )}

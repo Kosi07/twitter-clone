@@ -1,24 +1,25 @@
 'use client';
 import { useSession } from "next-auth/react"
 import Link from "next/link";
+
 import { useContext, useEffect } from "react";
 import { NavContext } from '@/contexts/NavBarContext';
 
-const Search = () => {
-  const { data: session } = useSession();
+const DMs = () => {
+  const { data: session } = useSession(); //Get useSession().data and store it in const session
 
   const { setFocusHome, setFocusSearch, setFocusNotif, setFocusDM } = useContext(NavContext);
-  
+
   useEffect(()=>{
-      setFocusDM(false);
-      setFocusHome(false);
-      setFocusSearch(true);
-      setFocusNotif(false);
-    },[])
+    setFocusDM(true);
+    setFocusHome(false);
+    setFocusSearch(false);
+    setFocusNotif(false);
+  })
   return (
     <>
-      Search
-      <hr className='w-11/12 mb-4 text-blue-400' />
+      DMs
+      <hr className='w-11/12 text-blue-400 mb-4' />
       {session?.user?
           <></>
         :
@@ -44,4 +45,4 @@ const Search = () => {
   )
 }
 
-export default Search
+export default DMs

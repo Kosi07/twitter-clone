@@ -2,6 +2,20 @@
 
 import portugalTeam from '@/public/portugal-team2.jpeg';
 import profilePic from '@/public/profile.png'
+import { StaticImageData } from 'next/image';
+
+export interface tweetType {
+    username: string;
+    handle: string;
+    profilePic: string | StaticImageData;
+    time: number;
+    timeDetails: string;
+    tweetText: string;
+    commentCounter: number;
+    likeCounter: number;
+    imgSrcs: (string | null | StaticImageData)[]
+};
+
 
 export const tweets = [
         {

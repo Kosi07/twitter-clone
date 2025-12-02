@@ -54,7 +54,7 @@ const HeroSection = () => {
             <a 
               className='bg-gray-300/95 p-6 rounded-4xl flex flex-row gap-2 justify-center items-center from-red-200 to-blue-200
                         hover:cursor-pointer hover:bg-gradient-to-b hover:scale-101 active:scale-103 active:px-9 active:bg-gradient-to-b duration-300 ease-in'
-              href='/u/home'
+              href='/home'
               id='skip-to-app'
             >
               <p>Skip to app</p>

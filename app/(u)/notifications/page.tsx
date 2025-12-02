@@ -14,7 +14,7 @@ const Notifications = () => {
       setFocusHome(false);
       setFocusSearch(false);
       setFocusNotif(true);
-    },[])
+    })
   return (
     <>
       Notifications

@@ -2,6 +2,7 @@ import Image, { StaticImageData } from 'next/image';
 import commentIcon from '@/public/comment.svg';
 import heartIcon from '@/public/heart.png';
 import { useState } from 'react';
+import ImgViewer from './ImgViewer';
 
 const Tweet = ({ username, handle, profilePic, time, timeDetails, tweetText, commentCounter, likeCounter, imgSrcs } : {
   username : string,
@@ -12,7 +13,7 @@ const Tweet = ({ username, handle, profilePic, time, timeDetails, tweetText, com
   tweetText : string,
   commentCounter : number,
   likeCounter : number,
-  imgSrcs: StaticImageData[],
+  imgSrcs: (string | null | StaticImageData)[],
 }) => {
 
   const [isLiked, setIsLiked] = useState(false);
@@ -29,16 +30,11 @@ const Tweet = ({ username, handle, profilePic, time, timeDetails, tweetText, com
 
   const newCommentCounter = formatCounter(commentCounter);
   const newLikeCounter = formatCounter(likes);
-  // useEffect(()=>{
-  //     const interval = setInterval(()=>{
-  //       setTimeSinceTweet(prev => prev+1);
-  //     }, 60000);
 
-  //   return () => clearInterval(interval);
-  // }, [])
+  const [viewImg, setViewImg] = useState(false);
 
   return (
-    <div className='w-10/11 border-b border-b-gray-400/20 sm:text-xl md:text-2xl'>
+    <div className='w-19/20 border-b border-b-gray-400/20 sm:text-xl md:text-2xl'>
         <div className='flex justify-between gap-2 w-full my-3 p-1'>
             <div id='profilePic' className='w-10 min-w-10 h-10 sm:w-15 sm:h-15 md:w-20 md:h-20'>
               <Image 
@@ -50,18 +46,25 @@ const Tweet = ({ username, handle, profilePic, time, timeDetails, tweetText, com
               />
             </div>
             
-            <div className='flex flex-col gap-4 w-9/11'>
+            <div className='flex flex-col gap-4 w-11/12'>
                 <div className='flex flex-row gap-1'>
                   <span id='username' className='font-bold w-11/20 line-clamp-1 overflow-ellipses hover:cursor-pointer'>{username}</span>
                   <span id='handle' className='text-gray-500 w-7/20 line-clamp-1 overflow-ellipsis hover:cursor-pointer hover:underline'>@{handle}</span>
                   <span id='time' title={timeDetails} className='text-gray-500 w-1/10 text-center hover:cursor-pointer hover:underline'>{timeSinceTweet}m</span>
                 </div>
 
-                <div id='tweet-text' className='w-10/11 line-clamp-6 overflow-ellipsis'>{tweetText}</div>
+                <div id='tweet-text' className='w-10/11 line-clamp-6 break-words overflow-ellipsis'>{tweetText}</div>
 
                 {imgSrcs[0] &&
                   <div>
-                    {imgSrcs.map((imgSrc, index)=> <Image key={`Img${index}`} alt='' className='w-full h-auto rounded-2xl' src={imgSrc} quality={100} width={500} height={500} />)}
+                    {imgSrcs.map((imgSrc)=> 
+                      imgSrc &&
+                      <div key={`img${imgSrc}`}>
+                        <Image alt='' onClick={()=>setViewImg(true)} className='w-full h-auto rounded-2xl' src={imgSrc} quality={100} width={500} height={500} />
+
+                        <ImgViewer imgSrc={imgSrc} viewImg={viewImg} setViewImg={setViewImg} />
+                      </div>
+                    )}
                   </div>
                 }
 

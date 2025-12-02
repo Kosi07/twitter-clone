@@ -25,7 +25,7 @@ const NavBar = () => {
     <nav
         className='w-9/10 flex flex-row justify-between items-center'
     >
-        <Link href='/u/home'>
+        <Link href='/home'>
             <Image 
                 alt='home icon'
                 className={`w-11 h-11 ${focusHome? 'bg-gradient-to-b':''} from-red-200 to-blue-200 rounded-2xl
@@ -39,7 +39,7 @@ const NavBar = () => {
             />
         </Link>
 
-        <Link href='/u/search'>
+        <Link href='/search'>
             <Image 
                 alt='search icon'
                 className={`w-11 h-11 ${focusSearch? 'bg-gradient-to-b':''} from-red-200 to-blue-200 rounded-2xl
@@ -53,7 +53,7 @@ const NavBar = () => {
             />
         </Link>
 
-        <Link href='/u/notifications' className='relative'>
+        <Link href='/notifications' className='relative'>
             <Image 
                 alt='notification icon'
                 className={`w-12 h-12 ${focusNotif? 'bg-gradient-to-b':''} from-red-200 to-blue-200 rounded-2xl
@@ -70,7 +70,7 @@ const NavBar = () => {
             </span>
         </Link>
 
-        <Link href='/u/DMs'>
+        <Link href='/DMs'>
             <Image 
                 alt='message icon'
                 className={`w-12 h-12 ${focusDM? 'bg-gradient-to-b':''} from-red-200 to-blue-200 rounded-2xl

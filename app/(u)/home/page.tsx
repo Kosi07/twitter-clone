@@ -9,7 +9,7 @@ import profileIcon from '@/public/profile.png';
 import CreatePost from '@/components/CreatePost';
 import Tweet from '@/components/Tweet';
 
-import { tweets } from '@/lib/dummyData';
+import { tweetType, tweets } from '@/lib/dummyData';
 import Aside from '@/components/Aside';
 import { useSession } from 'next-auth/react';
 import { NavContext } from '@/contexts/NavBarContext';
@@ -25,11 +25,11 @@ const Page = () => {
     setFocusHome(true);
     setFocusSearch(false);
     setFocusNotif(false);
-  },[])
+  })
     
   const [shouldCreate, setShouldCreate] = useState(false);
 
-  const [tweetsArray, setTweetsArray] = useState([...tweets]);
+  const [tweetsArray, setTweetsArray] = useState<tweetType[]>([...tweets]);
 
   const [profilePic, setProfilePic] = useState<StaticImageData|string>(profileIcon);
 
@@ -39,48 +39,23 @@ const Page = () => {
 
   const [openAside, setOpenAside] = useState(false);
 
-  const [currentScrollY, setCurrentScrollY] = useState(0);  //Trying to implement "if user scrolls down, '+' icon turns transparent, if user scrolls up, it becomes opaque"
-  const [lastScrollY, setLastScrollY] = useState(0);        //
-  const [array, setArray] = useState([lastScrollY, currentScrollY]); //
-  
-  useEffect(()=>{  //I understand the code inside. Don't really understand why useEffect is here. Claude just said it's better that way?...
-    if(window){
-    window.addEventListener('scroll', ()=>{
-        setArray([currentScrollY, window.scrollY]);
-        setCurrentScrollY(window.scrollY);
-    })
+  //"if user scrolls down, '+' icon turns transparent, if user scrolls up, it becomes opaque"      
+  const [scrollArray, setScrollArray] = useState([0, 0]); 
+
+  useEffect(()=>{
+    const handleScroll = () => {
+      setScrollArray([scrollArray[1], window.scrollY])
     }
-  },[])
+    
+    window.addEventListener('scroll', handleScroll)
 
-  useEffect(() => {
-    let start = 0;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      start = e.touches[0].clientX;
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      const end = e.changedTouches[0].clientX;
-      const diff = end - start;
-
-      // Swipe right from left edge (open aside)
-      if (start < 50 && diff > 40) {
-        setOpenAside(true);
-      }
-      // Swipe left when aside is open (close aside)
-      if (openAside && diff < -40) {
-        setOpenAside(false);
-      }
-    };
-
-    document.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchend', handleTouchEnd);
-  }, [openAside]);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [scrollArray])
 
   return (
     <div className='w-full max-w-[700px] min-w-[280px] min-h-screen relative'>
         <header
-             className='w-[100%] flex justify-between border-b border-b-gray-300 p-2 mb-4 rounded-xl sticky top-2 backdrop-blur-lg bg-gray-100/5'
+             className='w-full flex justify-between border-b border-b-gray-300 p-2 mb-4 rounded-xl sticky top-2 backdrop-blur-lg bg-gray-100/5'
         >
                 <Image
                     alt='user profile icon'
@@ -112,10 +87,11 @@ const Page = () => {
 
         <main>
             {tweetsArray.map((tweet)=> <Tweet key={tweet.handle+''+tweet.timeDetails} username={tweet.username} handle={tweet.handle} profilePic={tweet.profilePic} time={tweet.time} timeDetails={tweet.timeDetails} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter} imgSrcs={tweet.imgSrcs}/>)}
+            <div className='h-20'>{/* Just to add empty space underneath the last tweet */}</div>
         </main>
 
        <div 
-            className={`z-20 fixed right-1/9 bottom-1/6 ${(array[1]>array[0])?'bg-gray-800/50 border':'bg-gradient-to-br from-gray-900/85 to-blue-300'} rounded-[50%] p-4 px-7 shadow-gray-700 shadow-lg/50
+            className={`z-20 fixed right-1/9 bottom-1/6 ${(scrollArray[1]>scrollArray[0])?'bg-gray-800/50 border':'bg-gradient-to-br from-gray-900/85 to-blue-300'} rounded-[50%] p-4 px-7 shadow-gray-700 shadow-lg/50
                     hover:scale-120 hover:cursor-pointer active:scale-130 duration-400`}
             onClick={()=>setShouldCreate(true)}
             title='Post tweet?'
