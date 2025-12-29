@@ -2,22 +2,18 @@
 
 import { useContext, useEffect, useState } from 'react';
 
-import Image, { StaticImageData } from 'next/image';
-import twitterBird from '@/public/twitter-bird.png';
-import profileIcon from '@/public/profile.png';
-
 import CreatePost from '@/components/CreatePost';
 import Tweet from '@/components/Tweet';
 
-import { tweetType, tweets } from '@/lib/dummyData';
-import Aside from '@/components/Aside';
-import { useSession } from 'next-auth/react';
+import { tweets } from '@/lib/dummyData';
+
 import { NavContext } from '@/contexts/NavBarContext';
 
+import { tweetType } from '@/lib/types';
+
+import Navigation from '@/components/Navigation';
+
 const Page = () => {
-
-  const { data: session } = useSession();
-
   const { setFocusHome, setFocusSearch, setFocusNotif, setFocusDM } = useContext(NavContext);
   
   useEffect(()=>{
@@ -29,15 +25,7 @@ const Page = () => {
     
   const [shouldCreate, setShouldCreate] = useState(false);
 
-  const [tweetsArray, setTweetsArray] = useState<tweetType[]>([...tweets]);
-
-  const [profilePic, setProfilePic] = useState<StaticImageData|string>(profileIcon);
-
-  useEffect(()=>{
-            if(session?.user){setProfilePic(String(session.user.image))};
-            }, [session])
-
-  const [openAside, setOpenAside] = useState(false);
+  const [tweetsArray, setTweetsArray] = useState<tweetType[]>([...tweets])
 
   //"if user scrolls down, '+' icon turns transparent, if user scrolls up, it becomes opaque"      
   const [scrollArray, setScrollArray] = useState([0, 0]); 
@@ -52,41 +40,38 @@ const Page = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrollArray])
 
+  const fetchTweets = async () => {
+    const response = await fetch('/api/tweets')
+    if(response.ok){
+      const result = await response.json()
+      
+      if (Array.isArray(result)) {
+        setTweetsArray([...result])
+        
+        setTweetsArray(prev=>[...prev, ...tweets])
+      } 
+      else {
+        console.error('Invalid response:', result)
+      }
+
+    } 
+    else{
+    console.error('Failed to fetch tweets')
+    }
+  }
+
+  useEffect(()=>{
+    fetchTweets()
+  }, [])
+
   return (
     <div className='w-full max-w-[700px] min-w-[280px] min-h-screen relative'>
-        <header
-             className='w-full flex justify-between border-b border-b-gray-300 p-2 mb-4 rounded-xl sticky top-2 backdrop-blur-lg bg-gray-100/5'
-        >
-                <Image
-                    alt='user profile icon'
-                    className='rounded-full hover:cursor-pointer active:bg-gradient-to-b from-red-200 to-blue-200 active:scale-110 active:p-1 duration-300 ease'
-                    src={profilePic}
-                    width={40}
-                    height={45}
-                    onClick={()=>setOpenAside(true)}
-                />
+        <Navigation />
 
-                <Image
-                    alt='twitter bird' 
-                    className='hover:cursor-pointer'
-                    src={twitterBird}
-                    width={40}
-                    height={45}
-                />
-        </header>
-
-        <CreatePost shouldCreate={shouldCreate} setShouldCreate={setShouldCreate} tweetsArray={tweetsArray} setTweetsArray={setTweetsArray} profilePic={profilePic} />
-
-        <Aside profilePic={profilePic} openAside={openAside} user={session?.user} />
-        <div 
-            id='overlay'
-            onClick={()=>setOpenAside(false)}
-            className={`fixed inset-0 z-25 bg-gray-500 opacity-90 ${openAside? '' : 'hidden'} duration-100 ease`}
-        >
-        </div>
+        <CreatePost shouldCreate={shouldCreate} setShouldCreate={setShouldCreate} tweetsArray={tweetsArray} setTweetsArray={setTweetsArray} fetchTweets={fetchTweets} />
 
         <main>
-            {tweetsArray.map((tweet)=> <Tweet key={tweet.handle+''+tweet.timeDetails} username={tweet.username} handle={tweet.handle} profilePic={tweet.profilePic} time={tweet.time} timeDetails={tweet.timeDetails} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter} imgSrcs={tweet.imgSrcs}/>)}
+            {tweetsArray.map((tweet)=> <Tweet key={tweet.handle+''+`${tweet.createdAt}`} username={tweet.username} handle={tweet.handle} profilePic={tweet.profilePic} createdAt={new Date(tweet.createdAt as Date)} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter} imgSrc={tweet.imgSrc}/>)}
             <div className='h-20'>{/* Just to add empty space underneath the last tweet */}</div>
         </main>
 

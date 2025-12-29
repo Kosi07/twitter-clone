@@ -4,23 +4,43 @@ import heartIcon from '@/public/heart.png';
 import { useState } from 'react';
 import ImgViewer from './ImgViewer';
 
-const Tweet = ({ username, handle, profilePic, time, timeDetails, tweetText, commentCounter, likeCounter, imgSrcs } : {
+const Tweet = ({ username, handle, profilePic, createdAt, tweetText, commentCounter, likeCounter, imgSrc } : {
   username : string,
   handle : string,
   profilePic: StaticImageData | string,
-  time : number,
-  timeDetails : string,
+  createdAt?: Date,
   tweetText : string,
   commentCounter : number,
   likeCounter : number,
-  imgSrcs: (string | null | StaticImageData)[],
+  imgSrc?: string | StaticImageData,
 }) => {
 
   const [isLiked, setIsLiked] = useState(false);
 
   const [likes, setLikes] = useState(likeCounter);
 
-  const timeSinceTweet = time;
+  function formatTweetDate(date: Date) {
+    const currentYear = new Date().getFullYear();
+    const tweetYear = date.getFullYear();
+    
+    const options: Intl.DateTimeFormatOptions = { 
+      month: 'short',  // "Nov" instead of "November"
+      day: 'numeric'   // "11" 
+    };
+    
+    // If same year, just show "Nov 11"
+    if (currentYear === tweetYear) {
+      return date.toLocaleDateString('en-US', options);
+    }
+    
+    // If different year, show "Nov 11, 2025"
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    const year = date.getFullYear();
+  
+    return `${year} ${month}`;
+  }
+
+  const timeSinceTweet = createdAt && formatTweetDate(createdAt);
 
   function formatCounter(counter:number){
     if (counter >= 1000000){ return `${Math.floor(counter/1000000)}M`}
@@ -48,23 +68,22 @@ const Tweet = ({ username, handle, profilePic, time, timeDetails, tweetText, com
             
             <div className='flex flex-col gap-4 w-11/12'>
                 <div className='flex flex-row gap-1'>
-                  <span id='username' className='font-bold w-11/20 line-clamp-1 overflow-ellipses hover:cursor-pointer'>{username}</span>
-                  <span id='handle' className='text-gray-500 w-7/20 line-clamp-1 overflow-ellipsis hover:cursor-pointer hover:underline'>@{handle}</span>
-                  <span id='time' title={timeDetails} className='text-gray-500 w-1/10 text-center hover:cursor-pointer hover:underline'>{timeSinceTweet}m</span>
+                  <span id='username' className='font-bold w-53/100 line-clamp-1 overflow-ellipses hover:cursor-pointer'>{username}</span>
+
+                  <span id='handle' className='text-gray-500 text-lg w-3/10 line-clamp-1 overflow-ellipsis hover:cursor-pointer hover:underline'>@{handle.split('-')[0]}</span>
+
+                  <span id='time' title={`${createdAt}`} className='text-gray-500 w-3/10 text-lg text-center hover:cursor-pointer hover:underline'>{timeSinceTweet}</span>
                 </div>
 
                 <div id='tweet-text' className='w-10/11 line-clamp-6 break-words overflow-ellipsis'>{tweetText}</div>
 
-                {imgSrcs[0] &&
+                {imgSrc &&
                   <div>
-                    {imgSrcs.map((imgSrc)=> 
-                      imgSrc &&
-                      <div key={`img${imgSrc}`}>
+                      <div>
                         <Image alt='' onClick={()=>setViewImg(true)} className='w-full h-auto rounded-2xl' src={imgSrc} quality={100} width={500} height={500} />
 
                         <ImgViewer imgSrc={imgSrc} viewImg={viewImg} setViewImg={setViewImg} />
                       </div>
-                    )}
                   </div>
                 }
 
@@ -78,7 +97,7 @@ const Tweet = ({ username, handle, profilePic, time, timeDetails, tweetText, com
                         width={30}
                         height={30} 
                     />
-                    <span id='comment-counter' className='text-gray-500 hover:text-teal-300 duration-200'>{newCommentCounter}</span>
+                    <span id='comment-counter' className='text-gray-500 text-lg hover:text-teal-300 duration-200'>{newCommentCounter}</span>
                   </div>
 
                   <div 
@@ -113,7 +132,7 @@ const Tweet = ({ username, handle, profilePic, time, timeDetails, tweetText, com
                       />
                     }
 
-                    <span id='like-counter' className='text-gray-500 hover:text-red-400 duration-200'>{newLikeCounter}</span>
+                    <span id='like-counter' className='text-gray-500 text-lg hover:text-red-400 duration-200'>{newLikeCounter}</span>
                   </div>
                 </div>
             </div>

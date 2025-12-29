@@ -3,46 +3,119 @@
 import Image, { StaticImageData } from 'next/image';
 import imageIcon from '@/public/image-icon.png';
 import emojiIcon from '@/public/smiling.png'
-import { tweetType } from '@/lib/dummyData';
+import profileIcon from '@/public/profile.png';
 
-import { Dispatch, SetStateAction, useState } from 'react';
 
-const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray, profilePic }: {
+import { useState } from 'react';
+import { tweetType } from '@/lib/types';
+import { authClient } from '@/lib/client-side-auth-client';
+import { useRouter } from 'next/navigation';
+
+const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
   shouldCreate : boolean,
-  setShouldCreate: Dispatch<SetStateAction<boolean>>,
+  setShouldCreate: React.Dispatch<React.SetStateAction<boolean>>,
   tweetsArray : tweetType[],
-  setTweetsArray : Dispatch<SetStateAction<tweetType[]>>,
-  profilePic : StaticImageData | string,
+  setTweetsArray : React.Dispatch<React.SetStateAction<tweetType[]>>,
+  fetchTweets: () => Promise<void>,
 }) => {
+
+  const session = authClient.useSession()
+  const user = session?.data?.user
+
+  const profilePic: string | StaticImageData = user?.image? user.image : profileIcon
+
+  const router = useRouter()
 
   const [tweetInput, setTweetInput] = useState('');
 
-  const disabled: boolean = tweetInput.trim() === '';
+  const disabled: boolean = tweetInput.trim() === '' && user? true : false;
 
-  const [imgPreviewSrc, setImgPreviewSrc] = useState<string | null>(null);
+  const [imgPreviewSrc, setImgPreviewSrc] = useState<string | StaticImageData>();
 
-  let newTweet;
+  const [selectedFile, setSelectedFile] = useState<File>()
 
-  function handleTweet(){
+  let newTweet : tweetType;
 
-    console.log(tweetInput);
+  async function saveImgToCloudinary(img: File) {
+    try {
+      // Create form data with the image
+      const formData = new FormData();
+      formData.append('image', img);
 
-    newTweet = {
-      username: 'Random User',
-      handle: 'random_user',
-      profilePic: profilePic,
-      time: 0,
-      timeDetails: Date(),
-      tweetText: tweetInput.trim(),
-      commentCounter: 2,
-      likeCounter: 12,
-      imgSrcs: [imgPreviewSrc],
+      // Send to your API route
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      // Get the response
+      const data = await response.json();
+      
+      if (data.success) {
+        return data.url; // Return the Cloudinary URL
+      } else {
+        console.error('Upload failed');
+        return null;
+      }
+      
+    } 
+    catch(err){
+      console.error('Error saving to cloudinary', err);
+      return null;
     }
+  }
 
-    setTweetsArray([newTweet, ...tweetsArray]); 
-    setTweetInput('');
-    setShouldCreate(false);
-  };
+  async function handleTweet(){
+
+    if(user){
+      let cloudinaryUrl=null
+
+      if(selectedFile){
+        cloudinaryUrl = await saveImgToCloudinary(selectedFile)
+
+        if(!cloudinaryUrl){
+          alert('Failed to upload image')
+          return
+        }
+      }
+
+      newTweet = {
+        username: user.name,
+        handle: `${user.name.toLowerCase()}-${user.id}`,
+        profilePic: profilePic,
+        tweetText: tweetInput.trim(),
+        commentCounter: 0,
+        likeCounter: 0,
+        ...(cloudinaryUrl && { imgSrc: cloudinaryUrl })
+      }
+
+      await saveToMongoDB()
+
+      setTweetInput('');
+      setSelectedFile(undefined);
+      setShouldCreate(false);
+
+      fetchTweets()
+    
+  } 
+  else {
+    console.log('Need to be signed in to post');
+  }
+}
+
+  async function saveToMongoDB(){
+    console.log(newTweet)
+    const result = await fetch('/api/tweets', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        newTweet
+      })
+    })
+
+    console.log('result',typeof result, result)
+
+  }
 
   return (
     <div
@@ -64,10 +137,17 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
               className={`${disabled? 'bg-blue-300' : 'bg-blue-400'}
                    text-white font-bold px-4 py-2 rounded-4xl
                    hover:cursor-pointer hover:bg-white hover:text-blue-400 hover:scale-110 duration-200 ease-out`}
-              onClick={()=>handleTweet()}
+              onClick={()=>{
+                if(user){
+                  handleTweet()
+                }
+                else{
+                  router.push('/sign-in')
+                }
+              }}
               disabled={disabled}
           >
-            Tweet
+            {user?'Tweet':'SignIn'}
           </button>
         </div>
 
@@ -91,9 +171,9 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
                 value={tweetInput}
                 maxLength={180}
                 onChange={(e)=> {
-                  const scrollHeight = e.currentTarget.scrollHeight;
                   setTweetInput(e.target.value);
-                  console.log('textarea onChange');
+
+                  const scrollHeight = e.currentTarget.scrollHeight;
                   e.currentTarget.style.height = scrollHeight + 'px';
                 }}
             />
@@ -104,7 +184,11 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
                     className='py-2 px-3 border rounded-[50%] bg-gray-200/70 absolute top-2 right-2 text-black font-extrabold
                             hover:bg-gray-900 hover:text-white hover:border-white hover:cursor-pointer
                             active:bg-blue-400 active:text-white active:border-white duration-400'
-                    onClick={()=> setImgPreviewSrc(null)}
+                    onClick={()=> {
+                        setImgPreviewSrc('')
+                        setSelectedFile(undefined)
+                      }
+                    }
                 >
                   X
                 </button>
@@ -121,17 +205,18 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
         </div>
 
         <div className='p-4 flex flex-row gap-2'>
+
           <label htmlFor='img-input'>
-          <Image 
-              alt='image icon'
-              className='h-11 w-11 p-1 rounded-[50%]
-                      hover:bg-blue-200 hover:p-2 duration-300'
-              src={imageIcon}
-              width={40}
-              height={40}
-              quality={100}
-              title='add image?'
-          />
+            <Image 
+                alt='image icon'
+                className='h-11 w-11 p-1 rounded-[50%]
+                        hover:bg-blue-200 hover:p-2 duration-300'
+                src={imageIcon}
+                width={40}
+                height={40}
+                quality={100}
+                title='add image?'
+            />
           </label>
           <input 
                 type='file'
@@ -143,8 +228,13 @@ const CreatePost = ({ shouldCreate, setShouldCreate, tweetsArray, setTweetsArray
                   console.log('input type file onChange');
                   if(e.target.files){
                     const file = e.target.files[0];
+                    console.log('file',file)
+                    setSelectedFile(file)
+
                     setImgPreviewSrc(URL.createObjectURL(file));
-                    console.log(e.target.value) // .value is the file name
+                    console.log('objectURL',URL.createObjectURL(file))
+
+                    console.log('e.target.value',e.target.value) // .value is the file name
                     e.target.value=''; //causes onChange to trigger even if the same img is selected immediately after it has been removed.
                   }
                 }}

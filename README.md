@@ -16,10 +16,10 @@ I really just want to nail Twitter's frontend design.
 
 
 Responsiveness
-- Clicking an image makes the image go full screen.
+- [x]Clicking an image makes the image go full screen.
 - Clicking on a tweet makes the tweet go full screen. Comments appear down below
 
-- Darkmode.
+- Darkmode/Lightmode toggle.
 
 - [x] NavBar icons should be highlighted depending on what icon you click
 
@@ -31,12 +31,13 @@ Responsiveness
 - [x] Auth
 - [x] Finish OAuth setup with X and Google
 
-- [ ] Search 'how do I deal with auth and user data if GitHub is handling sign in and signup? There's no password field, so I don't need to store passwords. How do I prevent someone from signing up if they already have an account? How do I get someone to sign up if they don't have one? How do I control the length of sessions? 
-How do I send them a Welcome Email?
+-[]Modified readme, removed Github OAuth, removed AuthJS, minor styling changes, added better-auth and mongodb and now render tweets from DB
 
-Is conditionally rendering stuff based on if a session exists okay? Can't client-side JS bypass that kinda stuff?'
+-[ ] Limit DB fetch calls to 7 tweets at a time
+- [ ] Infinite scroll?
 
-- [ ] Push user data to mongoDB on signUp. Check if account already exists though. For signIn, check if user exists.
+- [ ] How do I send them a Welcome Email?
+
 - [ ] User should be able to change profile picture, name and handle. This should reflect in the mongoDB.
 - [ ] Store Tweets and messages in DB.
 - [ ] User should be able to message other users.

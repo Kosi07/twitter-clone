@@ -1,11 +1,11 @@
 'use client';
-import { useSession } from "next-auth/react"
 import Link from "next/link";
 import { useContext, useEffect } from "react";
 import { NavContext } from '@/contexts/NavBarContext';
 
 const Search = () => {
-  const { data: session } = useSession();
+  const session = {user: true}
+  const user = session?.user
 
   const { setFocusHome, setFocusSearch, setFocusNotif, setFocusDM } = useContext(NavContext);
   
@@ -19,7 +19,7 @@ const Search = () => {
     <>
       Search
       <hr className='w-11/12 mb-4 text-blue-400' />
-      {session?.user?
+      {user?
           <></>
         :
           <div className='flex flex-col gap-5'>

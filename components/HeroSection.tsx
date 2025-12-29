@@ -1,11 +1,27 @@
-'use client';
-
 import Image from 'next/image';
 import twitt3rBird from '@/public/twitter-bird.png'
 
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 
-const HeroSection = () => {
+const HeroSection = async() => {
+
+  let session
+  try{
+    session = await auth.api.getSession({
+      headers: await headers()
+    })
+  }
+  catch(err){
+    console.error('Error checking session',err)
+  }
+
+  if(session){
+    redirect('/home')
+  }
+  
   return (
     <section className='min-w-[350px] my-4 flex flex-col gap-4 items-center'>
         <Image 
@@ -26,11 +42,11 @@ const HeroSection = () => {
 
             <div >
               <Link 
-                  className='text-xl border m-1 px-20 py-2 rounded-xl'
-                  href='/sign-up'
+                  className='text-xl text-white font-extrabold bg-gray-900 border m-1 px-20 py-2 rounded-xl'
+                  href='/sign-in'
                   
               >
-                SignUp
+                SignIn
               </Link>
              
               <p className='text-sm my-2'>
@@ -38,20 +54,7 @@ const HeroSection = () => {
               </p>
             </div>
 
-            <div>
-              <p className='text-lg font-bold my-2'>
-                Already have an account?
-              </p>
-              <Link 
-                  className='text-xl border px-10 py-1 m-1 rounded-xl text-white bg-gray-900'
-                  href='/sign-in'
-                  
-              >
-                SignIn
-              </Link>
-            </div>
-
-            <a 
+            <Link 
               className='bg-gray-300/95 p-6 rounded-4xl flex flex-row gap-2 justify-center items-center from-red-200 to-blue-200
                         hover:cursor-pointer hover:bg-gradient-to-b hover:scale-101 active:scale-103 active:px-9 active:bg-gradient-to-b duration-300 ease-in'
               href='/home'
@@ -65,7 +68,7 @@ const HeroSection = () => {
                 width={30}
                 height={30}
               />
-            </a>
+            </Link>
         </div>
     </section>
   )

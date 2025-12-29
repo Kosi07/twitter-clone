@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { sfpro } from '@/utils/useFonts';
+import { sfpro } from '@/lib/fonts';
 
 export const metadata: Metadata = {
   title: "Twitt3r",
