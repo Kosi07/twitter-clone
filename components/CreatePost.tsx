@@ -28,7 +28,9 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
 
   const [tweetInput, setTweetInput] = useState('');
 
-  const disabled: boolean = tweetInput.trim() === '' && user? true : false;
+  const [isPosting, setIsPosting] = useState(false)
+
+  const disabled: boolean = (tweetInput.trim() === '' && user) || isPosting? true : false;
 
   const [imgPreviewSrc, setImgPreviewSrc] = useState<string | StaticImageData>();
 
@@ -66,6 +68,7 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
   }
 
   async function handleTweet(){
+    setIsPosting(true)
 
     if(user){
       let cloudinaryUrl=null
@@ -101,6 +104,8 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
   else {
     console.log('Need to be signed in to post');
   }
+
+  setIsPosting(prev => !prev) //false
 }
 
   async function saveToMongoDB(){

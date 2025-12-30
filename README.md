@@ -31,8 +31,6 @@ Responsiveness
 - [x] Auth
 - [x] Finish OAuth setup with X and Google
 
--[]Modified readme, removed Github OAuth, removed AuthJS, minor styling changes, added better-auth and mongodb and now render tweets from DB
-
 -[ ] Limit DB fetch calls to 7 tweets at a time
 - [ ] Infinite scroll?
 
