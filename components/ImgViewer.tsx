@@ -10,7 +10,7 @@ const ImgViewer = ({ imgSrc, viewImg, setViewImg } :
   return (
     <div className={`fixed z-30 inset-0 bg-gray-900 text-white flex flex-row justify-center
                     ${viewImg? '' : 'opacity-0 pointer-events-none'} duration-200 ease-out`}>
-        <div className='h-screen'>
+        <div className='w-screen h-screen'>
             <div className='p-4 text-3xl mb-15 text-bold cursor-pointer'
                 onClick={()=>setViewImg(false)}
                 title='Close?'
