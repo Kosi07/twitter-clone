@@ -23,7 +23,7 @@ const ImgViewer = ({ imgSrc, viewImg, setViewImg } :
             width={500}
             height={500}
             alt=''
-            className='w-full h-3/4 max-w-[700px] object-contain rounded-lg shadow-lg' 
+            className='w-full h-6/10 max-w-[700px] object-contain rounded-lg shadow-lg' 
             />
         </div>
     </div>
