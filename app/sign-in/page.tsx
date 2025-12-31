@@ -13,7 +13,7 @@ const SignIn = () => {
 
   return (
     <>
-        <header>Header</header>
+        <header></header>
 
         <main className='mb-4 flex flex-col gap-4 items-center'>
 

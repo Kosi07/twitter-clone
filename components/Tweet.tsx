@@ -1,8 +1,38 @@
 import Image, { StaticImageData } from 'next/image';
 import commentIcon from '@/public/comment.svg';
-import heartIcon from '@/public/heart.png';
 import { useState } from 'react';
 import ImgViewer from './ImgViewer';
+
+{/* Heart */}
+function Heart({isLiked, setIsLiked, setLikes} 
+  : 
+  {
+    isLiked: boolean,
+    setIsLiked: React.Dispatch<React.SetStateAction<boolean>>,
+    setLikes: React.Dispatch<React.SetStateAction<number>>,
+  }){
+  return(
+    <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+      className='w-9 h-9 rounded-full 
+                  hover:scale-110 hover:p-1 hover:bg-red-400 hover:cursor-pointer
+                  active:bg-red-400 active:scale-110 active:p-1 
+                  duration-140 ease-out'
+
+      onClick={()=>{
+        setIsLiked(prev => !prev)
+        if(isLiked){
+          setLikes(prev => prev-1)
+        }
+        else{
+          setLikes(prev => prev+1)
+        }
+      }}
+    >
+      <path d="M 50 75 Q 30 60 22 48 Q 15 35 20 27 Q 25 20 35 20 Q 42 20 50 28 Q 58 20 65 20 Q 75 20 80 27 Q 85 35 78 48 Q 70 60 50 75 Z" 
+            fill={isLiked? '#DC143C' : 'none'} stroke="black" strokeWidth={isLiked? '3' : '2'}/>
+    </svg>
+  )
+}
 
 const Tweet = ({ username, handle, profilePic, createdAt, tweetText, commentCounter, likeCounter, imgSrc } : {
   username : string,
@@ -104,33 +134,7 @@ const Tweet = ({ username, handle, profilePic, createdAt, tweetText, commentCoun
                     className='flex flex-row items-center gap-1'
                     id='likes-div'
                   >                    
-                    {isLiked?
-                      <div 
-                        className='relative w-[25px] h-[20px] mr-1
-                                hover:cursor-pointer hover:scale-90 duration-300'
-                        onClick={()=>{
-                                      setIsLiked(false);
-                                      setLikes(prev=>prev-1);
-                                     }
-                                }
-                      >
-                        <div className='absolute w-1/2 h-[18px] bg-red-500 rounded-t-full left-[11px] origin-bottom-left -rotate-45'></div>
-                        <div className='absolute w-1/2 h-[18px] bg-red-500 rounded-t-full left-0 origin-bottom-right rotate-45'></div>
-                      </div>
-                      :
-                      <Image 
-                          alt=''
-                          className='rounded-full 
-                                  hover:scale-110 hover:p-1 hover:bg-red-400 active:bg-red-400 active:scale-110 active:p-1 duration-300'
-                          src={heartIcon}
-                          width={30}
-                          height={30}
-                          onClick={()=>{
-                            setIsLiked(true);
-                            setLikes(prev=>prev+1)
-                          }}
-                      />
-                    }
+                    <Heart isLiked={isLiked} setIsLiked={setIsLiked} setLikes={setLikes} />
 
                     <span id='like-counter' className='text-gray-500 text-lg hover:text-red-400 duration-200'>{newLikeCounter}</span>
                   </div>

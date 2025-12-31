@@ -38,6 +38,7 @@ const Aside = ({ profilePic, openAside, user }:{ profilePic: StaticImageData|str
           </Link>
         </>
       }
+
     </aside>
   )
 }
