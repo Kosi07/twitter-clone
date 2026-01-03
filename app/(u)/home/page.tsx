@@ -27,7 +27,7 @@ const Page = () => {
 
   const [tweetsArray, setTweetsArray] = useState<tweetType[]>([...tweets])
 
-  //"if user scrolls down, '+' icon turns transparent, if user scrolls up, it becomes opaque"      
+  //"if user scrolls down, '+' icon background turns transparent, if user scrolls up, it becomes opaque"      
   const [scrollArray, setScrollArray] = useState([0, 0]); 
 
   useEffect(()=>{
@@ -47,8 +47,6 @@ const Page = () => {
       
       if (Array.isArray(result)) {
         setTweetsArray([...result])
-        
-        setTweetsArray(prev=>[...prev, ...tweets])
       } 
       else {
         console.error('Invalid response:', result)
@@ -71,7 +69,7 @@ const Page = () => {
         <CreatePost shouldCreate={shouldCreate} setShouldCreate={setShouldCreate} tweetsArray={tweetsArray} setTweetsArray={setTweetsArray} fetchTweets={fetchTweets} />
 
         <main>
-            {tweetsArray.map((tweet)=> <Tweet key={tweet.handle+''+`${tweet.createdAt}`} username={tweet.username} handle={tweet.handle} profilePic={tweet.profilePic} createdAt={new Date(tweet.createdAt as Date)} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter} imgSrc={tweet.imgSrc}/>)}
+            {tweetsArray.map((tweet)=> <Tweet key={tweet.handle+''+`${tweet.createdAt}`} id={tweet._id} username={tweet.username} handle={tweet.handle} profilePic={tweet.profilePic} createdAt={new Date(tweet.createdAt as Date)} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter} imgSrc={tweet.imgSrc}/>)}
             <div className='h-20'>{/* Just to add empty space underneath the last tweet */}</div>
         </main>
 

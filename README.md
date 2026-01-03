@@ -25,11 +25,13 @@ Responsiveness
 
 - [x] User should be able to add images to tweets
 
-- [x] User should be able to like tweets.
+- [ ] User should be able to like tweets.
 
 
 - [x] Auth
 - [x] Finish OAuth setup with X and Google
+
+-[ ] Minor styling changes to NavBar, clicking on a tweet takes you to a new page that opens the tweet in fullscreen mode, DB tracks likes and comments
 
 -[ ] Limit DB fetch calls to 7 tweets at a time
 - [ ] Infinite scroll?

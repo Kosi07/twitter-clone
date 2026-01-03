@@ -6,7 +6,7 @@ import emojiIcon from '@/public/smiling.png'
 import profileIcon from '@/public/profile.png';
 
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { tweetType } from '@/lib/types';
 import { authClient } from '@/lib/client-side-auth-client';
 import { useRouter } from 'next/navigation';
@@ -35,6 +35,16 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
   const [imgPreviewSrc, setImgPreviewSrc] = useState<string | StaticImageData>();
 
   const [selectedFile, setSelectedFile] = useState<File>()
+
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
+
+ useEffect(() => {
+  const pause = setTimeout(() => {
+    textAreaRef.current?.focus();
+  }, 100);
+
+  return ()=>clearTimeout(pause)
+}, [shouldCreate])
 
   let newTweet : tweetType;
 
@@ -171,6 +181,7 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
 
           <div className='flex flex-col'>
             <textarea
+                ref={textAreaRef}
                 className='text-2xl w-full p-2 focus:outline-none'
                 placeholder="What's happening?"
                 value={tweetInput}
@@ -178,6 +189,7 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
                 onChange={(e)=> {
                   setTweetInput(e.target.value);
 
+                  e.currentTarget.style.height = 'auto';
                   const scrollHeight = e.currentTarget.scrollHeight;
                   e.currentTarget.style.height = scrollHeight + 'px';
                 }}

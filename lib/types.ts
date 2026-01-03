@@ -1,6 +1,7 @@
 import { StaticImageData } from 'next/image';
 
 export interface tweetType {
+    _id: string,
     username: string
     handle: string
     profilePic: string | StaticImageData
@@ -8,18 +9,10 @@ export interface tweetType {
     tweetText: string
     commentCounter: number
     likeCounter: number
-    commentDetails?: commentDetailsType
-    likeDetails?: likeDetailsType
+    commentOf?: string
+    likedBy?: string[]
     imgSrc?: string | StaticImageData
 };
-
-interface likeDetailsType {
-  emails: string[]
-}
-
-interface commentDetailsType {
-  emails: string[]
-}
 
 export interface userType {
     id: string;

@@ -1,8 +1,8 @@
 import { auth } from "@/lib/auth"
-import { MongoClient } from "mongodb"
+import { MongoClient, ObjectId } from "mongodb"
 import { headers } from "next/headers"
 
-const client = new MongoClient(process.env.MONGODB_CONNECTION_STRING as string)
+export const client = new MongoClient(process.env.MONGODB_CONNECTION_STRING as string)
 
 export async function POST(req:Request){
     let session
@@ -28,6 +28,7 @@ export async function POST(req:Request){
               commentCounter,
               likeCounter,
               imgSrc=null,
+              commentOf=null,
             } = newTweet
 
       //Connect to MongoDB
@@ -41,9 +42,18 @@ export async function POST(req:Request){
           commentCounter,
           likeCounter,
           imgSrc,
+          ...(commentOf && {commentOf: new ObjectId(commentOf as string)}),
           email: session.user.email,
           createdAt: new Date(),
       })
+
+      if(commentOf){
+        await db.collection('tweets')
+          .updateOne(
+            { _id: new ObjectId(commentOf as string) },
+            { $inc: { commentCounter: 1 } }  // $inc means "increment by 1"
+          )
+      }
 
       return Response.json(
             {
@@ -53,38 +63,26 @@ export async function POST(req:Request){
         )
     }
     catch(err){
-      console.error('Error checking session',err)
+      console.error('Error',err)
       return Response.json({
-        error: 'Error checking session'
+        error: 'Error'
       })
     }
 }
 
 export async function GET() {
-  let session
   try{
-    session = await auth.api.getSession({
-      headers: await headers()
-    })
-
-    if(!session){
-      return Response.json(
-              { error: 'Must be signed in to add tasks' }, 
-              { status: 401 }
-      )
-    }
-
     //Connect to MongoDB
     const db = client.db(process.env.DB_NAME as string);
     
     // Get all tweets, sorted by newest first
     const tweets = await db.collection('tweets')
-      .find({}, { 
-        projection: { 
-          _id: 0,     
+      .find({commentOf: {$eq: null}}, { 
+        projection: {    
           email: 0     
         } 
       })
+      .limit(11)
       .sort({ createdAt: -1 })
       .toArray();
     

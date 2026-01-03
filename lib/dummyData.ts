@@ -6,6 +6,7 @@ import profilePic from '@/public/profile.png'
 
 export const tweets = [
         {
+            _id: '123',
             username: 'MrBeast',
             handle: 'mrbeast',
             profilePic: profilePic,
@@ -19,6 +20,7 @@ export const tweets = [
         },
 
         {
+            _id: '12',
             username: 'Cristiano Ronaldo',
             handle: 'cr7',
             profilePic: profilePic,
@@ -32,6 +34,7 @@ export const tweets = [
         },
 
         {
+            _id: '1',
             username: 'Elon Musk',
             handle: 'elonmusk',
             profilePic: profilePic,
