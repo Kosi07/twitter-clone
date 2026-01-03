@@ -3,7 +3,7 @@ import { client } from "../../tweets/route"
 import { headers } from "next/headers"
 import { ObjectId } from "mongodb"
 
-export async function GET(req: Request, {params}: {params: {id: string}}){
+export async function GET(req: Request, {params}: {params: Promise<{id: string}>}){
     try{
         const {id} = await params
 
