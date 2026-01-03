@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic' //This page depends on request data — don’t try to statically render it.
+
 import { client } from '@/app/api/tweets/route'
 import BackButton from '@/components/BackButton'
 import Comments from '@/components/Comments'
