@@ -82,8 +82,8 @@ export async function GET() {
           email: 0     
         } 
       })
-      .limit(11)
       .sort({ createdAt: -1 })
+      .limit(25)
       .toArray();
     
     return Response.json(tweets);

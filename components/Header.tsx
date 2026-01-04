@@ -10,7 +10,7 @@ const Header = ({ profilePic,setOpenAside, user }:
     }) => {
   return (
         <header
-             className='w-full flex justify-between border-b border-b-gray-300 p-2 mb-4 rounded-xl sticky top-2 backdrop-blur-lg bg-gray-100/5'
+             className='w-full flex justify-between border-b border-b-gray-300 p-2 mb-4 rounded-xl sticky top-0 backdrop-blur-lg bg-gray-100/5'
         >
                 <Image
                     alt='user profile icon'
