@@ -14,7 +14,7 @@ const Header = ({ profilePic,setOpenAside, user }:
         >
                 <Image
                     alt='user profile icon'
-                    className='rounded-full w-10 h-10
+                    className='rounded-full w-7 h-7
                         hover:cursor-pointer 
                         active:scale-110 active:p-1 
                         duration-300 ease'
@@ -26,7 +26,7 @@ const Header = ({ profilePic,setOpenAside, user }:
 
                 <Image
                     alt='twitter bird' 
-                    className=' w-10 h-10
+                    className=' w-7 h-7
                         hover:cursor-pointer'
                     src={twitterBird}
                     width={40}

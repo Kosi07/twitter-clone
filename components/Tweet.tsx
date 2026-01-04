@@ -47,7 +47,7 @@ function Heart({isLiked, setIsLiked, setLikes, id}
 
   return(
     <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-      className='w-9 h-9 rounded-full 
+      className='w-7 h-7 rounded-full 
                   hover:scale-110 hover:p-1 hover:bg-red-400 hover:cursor-pointer
                   active:bg-red-400 active:scale-110 active:p-1 
                   duration-140 ease-out'
@@ -135,7 +135,7 @@ const Tweet = ({ id, username, handle, profilePic, createdAt, tweetText, comment
       id={id}
     >
         <div className='flex justify-between gap-2 w-full my-3 p-1'>
-            <div id='profilePic' className='w-10 min-w-10 h-10 sm:w-15 sm:h-15 md:w-20 md:h-20'>
+            <div id='profilePic' className='w-8 min-w-8 h-8 sm:w-10 sm:h-10 md:w-15 md:h-15'>
               <Image 
                   src={profilePic}
                   className='rounded-full'
@@ -147,16 +147,16 @@ const Tweet = ({ id, username, handle, profilePic, createdAt, tweetText, comment
             
             <div className='flex flex-col gap-4 w-11/12'>
                 <div className='flex flex-row gap-1'>
-                  <span id='username' className='font-bold w-53/100 truncate hover:cursor-pointer'>{username}</span>
+                  <span id='username' className='text-sm font-bold w-53/100 truncate hover:cursor-pointer'>{username}</span>
 
-                  <span id='handle' className='text-gray-500 text-lg w-3/10 truncate hover:cursor-pointer hover:underline'>@{handle.split('-')[0]}</span>
+                  <span id='handle' className='text-gray-500 text-sm w-3/10 truncate hover:cursor-pointer hover:underline'>@{handle.split('-')[0]}</span>
 
-                  <span id='time' title={`${createdAt}`} className='text-gray-500 w-3/10 text-lg text-center hover:cursor-pointer hover:underline'>{timeSinceTweet}</span>
+                  <span id='time' title={`${createdAt}`} className='text-gray-500 w-3/10 text-sm text-center hover:cursor-pointer hover:underline'>{timeSinceTweet}</span>
                 </div>
 
                 <Link 
                   href={`/tweet/${id}`}
-                  className='w-10/11 line-clamp-6 break-words overflow-ellipsis'
+                  className='w-10/11 text-sm line-clamp-6 break-words overflow-ellipsis'
                 >
                   {tweetText}
                 </Link>
@@ -178,14 +178,14 @@ const Tweet = ({ id, username, handle, profilePic, createdAt, tweetText, comment
                     >
                       <Image
                           alt=''
-                          className='rounded-full 
+                          className='rounded-full w-6 h-6
                                     hover:scale-110 hover:p-1 hover:bg-teal-300/50 active:bg-teal-300 active:scale-110 active:p-1 duration-300'
                           src={commentIcon}
                           width={30}
                           height={30} 
                       />
                     </Link>
-                    <span id='comment-counter' className='text-gray-500 text-lg hover:text-teal-300 duration-200'>{newCommentCounter}</span>
+                    <span id='comment-counter' className='text-gray-500 text-sm hover:text-teal-300 duration-200'>{newCommentCounter}</span>
                   </div>
 
                   <div 
@@ -194,7 +194,7 @@ const Tweet = ({ id, username, handle, profilePic, createdAt, tweetText, comment
                   >                    
                     <Heart isLiked={isLiked} setIsLiked={setIsLiked} setLikes={setLikes} id={id} />
 
-                    <span id='like-counter' className='text-gray-500 text-lg hover:text-red-400 duration-200'>{newLikeCounter}</span>
+                    <span id='like-counter' className='text-gray-500 text-sm hover:text-red-400 duration-200'>{newLikeCounter}</span>
                   </div>
                 </div>
             </div>
