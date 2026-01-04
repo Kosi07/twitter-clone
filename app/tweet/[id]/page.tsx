@@ -14,15 +14,16 @@ import Link from 'next/link'
 const Page = async({params}:{params: {id: string}}) => {
     const { id } = await params //id is correct
 
-    let user
-    try{
-      const session = await auth.api.getSession({
-                      headers: await headers()
-                    })
-      user = session?.user
-    }
-    catch(err){
-      console.error('Error checking session', err)
+    const getUser = async() => {
+      try{
+        const session = await auth.api.getSession({
+                        headers: await headers()
+                      })
+        return session?.user
+      }
+      catch(err){
+        console.error('Error checking session', err)
+      }
     }
 
     const fetchTweetById = async() => {
@@ -45,8 +46,6 @@ const Page = async({params}:{params: {id: string}}) => {
       }
     }
 
-    const tweet = await fetchTweetById()
-
     async function fetchComments(){
       try{
         const db = client.db(process.env.DB_NAME as string)
@@ -65,7 +64,11 @@ const Page = async({params}:{params: {id: string}}) => {
       }
     }
 
-    const comments = await fetchComments()
+    const [user, tweet, comments] = await Promise.all([
+      getUser(),
+      fetchTweetById(),
+      fetchComments()
+    ])
 
   return (
     <div className='w-full max-w-[700px] min-w-[280px] min-h-screen'>
