@@ -69,7 +69,7 @@ const Page = async({params}:{params: {id: string}}) => {
 
   return (
     <div className='w-full max-w-[700px] min-w-[280px] min-h-screen'>
-      <div className='sticky top-1 bg-gray-50/30 backdrop-blur-xl rounded-lg w-full flex flex-row px-2 text-2xl'>
+      <div className='sticky top-0 bg-gray-50/30 backdrop-blur-xl rounded-lg w-full flex flex-row px-2 text-2xl'>
         <BackButton />
         
         <span className='w-7/10 text-center font-bold'>Tweet</span>

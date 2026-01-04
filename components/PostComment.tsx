@@ -86,6 +86,7 @@ const PostComment = ({ user, idOfOriginalTweet }:
         await saveToMongoDB()
     
         setInputValue('');
+        setImgPreviewSrc('')
         setSelectedFile(undefined);
         
       } 

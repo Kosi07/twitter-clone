@@ -156,7 +156,7 @@ const Tweet = ({ id, username, handle, profilePic, createdAt, tweetText, comment
 
                 <Link 
                   href={`/tweet/${id}`}
-                  className='w-10/11 text-sm line-clamp-6 break-words overflow-ellipsis'
+                  className='w-10/11 text-[16px] line-clamp-6 break-words overflow-ellipsis'
                 >
                   {tweetText}
                 </Link>
