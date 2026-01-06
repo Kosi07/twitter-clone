@@ -11,6 +11,7 @@
   "dependencies": {
     "better-auth": "^1.4.9",
     "cloudinary": "^2.8.0",
+    "emoji-picker-react": "^4.16.1",
     "mongodb": "^6.20.0",
     "next": "^16.0.10",
     "react": "^19.2.1",

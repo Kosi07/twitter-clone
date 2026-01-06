@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from 'react';
 import { tweetType } from '@/lib/types';
 import { authClient } from '@/lib/client-side-auth-client';
 import { useRouter } from 'next/navigation';
+import EmojiPicker from 'emoji-picker-react';
 
 const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
   shouldCreate : boolean,
@@ -35,6 +36,8 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
   const [imgPreviewSrc, setImgPreviewSrc] = useState<string | StaticImageData>();
 
   const [selectedFile, setSelectedFile] = useState<File>()
+  
+  const [chooseEmoji, setChooseEmoji] = useState(false)
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -102,13 +105,18 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
         ...(cloudinaryUrl && { imgSrc: cloudinaryUrl })
       }
 
-      await saveToMongoDB()
+      await saveToMongoDB().then((ok)=> {
+        if(ok){
+          setTweetInput('');
+          setSelectedFile(undefined);
+          setShouldCreate(false);
 
-      setTweetInput('');
-      setSelectedFile(undefined);
-      setShouldCreate(false);
-
-      fetchTweets()
+          fetchTweets()
+        }
+        else{
+          alert('Failed to save tweet')
+        }
+      })
     
   } 
   else {
@@ -119,7 +127,6 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
 }
 
   async function saveToMongoDB(){
-    console.log(newTweet)
     const result = await fetch('/api/tweets', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -128,14 +135,14 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
       })
     })
 
-    console.log('result',typeof result, result)
+    return result.ok
 
   }
 
   return (
     <div
       className={`z-40 bg-gray-100 rounded-lg max-w-[690px] p-2 overflow-auto
-          ${shouldCreate? 'fixed inset-4 m-auto opacity-95': 'hidden opacity-0'} duration-300 ease-in-out`}
+          ${shouldCreate? 'fixed inset-4 m-auto': 'hidden opacity-0'} duration-300 ease-in-out`}
     >
         <div 
           className='buttons w-full flex flex-row justify-between p-4 mb-4'
@@ -265,8 +272,21 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
               width={40}
               height={40}
               title='add emoji?'
+              onClick={()=>setChooseEmoji(prev=>!prev)}
           />
+
         </div>
+
+        {chooseEmoji &&
+          <div className='w-full'>
+            <EmojiPicker
+             width={'100%'}
+             onEmojiClick={(emojiObject)=>{
+              setTweetInput(prev => prev + emojiObject.emoji)
+             }}
+            />
+          </div>
+        }
     </div>
   )
 }

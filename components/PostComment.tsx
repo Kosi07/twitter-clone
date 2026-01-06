@@ -116,7 +116,7 @@ const PostComment = ({ user, idOfOriginalTweet }:
 
   return (
     <div className='bg-gray-50/5 rounded-lg'>
-      <div className='flex flex-row gap-2'>
+      <div className='p-2 flex flex-row gap-2'>
         <Image 
           src={user.image? user.image : profileIcon}
           alt=''
