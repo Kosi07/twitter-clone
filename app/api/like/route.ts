@@ -16,15 +16,29 @@ export async function POST(req:Request){
                 )
         }
 
+        const email = session.user.email
+
         const {tweetId, action} = await req.json()
 
         const db = client.db(process.env.DB_NAME as string)
 
         if(action==='like'){
+            const tweet = await db.collection('tweets').findOne(
+                {_id: new ObjectId(tweetId as string)},
+                {projection: {likedBy: 1, _id: 0}}
+            )
+
+            if(tweet?.likedBy?.includes(email) ){
+                return Response.json(
+                    {error: 'Tweet already liked'},
+                    {status: 400}
+                )
+            }
+
             await db.collection('tweets').updateOne(
                 {_id: new ObjectId(tweetId as string)},
                 { 
-                    $push: { likedBy: session.user.email } as PushOperator<Document>,  // Only adds if not already there
+                    $push: { likedBy: email } as PushOperator<Document>,  // Only adds if not already there
                     $inc: {likeCounter: 1}, 
                 }
             )
@@ -33,7 +47,7 @@ export async function POST(req:Request){
             await db.collection('tweets').updateOne(
                 {_id: new ObjectId(tweetId as string)},
                 { 
-                    $pull: { likedBy: session.user.email} as PullOperator<Document>, 
+                    $pull: { likedBy: email} as PullOperator<Document>, 
                     $inc: { likeCounter: -1 },
                 }
             )
