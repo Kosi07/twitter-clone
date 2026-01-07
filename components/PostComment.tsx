@@ -8,6 +8,7 @@ import profileIcon from '@/public/profile.png';
 import { useState } from "react"
 import { tweetType, userType } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import EmojiPicker from "emoji-picker-react";
 
 const PostComment = ({ user, idOfOriginalTweet }:
     {
@@ -24,6 +25,9 @@ const PostComment = ({ user, idOfOriginalTweet }:
     const [selectedFile, setSelectedFile] = useState<File>()
 
     const [isPosting, setIsPosting] = useState(false)
+
+    const [chooseEmoji, setChooseEmoji] = useState(false)
+
 
     let newTweet : tweetType;
     
@@ -203,12 +207,14 @@ const PostComment = ({ user, idOfOriginalTweet }:
 
             <Image
                 alt='emoji icon'
-                className='h-11 w-11 p-1 rounded-[50%]
+                className='h-11
+                 w-11 p-1 rounded-[50%]
                         hover:bg-blue-200 hover:p-2 duration-300'
                 src={emojiIcon}
                 width={40}
                 height={40}
                 title='add emoji?'
+                onClick={()=>setChooseEmoji(prev => !prev)}
             />
           </div>
 
@@ -220,6 +226,17 @@ const PostComment = ({ user, idOfOriginalTweet }:
             Post
           </button>
         </div>
+
+        {chooseEmoji &&
+          <div className='w-full'>
+            <EmojiPicker
+              width={'100%'}
+              onEmojiClick={(emojiObject)=>{
+                  setInputValue(prev => prev + emojiObject.emoji)
+              }}
+            />
+          </div>
+        }
 
     </div>
   )

@@ -13,7 +13,7 @@ This is a [Twitter clone](https://trytwitter.vercel.app/) project bootstrapped w
 I really just want to nail Twitter's core functionalities.
 
 Core Functionality
-- [ ] User can select emojis from an emoji selector.
+- [x] User can select emojis from an emoji selector.
 
 - [ ] Querying DB every 15 secs for new Tweets, then render <div onClick={ ()=> setTweetsArray( prev => [...newTweets, ...prev]) }>Show {n} new tweets</div>
 
