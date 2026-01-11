@@ -74,6 +74,9 @@ export async function GET() {
   try{
     //Connect to MongoDB
     const db = client.db(process.env.DB_NAME as string);
+
+    //Get all emails, arrange into an array
+    //Go to the user collection get their profile pic url, name and handle and return it
     
     // Get all tweets, sorted by newest first
     const tweets = await db.collection('tweets')

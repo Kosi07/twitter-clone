@@ -15,8 +15,8 @@ import EmojiPicker from 'emoji-picker-react';
 const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
   shouldCreate : boolean,
   setShouldCreate: React.Dispatch<React.SetStateAction<boolean>>,
-  tweetsArray : tweetType[],
-  setTweetsArray : React.Dispatch<React.SetStateAction<tweetType[]>>,
+  tweetsArray : tweetType[] | undefined,
+  setTweetsArray : React.Dispatch<React.SetStateAction<tweetType[] | undefined>>,
   fetchTweets: () => Promise<void>,
 }) => {
 

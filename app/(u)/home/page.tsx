@@ -5,8 +5,6 @@ import { useContext, useEffect, useState } from 'react';
 import CreatePost from '@/components/CreatePost';
 import Tweet from '@/components/Tweet';
 
-import { tweets } from '@/lib/dummyData';
-
 import { NavContext } from '@/contexts/NavBarContext';
 
 import { tweetType } from '@/lib/types';
@@ -25,7 +23,7 @@ const Page = () => {
     
   const [shouldCreate, setShouldCreate] = useState(false);
 
-  const [tweetsArray, setTweetsArray] = useState<tweetType[]>([...tweets])
+  const [tweetsArray, setTweetsArray] = useState<tweetType[] | undefined>()
 
   //"if user scrolls down, '+' icon background turns transparent, if user scrolls up, it becomes opaque"      
   const [scrollArray, setScrollArray] = useState([0, 0]); 
@@ -69,7 +67,7 @@ const Page = () => {
         <CreatePost shouldCreate={shouldCreate} setShouldCreate={setShouldCreate} tweetsArray={tweetsArray} setTweetsArray={setTweetsArray} fetchTweets={fetchTweets} />
 
         <main>
-            {tweetsArray.map((tweet)=> <Tweet key={tweet.handle+''+`${tweet.createdAt}`} id={tweet._id} username={tweet.username} handle={tweet.handle} profilePic={tweet.profilePic} createdAt={new Date(tweet.createdAt as Date)} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter} imgSrc={tweet.imgSrc}/>)}
+            {tweetsArray && tweetsArray.length>0 && tweetsArray.map((tweet)=> <Tweet key={tweet.handle+''+`${tweet.createdAt}`} id={tweet._id} username={tweet.username} handle={tweet.handle} profilePic={tweet.profilePic} createdAt={new Date(tweet.createdAt as Date)} tweetText={tweet.tweetText} commentCounter={tweet.commentCounter} likeCounter={tweet.likeCounter} imgSrc={tweet.imgSrc}/>)}
             <div className='h-20'>{/* Just to add empty space underneath the last tweet */}</div>
         </main>
 
