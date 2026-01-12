@@ -81,21 +81,23 @@ const Tweet = ({ id, username, handle='coming soon', profilePic=profileIcon, cre
   imgSrc?: string | StaticImageData,
 }) => {
 
-  async function checkIsLiked(){
-    const response = await fetch(`/api/like/${id}`)
-    if(response.ok){
-      const data = await response.json()
-      setIsLiked(data.isLiked)
-    }
-  }
+  
 
   const [isLiked, setIsLiked] = useState(false);
 
   const [likes, setLikes] = useState(likeCounter);
 
   useEffect(() => {
+    async function checkIsLiked(){
+      const response = await fetch(`/api/like/${id}`)
+      if(response.ok){
+        const data = await response.json()
+        setIsLiked(data.isLiked)
+      }
+    }
+
     checkIsLiked()
-  }, [])
+  }, [id])
 
   function formatTweetDate(date: Date) {
     const currentYear = new Date().getFullYear();
