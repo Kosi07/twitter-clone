@@ -15,6 +15,8 @@ I really just want to nail Twitter's core functionalities.
 Core Functionality
 - [x] User can select emojis from an emoji selector.
 
+- [ ] Use user's name to generate handle for him which he can modify with "Edit Profile" button
+
 - [ ] Querying DB every 15 secs for new Tweets, then render <div onClick={ ()=> setTweetsArray( prev => [...newTweets, ...prev]) }>Show {n} new tweets</div>
 
 - [ ] Infinite scroll?

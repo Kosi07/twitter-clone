@@ -2,6 +2,8 @@
 
 import Image, { StaticImageData } from 'next/image';
 import commentIcon from '@/public/comment.svg';
+import profileIcon from '@/public/profile.png'
+
 import { useEffect, useState } from 'react';
 import ImgViewer from './ImgViewer';
 import Link from 'next/link';
@@ -66,7 +68,7 @@ function Heart({isLiked, setIsLiked, setLikes, id}
   )
 }
 
-const Tweet = ({ id, username, handle, profilePic, createdAt, tweetText, commentCounter, likeCounter, imgSrc } : 
+const Tweet = ({ id, username, handle='coming soon', profilePic=profileIcon, createdAt, tweetText, commentCounter, likeCounter, imgSrc } : 
 {
   id: string,
   username : string,

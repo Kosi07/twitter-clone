@@ -22,8 +22,40 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
 
   const session = authClient.useSession()
   const user = session?.data?.user
+  const email = user?.email
 
-  const profilePic: string | StaticImageData = user?.image? user.image : profileIcon
+  const [profilePic, setProfilePic] = useState(profileIcon)
+
+  useEffect(()=>{
+    async function getUserDetails(){
+      let userDetails
+
+      if(email){ 
+        const response = await fetch('/api/userdetails', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            email
+          })
+        })
+
+        if(response.ok){
+          userDetails = await response.json()
+        }
+      }
+
+      return userDetails
+    }
+
+    if(session){
+      getUserDetails().then((userDetails)=>{
+        if(userDetails?.profilePic){
+          setProfilePic(userDetails.profilePic)
+        }
+      })
+    }
+
+  }, [session, email])
 
   const router = useRouter()
 
@@ -96,9 +128,6 @@ const CreatePost = ({ shouldCreate, setShouldCreate, fetchTweets}: {
       }
 
       newTweet = {
-        username: user.name,
-        handle: `${user.name.toLowerCase()}-${user.id}`,
-        profilePic: profilePic,
         tweetText: tweetInput.trim(),
         commentCounter: 0,
         likeCounter: 0,
