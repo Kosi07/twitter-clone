@@ -6,7 +6,6 @@ import Comments from '@/components/Comments'
 import PostComment from '@/components/PostComment'
 import Tweet from '@/components/Tweet'
 import { auth } from '@/lib/auth'
-import { tweetType } from '@/lib/types'
 import { ObjectId } from 'mongodb'
 import { headers } from 'next/headers'
 import Link from 'next/link'
@@ -64,15 +63,39 @@ const Page = async({params}) => {
     }
 
     async function fetchComments(){
+      let userDetails = []
+      let emails = []
+
       try{
         const db = client.db(process.env.DB_NAME)
 
         const result = await db.collection('tweets')
-                        .find({commentOf: new ObjectId(id)}, 
-                          {projection: {email: 0} }
+                        .find({commentOf: new ObjectId(id)}
                         )
                         .sort({createdAt: -1})
                         .toArray()
+
+        const getUserDetails = async(email, index) => {
+          const userDetailsDoc = await db.collection('user').findOne({email: email}, 
+            {
+              projection: {name: 1, image:1, _id: 0}
+            })
+
+          userDetails[index] = {username: userDetailsDoc?.name, profilePic: userDetailsDoc?.image}
+        }
+
+        //Get all emails, arrange into an array
+        result.forEach((comment)=> emails.push(comment.email))
+
+        //Go to the user collection get their profile pic url, name and handle and return it
+        await Promise.all( emails.map((email, index)=> getUserDetails(email, index)) )
+
+        for(let i=0; i<result.length; i++){
+          
+          result[i] = {...result[i], ...userDetails[i]}
+
+        }
+        console.log(result)
 
         return result
       }
