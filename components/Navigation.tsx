@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { authClient } from "@/lib/client-side-auth-client";
 
@@ -14,10 +14,46 @@ import Overlay from "./Overlay";
 const Navigation = () => {
     const [openAside, setOpenAside] = useState(false);
 
-    const [profilePic] = useState<StaticImageData|string>(profileIcon);
+    const [profilePic, setProfilePic] = useState<StaticImageData|string>(profileIcon);
 
     const session = authClient.useSession()
     const user = session?.data?.user
+
+    const email = user?.email
+
+    
+
+    useEffect(()=>{
+
+      async function getUserDetails(){
+        let userDetails
+
+        if(email){ 
+          const response = await fetch('/api/userdetails', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              email
+            })
+          })
+
+          if(response.ok){
+            userDetails = await response.json()
+          }
+        }
+
+        return userDetails
+      }
+
+      if(session){
+        getUserDetails().then((userDetails)=>{
+          if(userDetails?.profilePic){
+            setProfilePic(userDetails.profilePic)
+          }
+        })
+      }
+      
+    }, [session, email])
 
   return (
     <>

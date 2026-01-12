@@ -5,7 +5,7 @@ import emojiIcon from '@/public/smiling.png'
 import profileIcon from '@/public/profile.png';
 
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { tweetType, userType } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import EmojiPicker from "emoji-picker-react";
@@ -15,6 +15,42 @@ const PostComment = ({ user, idOfOriginalTweet }:
         user: userType,
         idOfOriginalTweet: string,
     }) => {
+
+    const email = user?.email
+
+    async function getUserDetails(){
+      let userDetails
+
+      if(email){ 
+        const response = await fetch('/api/userdetails', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            email
+          })
+        })
+
+        if(response.ok){
+          userDetails = await response.json()
+        }
+      }
+
+      return userDetails
+    }
+
+    const [profilePic, setProfilePic] = useState(profileIcon)
+
+    useEffect(()=>{
+
+      if(user){
+        getUserDetails().then((userDetails)=>{
+          if(userDetails?.profilePic){
+            setProfilePic(userDetails.profilePic)
+          }
+        })
+      }
+
+    })
 
     const router = useRouter() 
 
@@ -77,9 +113,6 @@ const PostComment = ({ user, idOfOriginalTweet }:
         }
     
         newTweet = {
-          username: user.name,
-          handle: `${user.name.toLowerCase()}-${user.id}`,
-          profilePic: user.image,
           tweetText: inputValue.trim(),
           commentCounter: 0,
           likeCounter: 0,
@@ -122,12 +155,13 @@ const PostComment = ({ user, idOfOriginalTweet }:
     <div className='bg-gray-50/5 rounded-lg'>
       <div className='p-2 flex flex-row gap-2'>
         <Image 
-          src={user.image? user.image : profileIcon}
+          src={profilePic}
           alt=''
           className='min-w-11 h-11 rounded-full'
           width={50}
           height={50}
         />
+
         <textarea
             autoFocus={true}
             className='text-2xl w-full p-2 focus:outline-none'

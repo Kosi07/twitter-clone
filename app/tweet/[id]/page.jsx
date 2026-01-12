@@ -11,7 +11,7 @@ import { ObjectId } from 'mongodb'
 import { headers } from 'next/headers'
 import Link from 'next/link'
 
-const Page = async({params}:{params: {id: string}}) => {
+const Page = async({params}) => {
     const { id } = await params //id is correct
 
     const getUser = async() => {
@@ -27,19 +27,36 @@ const Page = async({params}:{params: {id: string}}) => {
     }
 
     const fetchTweetById = async() => {
-      try{
-        const db = client.db(process.env.DB_NAME as string)
+      let userDetails
 
-        const result = await db.collection('tweets')
+      try{
+        let email 
+
+        const db = client.db(process.env.DB_NAME)
+
+        let result = await db.collection('tweets')
           .findOne(
             {_id: new ObjectId(id)}
-            ,
-            {
-              projection: {email: 0}
-            }
           )
+
+          email = result?.email
+
+        const getUserDetails = async(email) => {
+          const userDetailsDoc = await db.collection('user').findOne({email: email}, 
+            {
+              projection: {name: 1, image:1, _id: 0}
+            })
+
+          userDetails = {username: userDetailsDoc?.name, profilePic: userDetailsDoc?.image}
+        }
+
+        if(email){
+          await getUserDetails(email)
+
+          result = {...result, ...userDetails}
+        }
         
-        return result as unknown as tweetType
+        return result
       }
       catch(err){
         console.error('Error fetching tweet', err)
@@ -48,7 +65,7 @@ const Page = async({params}:{params: {id: string}}) => {
 
     async function fetchComments(){
       try{
-        const db = client.db(process.env.DB_NAME as string)
+        const db = client.db(process.env.DB_NAME)
 
         const result = await db.collection('tweets')
                         .find({commentOf: new ObjectId(id)}, 
@@ -57,7 +74,7 @@ const Page = async({params}:{params: {id: string}}) => {
                         .sort({createdAt: -1})
                         .toArray()
 
-        return result as unknown as tweetType[]
+        return result
       }
       catch(err){
         console.error('Error fetching comments', err)
