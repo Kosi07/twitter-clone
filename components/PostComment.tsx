@@ -152,7 +152,7 @@ const PostComment = ({ user, idOfOriginalTweet }:
 
 
   return (
-    <div className='bg-gray-50/5 rounded-lg'>
+    <div className='bg-gray-50/5 rounded-lg px-1'>
       <div className='p-2 flex flex-row gap-2'>
         <Image 
           src={profilePic}
