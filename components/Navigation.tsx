@@ -16,19 +16,15 @@ const Navigation = () => {
 
     const [profilePic, setProfilePic] = useState<StaticImageData|string>(profileIcon);
 
-    const session = authClient.useSession()
-    const user = session?.data?.user
-
-    const email = user?.email
-
-    
+    const session = authClient.useSession()  
 
     useEffect(()=>{
 
       async function getUserDetails(){
         let userDetails
 
-        if(email){ 
+        if(session && session?.data?.user?.email){ 
+          const email = session?.data?.user?.email
           const response = await fetch('/api/userdetails', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -53,13 +49,13 @@ const Navigation = () => {
         })
       }
       
-    }, [session, email])
+    }, [session])
 
   return (
     <>
-        <Header profilePic={profilePic} setOpenAside={setOpenAside} user={user} />
+        <Header profilePic={profilePic} setOpenAside={setOpenAside} />
 
-        <Aside profilePic={profilePic} openAside={openAside} user={user} />
+        <Aside profilePic={profilePic} openAside={openAside} user={session?.data?.user} />
         <Overlay statefulVar={openAside} func={setOpenAside} />
     </>
   )

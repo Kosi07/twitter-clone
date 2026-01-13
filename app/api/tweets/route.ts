@@ -65,43 +65,45 @@ export async function POST(req:Request){
 }
 
 export async function GET() {
-  const emails:string[] = []
-  const userDetails: object[] = []
-
-
   try{
     //Connect to MongoDB
     const db = client.db(process.env.DB_NAME as string);
     
     // Get all tweets, sorted by newest first
     const tweets = await db.collection('tweets')
-      .find({commentOf: {$eq: null}}, { 
-        projection: { username:0, profilePic: 0} 
-      })
-      .sort({ createdAt: -1 })
-      .limit(25)
-      .toArray();
+      .aggregate([
+        //Find where commentOf is null
+        { $match: {commentOf: {$eq: null}} },
 
-    const getUserDetails = async(email:string, index:number) => {
-      const userDetailsDoc = await db.collection('user').findOne({email: email}, 
+        //sort by newest first
+        { $sort: {createdAt: -1}},
+
+        //limit to 25
+        { $limit: 35},
+
+        //lookup userdetails
+        { 
+          $lookup: {
+            from: 'user',
+            localField: 'email',
+            foreignField: 'email',
+            as: 'userDetails',
+          }
+        },
+
+        //Extract username and profilePic
         {
-          projection: {name: 1, image:1, _id: 0}
-        })
+          $addFields: {
+            username: { $arrayElemAt: ['$userDetails.name', 0] },
+            profilePic: { $arrayElemAt: ['$userDetails.image', 0]},
+          }
+        },
 
-      userDetails[index] = {username: userDetailsDoc?.name, profilePic: userDetailsDoc?.image}
-    }
+        //Delete userDetails field
+        { $project: { userDetails: 0 } },
 
-    //Get all emails, arrange into an array
-    tweets.forEach((tweet)=> emails.push(tweet.email))
-
-    //Go to the user collection get their profile pic url, name and handle and return it
-    await Promise.all( emails.map((email, index)=> getUserDetails(email, index)) )
-
-    for(let i=0; i<tweets.length; i++){
-      
-      tweets[i] = {...tweets[i], ...userDetails[i]}
-
-    }
+      ])
+      .toArray()
     
     return Response.json(tweets);
     

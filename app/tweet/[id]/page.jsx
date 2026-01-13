@@ -26,36 +26,38 @@ const Page = async({params}) => {
     }
 
     const fetchTweetById = async() => {
-      let userDetails
-
-      try{
-        let email 
-
+      try{ 
         const db = client.db(process.env.DB_NAME)
 
         let result = await db.collection('tweets')
-          .findOne(
-            {_id: new ObjectId(id)}
-          )
-
-          email = result?.email
-
-        const getUserDetails = async(email) => {
-          const userDetailsDoc = await db.collection('user').findOne({email: email}, 
+          .aggregate([
+            // Step 1: Find the specific tweet we want
+            { $match: { _id: new ObjectId(id) } },
+            
+            // Step 2: Join with the user collection to get author details
+            { 
+              $lookup: {
+                from: 'user',              // The collection we're joining with
+                localField: 'email',       // Field in tweets collection
+                foreignField: 'email',     // Matching field in user collection
+                as: 'userDetails'          // Put the result here
+              }
+            },
+            
+            // Step 3: Clean up the data - extract user info from array
             {
-              projection: {name: 1, image:1, _id: 0}
-            })
+              $addFields: {
+                username: { $arrayElemAt: ['$userDetails.name', 0] },
+                profilePic: { $arrayElemAt: ['$userDetails.image', 0] }
+              }
+            },
+            
+            // Step 4: Remove the temporary userDetails array
+            { $project: { userDetails: 0 } }
+          ])
+          .toArray()
 
-          userDetails = {username: userDetailsDoc?.name, profilePic: userDetailsDoc?.image}
-        }
-
-        if(email){
-          await getUserDetails(email)
-
-          result = {...result, ...userDetails}
-        }
-        
-        return result
+        return result[0]
       }
       catch(err){
         console.error('Error fetching tweet', err)
@@ -63,39 +65,39 @@ const Page = async({params}) => {
     }
 
     async function fetchComments(){
-      let userDetails = []
-      let emails = []
-
       try{
         const db = client.db(process.env.DB_NAME)
 
         const result = await db.collection('tweets')
-                        .find({commentOf: new ObjectId(id)}
-                        )
-                        .sort({createdAt: -1})
-                        .toArray()
-
-        const getUserDetails = async(email, index) => {
-          const userDetailsDoc = await db.collection('user').findOne({email: email}, 
-            {
-              projection: {name: 1, image:1, _id: 0}
-            })
-
-          userDetails[index] = {username: userDetailsDoc?.name, profilePic: userDetailsDoc?.image}
-        }
-
-        //Get all emails, arrange into an array
-        result.forEach((comment)=> emails.push(comment.email))
-
-        //Go to the user collection get their profile pic url, name and handle and return it
-        await Promise.all( emails.map((email, index)=> getUserDetails(email, index)) )
-
-        for(let i=0; i<result.length; i++){
-          
-          result[i] = {...result[i], ...userDetails[i]}
-
-        }
-        console.log(result)
+            .aggregate([
+              // Step 1: Find all comments for this tweet
+              { $match: { commentOf: new ObjectId(id) } },
+            
+              // Step 2: Sort newest first
+              { $sort: { createdAt: -1 } },
+            
+              // Step 3: Join with user collection to get commenter details
+              { 
+                $lookup: {
+                  from: 'user',
+                  localField: 'email',
+                  foreignField: 'email',
+                  as: 'userDetails'
+                }
+              },
+            
+              // Step 4: Extract user info
+              {
+                $addFields: {
+                  username: { $arrayElemAt: ['$userDetails.name', 0] },
+                  profilePic: { $arrayElemAt: ['$userDetails.image', 0] }
+                }
+              },
+            
+              // Step 5: Clean up
+              { $project: { userDetails: 0 } }
+          ])
+          .toArray()
 
         return result
       }
@@ -112,7 +114,7 @@ const Page = async({params}) => {
 
   return (
     <div className='w-full max-w-[700px] min-w-[280px] min-h-screen'>
-      <div className='sticky top-0 bg-gray-50/30 backdrop-blur-xl rounded-lg w-full flex flex-row px-2 text-2xl'>
+      <div className='sticky top-0 bg-gray-50/30 backdrop-blur-xl rounded-lg w-full flex flex-row p-2 text-2xl'>
         <BackButton />
         
         <span className='w-7/10 text-center font-bold'>Tweet</span>
