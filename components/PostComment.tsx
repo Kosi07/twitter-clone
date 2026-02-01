@@ -14,33 +14,33 @@ const PostComment = ({ user, idOfOriginalTweet }:
     {
         user: userType,
         idOfOriginalTweet: string,
-    }) => {
-
-    const email = user?.email
-
-    async function getUserDetails(){
-      let userDetails
-
-      if(email){ 
-        const response = await fetch('/api/userdetails', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            email
-          })
-        })
-
-        if(response.ok){
-          userDetails = await response.json()
-        }
-      }
-
-      return userDetails
-    }
+    }) => {    
 
     const [profilePic, setProfilePic] = useState(profileIcon)
 
     useEffect(()=>{
+
+      async function getUserDetails(){
+        let userDetails
+        const email = user?.email
+
+
+        if(email){ 
+          const response = await fetch('/api/userdetails', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              email
+            })
+          })
+
+          if(response.ok){
+            userDetails = await response.json()
+          }
+        }
+
+        return userDetails
+      }
 
       if(user){
         getUserDetails().then((userDetails)=>{
@@ -50,7 +50,7 @@ const PostComment = ({ user, idOfOriginalTweet }:
         })
       }
 
-    })
+    }, [user])
 
     const router = useRouter() 
 
@@ -63,6 +63,9 @@ const PostComment = ({ user, idOfOriginalTweet }:
     const [isPosting, setIsPosting] = useState(false)
 
     const [chooseEmoji, setChooseEmoji] = useState(false)
+
+    const disabled = (inputValue.trim() === '' && user) || isPosting? true : false;
+
 
 
     let newTweet : tweetType;
@@ -253,8 +256,9 @@ const PostComment = ({ user, idOfOriginalTweet }:
           </div>
 
           <button
-            className='p-1 px-5 h-12 bg-blue-400 text-center text-white text-lg font-bold rounded-3xl'
-            disabled={isPosting? true:false}
+            className='p-1 px-5 h-12 bg-blue-400 text-center text-white text-lg font-bold rounded-3xl
+              hover:cursor-pointer'
+            disabled={disabled}
             onClick={()=> handleTweet()}
           >
             Post
@@ -262,7 +266,7 @@ const PostComment = ({ user, idOfOriginalTweet }:
         </div>
 
         {chooseEmoji &&
-          <div className='w-full'>
+          <div className='w-9/10'>
             <EmojiPicker
               width={'100%'}
               onEmojiClick={(emojiObject)=>{
