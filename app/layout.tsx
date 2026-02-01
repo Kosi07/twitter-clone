@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { sfpro } from '@/lib/fonts';
+import { chirp } from '@/lib/fonts';
 
 export const metadata: Metadata = {
   title: "Twitter",
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased ${sfpro.className} flex flex-col items-center`}
+        className={`antialiased ${chirp.className} flex flex-col items-center`}
       >
         {children}
       </body>

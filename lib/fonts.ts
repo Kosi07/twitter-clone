@@ -9,3 +9,13 @@ export const sfpro = localFont({
     variable: '--sfpro',
     display: 'swap'
 })
+
+export const chirp = localFont({
+    src:[
+        {
+            path: '../public/fonts/chirp-regular-web.woff'
+        }
+    ],
+    variable: '--chirp',
+    display: 'swap'
+})

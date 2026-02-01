@@ -45,7 +45,7 @@ export async function POST(req:Request){
         await db.collection('tweets')
           .updateOne(
             { _id: new ObjectId(commentOf as string) },
-            { $inc: { commentCounter: 1 } }  // $inc means "increment by 1"
+            { $inc: { commentCounter: 1 } }  
           )
       }
 
@@ -78,7 +78,7 @@ export async function GET() {
         //sort by newest first
         { $sort: {createdAt: -1}},
 
-        //limit to 25
+        //limit to 35
         { $limit: 35},
 
         //lookup userdetails
@@ -104,6 +104,17 @@ export async function GET() {
 
       ])
       .toArray()
+
+    // const usersWithoutHandles = await db.collection('user')
+    //   .find(
+    //     {handle: {$exists: false}}
+    //   )
+    // .toArray()
+
+    // //generate unique handle func
+    // async function generateUniqueHandle(name:string){
+      
+    // }
     
     return Response.json(tweets);
     

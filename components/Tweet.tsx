@@ -134,12 +134,12 @@ const Tweet = ({ id, username, handle='coming soon', profilePic=profileIcon, cre
   const [viewImg, setViewImg] = useState(false);
 
   return (
-    <div
+    <section
       className='w-19/20 border-b border-b-gray-400/20 sm:text-xl md:text-2xl'
       id={id}
     >
         <div className='flex justify-between gap-2 w-full my-3 p-1'>
-            <div id='profilePic' className='w-8 min-w-8 h-8 sm:w-10 sm:h-10 md:w-15 md:h-15'>
+            <div id='profilePic' className='w-8 min-w-8 h-8 sm:w-9 sm:h-9'>
               <Image 
                   src={profilePic}
                   className='rounded-full'
@@ -203,7 +203,7 @@ const Tweet = ({ id, username, handle='coming soon', profilePic=profileIcon, cre
                 </div>
             </div>
         </div>
-    </div>
+    </section>
   )
 }
 

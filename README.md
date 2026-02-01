@@ -13,7 +13,7 @@ This is a [Twitter clone](https://trytwitter.vercel.app/) project bootstrapped w
 I really just want to nail Twitter's core functionalities.
 
 Core Functionality
-- [x] User can select emojis from an emoji selector.
+-[ ] Force new users to pick a unique handle or auto-generate one for them
 
 - [ ] Use user's name to generate handle for him which he can modify with "Edit Profile" button
 
