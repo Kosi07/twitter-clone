@@ -3,9 +3,7 @@ import { tweetType } from "@/lib/types"
 import Tweet from "./Tweet"
 
 
-const Comments = ({comments}:
-    {comments: tweetType[]}
-) => {
+const Comments = ({comments}) => {
 
   return (
     <div>
