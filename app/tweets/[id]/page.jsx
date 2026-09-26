@@ -48,7 +48,8 @@ const Page = async({params}) => {
             {
               $addFields: {
                 username: { $arrayElemAt: ['$userDetails.name', 0] },
-                profilePic: { $arrayElemAt: ['$userDetails.image', 0] }
+                profilePic: { $arrayElemAt: ['$userDetails.image', 0] },
+                handle: { $arrayElemAt: ['$userDetails.handle', 0]},
               }
             },
             
@@ -90,7 +91,8 @@ const Page = async({params}) => {
               {
                 $addFields: {
                   username: { $arrayElemAt: ['$userDetails.name', 0] },
-                  profilePic: { $arrayElemAt: ['$userDetails.image', 0] }
+                  profilePic: { $arrayElemAt: ['$userDetails.image', 0] },
+                  handle: { $arrayElemAt: ['$userDetails.handle', 0]},
                 }
               },
             

@@ -67,7 +67,7 @@ export async function POST(req:Request){
 export async function GET() {
   try{
     //Connect to MongoDB
-    const db = client.db(process.env.DB_NAME as string);
+    const db = client.db(process.env.DB_NAME as string)
     
     // Get all tweets, sorted by newest first
     const tweets = await db.collection('tweets')
@@ -96,6 +96,7 @@ export async function GET() {
           $addFields: {
             username: { $arrayElemAt: ['$userDetails.name', 0] },
             profilePic: { $arrayElemAt: ['$userDetails.image', 0]},
+            handle: { $arrayElemAt: ['$userDetails.handle', 0]},
           }
         },
 
@@ -105,17 +106,6 @@ export async function GET() {
       ])
       .toArray()
 
-    // const usersWithoutHandles = await db.collection('user')
-    //   .find(
-    //     {handle: {$exists: false}}
-    //   )
-    // .toArray()
-
-    // //generate unique handle func
-    // async function generateUniqueHandle(name:string){
-      
-    // }
-    
     return Response.json(tweets);
     
   } 

@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased ${chirp.className} flex flex-col items-center`}
+        className={`antialiased ${chirp.className}`}
       >
         {children}
       </body>

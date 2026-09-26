@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useContext, useEffect } from "react";
 import { NavContext } from '@/contexts/NavBarContext';
+import ProfilePage from '@/components/ProfilePage'
 
 const Search = () => {
   const session = {user: true}
