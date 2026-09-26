@@ -53,6 +53,7 @@ const Page = () => {
         <CreatePost shouldCreate={shouldCreate} setShouldCreate={setShouldCreate} tweetsArray={tweetsArray} setTweetsArray={setTweetsArray} fetchTweets={fetchTweets} />
 
         <main>
+          <div className='flex flex-col gap-4'>
             {tweetsArray && tweetsArray.length>0 && 
               tweetsArray.map((tweet)=> 
                 <Tweet 
@@ -69,8 +70,7 @@ const Page = () => {
                 />
               )
             }
-            
-            <div className='h-20'>{/* Just to add empty space underneath the last tweet */}</div>
+          </div>
         </main>
 
         <PostIcon setShouldCreate={setShouldCreate}/>

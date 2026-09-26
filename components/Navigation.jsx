@@ -7,14 +7,13 @@ import { authClient } from "@/lib/client-side-auth-client";
 import Aside from "./Aside"
 import Header from "./Header"
 
-import { StaticImageData } from "next/image";
 import profileIcon from '@/public/profile.png';
 import Overlay from "./Overlay";
 
 const Navigation = () => {
     const [openAside, setOpenAside] = useState(false);
 
-    const [profilePic, setProfilePic] = useState<StaticImageData|string>(profileIcon);
+    const [profilePic, setProfilePic] = useState(profileIcon);
 
     const session = authClient.useSession()  
 

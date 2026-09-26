@@ -256,8 +256,8 @@ const PostComment = ({ user, idOfOriginalTweet }:
           </div>
 
           <button
-            className='p-1 px-5 h-12 bg-blue-400 text-center text-white text-lg font-bold rounded-3xl
-              hover:cursor-pointer'
+            className={`p-1 px-5 h-12 ${disabled? 'bg-blue-200':'bg-blue-400'} text-center text-white text-lg font-bold rounded-3xl
+              hover:cursor-pointer duration-400`}
             disabled={disabled}
             onClick={()=> handleTweet()}
           >
