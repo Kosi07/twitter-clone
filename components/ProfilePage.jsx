@@ -11,11 +11,11 @@ const highlights = [
   { label: 'Mood', color: 'bg-[#eadfda]', icon: Heart },
 ]
 
-const ProfilePage = ({userDetailsAndPosts, urProfilePic}) => {
-    const [following, setFollowing] = useState(false)
+const ProfilePage = ({userDetailsAndPosts, urProfilePic, isFollowing}) => {
+    const [following, setFollowing] = useState(isFollowing)
     const [activeTab, setActiveTab] = useState('posts')
 
-    const {name, handle, image:profilePic, userPosts, bio='Designing quiet spaces and thoughtful objects. Finding beauty in the everyday.', website_link='mayachen.studio', location='Based in Copenhagen'} = userDetailsAndPosts
+    const {name, _id:profile_id, handle, image:profilePic, followerCount, followingCount, postCount=86, userPosts, bio='Designing quiet spaces and thoughtful objects. Finding beauty in the everyday.', website_link='mayachen.studio', location='Based in Copenhagen'} = userDetailsAndPosts
 
     function formatCounter(counter){
         if (counter >= 1000000){ return `${(counter/1000000).toFixed(1)}M`}
@@ -23,9 +23,37 @@ const ProfilePage = ({userDetailsAndPosts, urProfilePic}) => {
         if (counter < 1000){ return counter }
     }
 
-    const follower_count = formatCounter(12400)
-    const following_count = formatCounter(438)
-    const post_count = formatCounter(86)
+    const [follower_count, setfollower_count] = useState(followerCount) //12400
+
+    const handleFollowBtnClick = async () => {
+        //Optimistic update
+        const prevFollowing = !following
+        setFollowing(prevFollowing)
+        setfollower_count(prev => prevFollowing? prev + 1 : prev - 1)
+
+        try {
+            const response = await fetch('/api/follow', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                profile_id: profile_id,
+                action: prevFollowing ? 'follow' : 'unfollow'
+                })
+            })
+
+            if (!response?.ok) {
+                console.log('Failed to follow')
+                // If it fails, revert the UI
+                setFollowing(!prevFollowing)
+                setfollower_count(prev => prevFollowing? prev - 1 : prev + 1)
+            }
+        }catch(err) {
+            console.error('Error occured when trying to follow user:')
+            // Revert on error
+            setFollowing(!prevFollowing)
+            setfollower_count(prev => prevFollowing? prev - 1 : prev + 1)
+        }
+    }
 
     return(
         <main className="min-h-screen bg-[#fafaf9] text-[#242321] min-w-0">
@@ -71,7 +99,7 @@ const ProfilePage = ({userDetailsAndPosts, urProfilePic}) => {
                         </div>
                         <div className="mt-6 flex flex-wrap gap-2.5">
                             <button 
-                                onClick={() => setFollowing(!following)} 
+                                onClick={() => handleFollowBtnClick()} 
                                 className={`inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-sm font-medium transition ${following ? 'bg-[#ebe9e5] text-[#4f4b45]' : 'bg-[#242321] text-white hover:bg-[#3d3b38] hover:cursor-pointer'}`}
                             >
                                 {following ? <><Check size={15} /> Following</> : <><UserPlus size={15} /> Follow</>}
@@ -81,11 +109,11 @@ const ProfilePage = ({userDetailsAndPosts, urProfilePic}) => {
                         </div>
                         </div>
                         <div className="hidden gap-7 pt-2 sm:flex">
-                            {[[follower_count, 'Followers'], [following_count, 'Following'], [post_count, 'Posts']].map(([number, label]) => <div key={label} className="text-center"><p className="text-lg font-semibold tracking-[-0.03em]">{number}</p><p className="mt-1 text-xs text-[#8c8880]">{label}</p></div>)}
+                            {[[formatCounter(follower_count), 'Followers'], [formatCounter(followingCount), 'Following'], [formatCounter(postCount), 'Posts']].map(([number, label]) => <div key={label} className="text-center"><p className="text-lg font-semibold tracking-[-0.03em]">{number}</p><p className="mt-1 text-xs text-[#8c8880]">{label}</p></div>)}
                         </div>
                     </div>
                         <div className="mt-8 flex justify-between border-y border-black/[0.07] py-4 sm:hidden">
-                            {[[follower_count, 'Followers'], [following_count, 'Following'], [post_count, 'Posts']].map(([number, label]) => <div key={label} className="text-center"><p className="font-semibold">{number}</p><p className="mt-0.5 text-xs text-[#8c8880]">{label}</p></div>)}
+                            {[[formatCounter(follower_count), 'Followers'], [formatCounter(followingCount), 'Following'], [formatCounter(postCount), 'Posts']].map(([number, label]) => <div key={label} className="text-center"><p className="font-semibold">{number}</p><p className="mt-0.5 text-xs text-[#8c8880]">{label}</p></div>)}
                         </div>
                 </section>
 

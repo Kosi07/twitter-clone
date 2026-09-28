@@ -4,6 +4,7 @@ import { client } from '@/app/api/tweets/route'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
 import ProfilePage from '@/components/ProfilePage'
+import { ObjectId } from 'mongodb'
 
 const Page = async({params}) => {
     const { handle } = await params //handle is correct
@@ -31,10 +32,10 @@ const Page = async({params}) => {
       urProfilePic = await getUserDetails((session.user.email))
     }
 
+    const db = client.db(process.env.DB_NAME)
+
     const fetchUser = async() => {
       try{
-        const db = client.db(process.env.DB_NAME)
-
         let response = await db.collection('user')
           .aggregate([
             //Get the specific user
@@ -69,12 +70,13 @@ const Page = async({params}) => {
 
         let result = response[0]
 
-        result._id = result._id.toString()
         //Can't work with MongoDB's id
+        result._id = result._id.toString()
+        
         result.userPosts = result.userPosts.map((userPost) => ({
           ...userPost,
           _id: userPost._id.toString(),
-          commentOf: userPost.commentOf && userPost.commentOf.toString(),
+          commentOf: userPost.commentOf && userPost.commentOf.toString(), //also an id
         }))
         
         return result
@@ -86,9 +88,20 @@ const Page = async({params}) => {
 
     let userDetailsAndPosts = await fetchUser()
 
+    const { _id:profile_id } = userDetailsAndPosts
+    const checkIsFollowing = async () => {
+      const follow_doc = await db.collection('follows').findOne({
+        follower: new ObjectId(session.user.id),
+        following: new ObjectId(profile_id),
+      })
+
+      return follow_doc
+    }
+
+    let follow_exists = await checkIsFollowing()
     
   return (
-    <ProfilePage userDetailsAndPosts={userDetailsAndPosts} urProfilePic={urProfilePic}/>
+    <ProfilePage userDetailsAndPosts={userDetailsAndPosts} urProfilePic={urProfilePic} isFollowing={follow_exists?true:false} />
   )
 }
 

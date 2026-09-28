@@ -11,7 +11,7 @@ export async function POST(req:Request){
         
         if(!session){
             return Response.json(
-                    { error: 'Must be signed in to add tasks' }, 
+                    { error: 'Must be signed in' }, 
                     { status: 401 }
                 )
         }
