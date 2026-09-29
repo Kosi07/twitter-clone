@@ -89,11 +89,16 @@ const Page = async({params}) => {
     let userDetailsAndPosts = await fetchUser()
 
     const { _id:profile_id } = userDetailsAndPosts
+    
     const checkIsFollowing = async () => {
-      const follow_doc = await db.collection('follows').findOne({
-        follower: new ObjectId(session.user.id),
-        following: new ObjectId(profile_id),
-      })
+      let follow_doc
+
+      if(session){
+        follow_doc = await db.collection('follows').findOne({
+          follower: new ObjectId(session.user.id),
+          following: new ObjectId(profile_id),
+        })
+      }
 
       return follow_doc
     }
