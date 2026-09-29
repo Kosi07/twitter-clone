@@ -11,7 +11,8 @@ This is a [Twitter clone](https://trytwitter.vercel.app/) project bootstrapped w
 
 ## ToDo
 
-- [ ] Implement follower btn logic
+- [ ] Update postCount for all users
+- [ ] Rebuild the homepage
 
 Since emails and handles can change;
 - [ ] Change like functionality to store the user_id of the person that liked the post intead of email

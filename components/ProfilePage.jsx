@@ -130,7 +130,7 @@ const ProfilePage = ({userDetailsAndPosts, urProfilePic, isFollowing}) => {
                     {[['posts', Grid2X2, 'Posts'], ['saved', Bookmark, 'Saved']].map(([id, Icon, label]) => <button key={id} onClick={() => setActiveTab(id)} className={`relative flex items-center gap-2 pb-3 text-xs font-medium transition ${activeTab === id ? 'text-[#242321]' : 'text-[#9b968e] hover:text-[#55514b]'}`}><Icon size={15} strokeWidth={1.8} />{label}{activeTab === id && <span className="absolute inset-x-0 -bottom-px h-px bg-[#242321]" />}</button>)}
                 </div>
                 {activeTab === 'posts' ? 
-                    <div className="columns-3 gap-3">
+                    <div className="columns-1 gap-3 sm:columns-2 sm:gap-3 lg:columns-3">
                         {userPosts.map((tweet) => (
                             <div key={tweet._id} className="break-inside-avoid mb-3">
                             <Tweet  
