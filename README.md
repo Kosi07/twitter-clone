@@ -10,11 +10,13 @@ This is a [Twitter clone](https://trytwitter.vercel.app/) project bootstrapped w
 - [Deployed with Netlify](https://twitt3r-clone.netlify.app/)
 
 ## ToDo
+- [ ] Rebuild the homepage
+- [ ] Add middleware, only '/' and '/sign-in', and '/home' and '/tweets/[id]' and '/users/[handle]' are allowed for unauthenticated users
 
 - [ ] Update postCount for all users
-- [ ] Rebuild the homepage
+- [ ] If postCount > 3, isCreator = true
 
-Since emails and handles can change;
-- [ ] Change like functionality to store the user_id of the person that liked the post intead of email
-- [ ] Convert stored emails in the likedBy to user_id
+No time limits on adding features
+Purely experimental. Feel free to play around
+More focused on getting things to work than hitting a goal within a specific timeframe
 

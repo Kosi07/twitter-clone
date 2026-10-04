@@ -1,7 +1,5 @@
 'use client';
 
-import Footer from '@/components/Footer';
-
 import Image from 'next/image';
 import googleIcon from '@/public/google.png';
 import xIcon from '@/public/x.png';
@@ -76,7 +74,6 @@ const SignIn = () => {
             </div>            
         </main>
 
-        <Footer />
     </>
   )
 }

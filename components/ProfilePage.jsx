@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { MapPin, Bell, Bookmark, Check, Grid2X2, Heart, Link2, MoreHorizontal, Pencil, Play, Plus, Send, Settings, Share2, Sparkles, UserPlus } from 'lucide-react'
+import { MapPin, Bell, Bookmark, Check, Grid2X2, Heart, Link2, MoreHorizontal, Pencil, Plus, Settings, Share2, Sparkles, UserPlus } from 'lucide-react'
 import Tweet from './Tweet'
+import Link from 'next/link'
 
 const highlights = [
   { label: 'Studio', color: 'bg-[#e9e2d8]', icon: Sparkles },
@@ -59,23 +60,25 @@ const ProfilePage = ({userDetailsAndPosts, urProfilePic, isFollowing}) => {
         <main className="min-h-screen bg-[#fafaf9] text-[#242321] min-w-0">
             <nav className="sticky top-0 z-20 border-b border-black/[0.06] bg-[#fafaf9]/90 backdrop-blur-xl">
                 <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
-                <a href='/home' className="flex items-center gap-2.5" aria-label="Luma home">
-                    <span className="grid size-8 place-items-center rounded-[10px] bg-[#242321] text-sm font-semibold tracking-tight text-white">t</span>
-                    <span className="text-[15px] font-semibold tracking-[-0.03em]">twitt3r</span>
-                </a>
-                <div className="flex items-center gap-1">
-                    <button 
-                        className="grid size-9 place-items-center rounded-full text-[#77736d] transition hover:bg-black/5 hover:text-[#242321]" 
-                        aria-label="Notifications">
-                            <Bell size={18} strokeWidth={1.7} />
-                    </button>
-                    <button 
-                        className="grid size-9 place-items-center rounded-full text-[#77736d] transition hover:bg-black/5 hover:text-[#242321]" 
-                        aria-label="Settings">
+                    <Link href='/home' className="flex items-center gap-2.5" aria-label="Twitt3r home">
+                        <span className="grid size-8 place-items-center rounded-[10px] bg-[#242321] text-sm font-semibold tracking-tight text-white">t</span>
+                        <span className="text-[15px] font-semibold tracking-[-0.03em]">twitt3r</span>
+                    </Link>
+                    <div className="flex items-center gap-1">
+                        <button 
+                            className="grid size-9 place-items-center rounded-full text-[#77736d] transition hover:bg-black/5 hover:text-[#242321]" 
+                            aria-label="Notifications">
+                                <Bell size={18} strokeWidth={1.7} />
+                        </button>
+                        <button 
+                            className="grid size-9 place-items-center rounded-full text-[#77736d] transition hover:bg-black/5 hover:text-[#242321]" 
+                            aria-label="Settings"
+                        >
                             <Settings size={18} strokeWidth={1.7} />
                         </button>
-                    <img src={urProfilePic} alt="Your profile" className={`${urProfilePic? '':'hidden'} ml-2 size-8 rounded-full object-cover`} />
-                </div>
+                        {/* If session */}
+                        <img src={urProfilePic} alt="Your profile" className={`${urProfilePic? '':'hidden'} ml-2 size-8 rounded-full object-cover`} />
+                    </div>
                 </div>
             </nav>
 
@@ -144,6 +147,7 @@ const ProfilePage = ({userDetailsAndPosts, urProfilePic, isFollowing}) => {
                                 commentCounter={tweet.commentCounter} 
                                 likeCounter={tweet.likeCounter} 
                                 imgSrc={tweet.imgSrc}
+                                isLiked={tweet.isLiked}
                             />
                             </div>
                         ))}

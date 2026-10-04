@@ -1,28 +1,27 @@
 'use client'
 
 import Image from 'next/image';
-import profileIcon from '@/public/profile.png'
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ImgViewer from './ImgViewer';
 import Link from 'next/link';
-import { Bookmark, Heart, MessageCircle, MoreHorizontal, Send } from 'lucide-react';
+import { Bookmark, Heart, MessageCircle, MoreHorizontal, Send, CircleUserRound } from 'lucide-react';
 
 const Tweet = (
-    { id, username, handle, profilePic=profileIcon, createdAt, tweetText, commentCounter, likeCounter, imgSrc }
+    { id, username, handle, profilePic, createdAt, tweetText, commentCounter, likeCounter, imgSrc, isLiked }
   ) => {
 
-  const border_accents = ['border-l-[#bdb0cf]', 'border-l-[#d8bd96]', 'border-l-[#a9c7b9]', 'border-l-[b8c099]', 'border-l-[gdbc96f]']
+  const border_accents = ['border-l-[#bdb0cf]', 'border-l-[#d8bd96]', 'border-l-[#a9c7b9]', 'border-l-[#b8c099]', 'border-l-[#dbc96f]']
 
 
-  const [isLiked, setIsLiked] = useState(false);
+  const [liked, setLiked] = useState(isLiked?isLiked:false);
 
   const [likes, setLikes] = useState(likeCounter);
 
   const handleLikeButtonClick = async () => {
     // Optimistic update (update UI immediately)
-    const newLikedState = !isLiked;
-    setIsLiked(newLikedState);
+    const newLikedState = !liked;
+    setLiked(newLikedState);
     setLikes(prev => newLikedState ? prev + 1 : prev - 1);
 
     try {
@@ -37,28 +36,16 @@ const Tweet = (
 
       if (!response.ok) {
         // If it fails, revert the UI
-        setIsLiked(!newLikedState);
+        setLiked(!newLikedState);
         setLikes(prev => newLikedState ? prev - 1 : prev + 1);
       }
     } catch (error) {
       console.error('Error liking tweet:', error);
       // Revert on error
-      setIsLiked(!newLikedState);
+      setLiked(!newLikedState);
       setLikes(prev => newLikedState ? prev - 1 : prev + 1);
     }
   };
-
-  useEffect(() => {
-    async function checkIsLiked(){
-      const response = await fetch(`/api/like/${id}`)
-      if(response.ok){
-        const data = await response.json()
-        setIsLiked(data.isLiked)
-      }
-    }
-
-    checkIsLiked()
-  }, [id])
 
   function formatTweetDate(date) {
     const currentYear = new Date().getFullYear();
@@ -103,11 +90,15 @@ const Tweet = (
     >
         <div className='flex items-start gap-3'>
             <div id='profilePic' className='w-8 h-8 sm:w-9 sm:h-9'>
-              <img
+              {profilePic?
+                <img
                   src={profilePic}
                   className='rounded-full'
                   alt='profile picture'
-              />
+                />
+                :
+                <CircleUserRound className='w-full h-full'/>
+              }
             </div>
             
             <div className='min-w-0 flex-1'>
@@ -137,10 +128,10 @@ const Tweet = (
               }
               <div className="mt-6 flex flex-wrap items-center gap-1 border-t border-border/70 pt-3">
                 <button onClick={() => handleLikeButtonClick()} 
-                  aria-label={isLiked ? 'Unlike post' : 'Like post'} 
-                  className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition-colors ${isLiked ? 'text-rose-600' : 'text-muted-foreground hover:bg-secondary hover:text-foreground'}`}
+                  aria-label={liked ? 'Unlike post' : 'Like post'} 
+                  className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition-colors ${liked ? 'text-rose-600' : 'text-muted-foreground hover:bg-secondary hover:text-foreground'}`}
                 >
-                  <Heart className={`size-4 ${isLiked ? 'fill-current' : ''}`} /> 
+                  <Heart className={`size-4 ${liked ? 'fill-current' : ''}`} /> 
                   {newLikeCounter}
                 </button>
 

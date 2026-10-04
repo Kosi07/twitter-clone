@@ -11,6 +11,8 @@ const Page = async({params}) => {
 
     let urProfilePic
 
+    const likeSteps = []
+
     async function getUserDetails(email){
       const db = client.db(process.env.DB_NAME)
 
@@ -25,19 +27,47 @@ const Page = async({params}) => {
       return urProfilePic
     }
 
-    const session = await auth.api.getSession({
-                      headers: await headers()
-                    })
+    let session
+
+    try{
+      session = await auth.api.getSession({
+                        headers: await headers()
+                      })
+    }catch(err){
+      console.error('Error checking sesssion: ', err)
+    }
+
     if(session){
       urProfilePic = await getUserDetails((session.user.email))
+
+      const signedInUser = new ObjectId(session.user.id)
+
+      likeSteps.push(
+        {
+          $lookup: {
+            from: 'likes',
+            let: { tweetId: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: ['$tweetId', '$$tweetId'] },
+                  userId: signedInUser,
+                },
+              },
+            ],
+            as: 'myLikes',
+          },
+        },
+        { $addFields: { isLiked: { $gt: [{ $size: '$myLikes' }, 0] } } },
+        { $project: { myLikes: 0 } }
+      )
     }
 
     const db = client.db(process.env.DB_NAME)
 
     const fetchUser = async() => {
       try{
-        let response = await db.collection('user')
-          .aggregate([
+        const pipeline = [
             //Get the specific user
             { $match: {handle: handle} },
 
@@ -52,7 +82,8 @@ const Page = async({params}) => {
                   }
                 },
                 { $sort: { createdAt: -1 } },   // newest first
-                { $limit: 20 },
+                { $limit: 40 },
+                ...likeSteps,
                 {
                   $project: {
                     email: 0
@@ -65,7 +96,10 @@ const Page = async({params}) => {
             // Step 5: Clean up
             { $project: { email: 0 } },
 
-          ])
+          ]
+
+          const response = await db.collection('user')
+          .aggregate(pipeline)
           .toArray()
 
         let result = response[0]
