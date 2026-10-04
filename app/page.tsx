@@ -1,5 +1,3 @@
-import Footer from "@/components/Footer";
-
 import Image from 'next/image';
 import twitt3rBird from '@/public/twitter-bird.png'
 
@@ -80,8 +78,6 @@ export default function Home() {
   return (
         <>
           <HeroSection />
-          
-          <Footer />
         </>
   );
 }

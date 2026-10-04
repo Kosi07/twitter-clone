@@ -14,11 +14,11 @@ export default function RootLayout({
        <>
           {children}
 
-          <div
+          {/* <div
             className='w-full max-w-[700px] m-auto flex justify-center fixed bottom-0 left-1 right-1 bg-gray-50/60 backdrop-blur-2xl border-t border-t-gray-400 p-2 rounded-xl'
           >
-            <NavBar />
-          </div>
+            <NavBar /> 
+          </div> */}
        </>
       </NavBarContext>
   );

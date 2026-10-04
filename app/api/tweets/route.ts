@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth"
-import { MongoClient, ObjectId } from "mongodb"
+import { Document, MongoClient, ObjectId } from "mongodb"
 import { headers } from "next/headers"
 
 export const client = new MongoClient(process.env.MONGODB_CONNECTION_STRING as string)
@@ -37,7 +37,6 @@ export async function POST(req:Request){
           likeCounter,
           imgSrc,
           ...(commentOf && {commentOf: new ObjectId(commentOf as string)}),
-          email: session.user.email,
           createdAt: new Date(),
       })
 
@@ -68,18 +67,21 @@ export async function GET() {
   try{
     //Connect to MongoDB
     const db = client.db(process.env.DB_NAME as string)
+
+    const session = await auth.api.getSession({
+      headers: await headers()
+    })
     
     // Get all tweets, sorted by newest first
-    const tweets = await db.collection('tweets')
-      .aggregate([
+    const pipeline: Document[] = [
         //Find where commentOf is null
         { $match: {commentOf: {$eq: null}} },
 
         //sort by newest first
         { $sort: {createdAt: -1}},
 
-        //limit to 35
-        { $limit: 35},
+        //limit to 55
+        { $limit: 55},
 
         //lookup userdetails
         { 
@@ -101,9 +103,45 @@ export async function GET() {
         },
 
         //Delete userDetails field
-        { $project: { userDetails: 0 } },
+        { $project: { userDetails: 0, email: 0 } },
 
-      ])
+      ]
+
+      if(session){
+        const signedInUser = new ObjectId(session.user.id)
+
+        //In the process of getting tweets, if lookup likesCollection for each tweet 
+        // localField:_id  foreignField:  tweetId
+        //If userId = signedInUser, isLiked = true for that specific tweet
+
+        pipeline.push(
+          // Step 1: search the likes collection
+          {
+            $lookup: {
+              from: 'likes',
+              let: { tweetId: '$_id' },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: { $eq: ['$tweetId', '$$tweetId'] },
+                    userId: signedInUser,
+                  },
+                },
+              ],
+              as: 'myLikes',
+            },
+          },
+
+          // Step 2: true if we found at least one like
+          { $addFields: { isLiked: { $gt: [{ $size: '$myLikes' }, 0] } } },
+
+          // Step 3: remove the temporary list
+          { $project: { myLikes: 0 } }
+        )
+      }
+
+      const tweets = await db.collection('tweets')
+      .aggregate(pipeline)
       .toArray()
 
     return Response.json(tweets);

@@ -1,14 +1,11 @@
 'use client'
 import Image from "next/image"
-import imageIcon from '@/public/image-icon.png';
-import emojiIcon from '@/public/smiling.png'
-import profileIcon from '@/public/profile.png';
-
 
 import { useEffect, useState } from "react"
 import { tweetType, userType } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import EmojiPicker from "emoji-picker-react";
+import { CircleUserRound, FaceSlightlySmilingPlus, ImageIcon } from "lucide-react";
 
 const PostComment = ({ user, idOfOriginalTweet }:
     {
@@ -16,7 +13,7 @@ const PostComment = ({ user, idOfOriginalTweet }:
         idOfOriginalTweet: string,
     }) => {    
 
-    const [profilePic, setProfilePic] = useState(profileIcon)
+    const [profilePic, setProfilePic] = useState()
 
     useEffect(()=>{
 
@@ -157,13 +154,17 @@ const PostComment = ({ user, idOfOriginalTweet }:
   return (
     <div className='bg-gray-50/5 rounded-lg px-1'>
       <div className='p-2 flex flex-row gap-2'>
-        <Image 
-          src={profilePic}
-          alt=''
-          className='min-w-11 h-11 rounded-full'
-          width={50}
-          height={50}
-        />
+        {profilePic?
+          <Image 
+            src={profilePic}
+            alt=''
+            className='min-w-11 h-11 rounded-full'
+            width={50}
+            height={50}
+          />
+          :
+          <CircleUserRound className='size-9'/>
+        }
 
         <textarea
             autoFocus={true}
@@ -209,16 +210,9 @@ const PostComment = ({ user, idOfOriginalTweet }:
           <div className='p-4 flex flex-row gap-2'>
 
             <label htmlFor='img-input'>
-              <Image 
-                  alt='image icon'
-                  className='h-11 w-11 p-1 rounded-[50%]
-                          hover:bg-blue-200 hover:p-2 duration-300'
-                  src={imageIcon}
-                  width={40}
-                  height={40}
-                  quality={100}
-                  title='add image?'
-              />
+              <button aria-label="Add image" className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground">
+                <ImageIcon className="size-4" />
+              </button>
             </label>
             <input 
                   type='file'
@@ -241,18 +235,14 @@ const PostComment = ({ user, idOfOriginalTweet }:
                     }
                   }}
             />
-
-            <Image
-                alt='emoji icon'
-                className='h-11
-                 w-11 p-1 rounded-[50%]
-                        hover:bg-blue-200 hover:p-2 duration-300'
-                src={emojiIcon}
-                width={40}
-                height={40}
-                title='add emoji?'
+  
+              <button aria-label="Add emoji" title='add emoji?'
                 onClick={()=>setChooseEmoji(prev => !prev)}
-            />
+                className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
+              >
+                <FaceSlightlySmilingPlus className='size-4' />
+              </button>
+        
           </div>
 
           <button

@@ -13,24 +13,19 @@ import Link from 'next/link'
 const Page = async({params}) => {
     const { id } = await params //id is correct
 
-    const getUser = async() => {
-      try{
-        const session = await auth.api.getSession({
+    const session = await auth.api.getSession({
                         headers: await headers()
                       })
-        return session?.user
-      }
-      catch(err){
-        console.error('Error checking session', err)
-      }
+
+    const getUser = async() => {
+      return session?.user
     }
 
     const fetchTweetById = async() => {
       try{ 
         const db = client.db(process.env.DB_NAME)
 
-        let result = await db.collection('tweets')
-          .aggregate([
+        const pipeline = [
             // Step 1: Find the specific tweet we want
             { $match: { _id: new ObjectId(id) } },
             
@@ -55,8 +50,42 @@ const Page = async({params}) => {
             
             // Step 4: Remove the temporary userDetails array
             { $project: { userDetails: 0 } }
-          ])
+          ]
+
+          if(session){
+            const signedInUser = new ObjectId(session.user.id)
+
+            pipeline.push(
+              // Step 1: search the likes collection
+              {
+                $lookup: {
+                  from: 'likes',
+                  let: { tweetId: new ObjectId(id) },
+                  pipeline: [
+                    {
+                      $match: {
+                        $expr: { $eq: ['$tweetId', '$$tweetId'] },
+                        userId: signedInUser,
+                      },
+                    },
+                  ],
+                  as: 'myLikes',
+                },
+              },
+          
+              // Step 2: true if we found at least one like
+              { $addFields: { isLiked: { $gt: [{ $size: '$myLikes' }, 0] } } },
+          
+              // Step 3: remove the temporary list
+              { $project: { myLikes: 0 } }
+            )
+          }
+
+          let result = await db.collection('tweets')
+          .aggregate(pipeline)
           .toArray()
+
+          console.log(result)
 
         return result[0]
       }
@@ -97,7 +126,7 @@ const Page = async({params}) => {
               },
             
               // Step 5: Clean up
-              { $project: { userDetails: 0 } }
+              { $project: { userDetails: 0, email: 0 } }
           ])
           .toArray()
 
@@ -134,6 +163,7 @@ const Page = async({params}) => {
             commentCounter={tweet.commentCounter}
             likeCounter={tweet.likeCounter}
             imgSrc={tweet.imgSrc}
+            isLiked={tweet.isLiked}
           />
 
           {user?
