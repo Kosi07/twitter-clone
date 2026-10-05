@@ -38,6 +38,7 @@ export async function POST(req:Request){
           imgSrc,
           ...(commentOf && {commentOf: new ObjectId(commentOf as string)}),
           createdAt: new Date(),
+          userId: new ObjectId(session.user.id),
       })
 
       if(commentOf){
@@ -87,8 +88,8 @@ export async function GET() {
         { 
           $lookup: {
             from: 'user',
-            localField: 'email',
-            foreignField: 'email',
+            localField: 'userId',
+            foreignField: '_id',
             as: 'userDetails',
           }
         },
