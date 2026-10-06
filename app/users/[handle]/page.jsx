@@ -11,18 +11,20 @@ const Page = async({params}) => {
 
     let urProfilePic
 
+    let signedInUserId
+
     const likeSteps = []
 
-    async function getUserDetails(email){
+    async function getUserDetails(id){
       const db = client.db(process.env.DB_NAME)
 
-      const signedInUserDetails = await db.collection('user').findOne({email: email}, 
+      const signedInUserDetails = await db.collection('user').findOne({_id: id}, 
         {
           projection: {name: 1, image:1, handle:1, _id: 0}
         }
       )
 
-      const {name, image:urProfilePic, handle} = signedInUserDetails
+      const {name, image:urProfilePic, handle} = await signedInUserDetails
 
       return urProfilePic
     }
@@ -38,7 +40,7 @@ const Page = async({params}) => {
     }
 
     if(session){
-      urProfilePic = await getUserDetails((session.user.email))
+      urProfilePic = await getUserDetails(new ObjectId(session.user.id))
 
       const signedInUser = new ObjectId(session.user.id)
 
@@ -138,9 +140,13 @@ const Page = async({params}) => {
     }
 
     let follow_exists = await checkIsFollowing()
+
+    if(session){
+      signedInUserId = session.user.id
+    }
     
   return (
-    <ProfilePage userDetailsAndPosts={userDetailsAndPosts} urProfilePic={urProfilePic} isFollowing={follow_exists?true:false} />
+    <ProfilePage signedInUserId={signedInUserId} userDetailsAndPosts={userDetailsAndPosts} urProfilePic={urProfilePic} isFollowing={follow_exists?true:false} />
   )
 }
 

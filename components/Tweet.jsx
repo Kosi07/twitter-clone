@@ -6,11 +6,11 @@ import { useState } from 'react';
 import ImgViewer from './ImgViewer';
 import Link from 'next/link';
 import { Bookmark, Heart, MessageCircle, MoreHorizontal, Send, CircleUserRound, Check } from 'lucide-react';
+import base_url from '@/lib/base_url';
 
 const Tweet = (
     { id, username, handle, profilePic, createdAt, tweetText, commentCounter, likeCounter, imgSrc, isLiked }
   ) => {
-  const base_url = 'https://trytwitter.vercel.app'
 
   const border_accents = ['border-l-[#bdb0cf]', 'border-l-[#d8bd96]', 'border-l-[#a9c7b9]', 'border-l-[#b8c099]', 'border-l-[#dbc96f]']
 
@@ -153,7 +153,7 @@ const Tweet = (
                 </button>
 
                 <button onClick={()=>{
-                  navigator.clipboard.writeText(base_url+'/tweets/'+id);
+                  navigator.clipboard.writeText(base_url()+'/tweets/'+id);
                   setCopied(true);
                   window.setTimeout(() => setCopied(false), 1800);
                 }} 
