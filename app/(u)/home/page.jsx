@@ -197,6 +197,23 @@ const Page = () => {
     setIsPosting(false) 
   }
 
+  const [pplToFollow, setPplToFollow] = useState([])
+
+  useEffect(()=>{
+    const getPplToFollow = async() => {
+      try{
+        const req = await fetch('/api/ppl-to-follow')
+
+        const result = await req.json()
+        setPplToFollow(result)
+      }catch(err){console.error('Error checking ppl to follow')}
+    }
+
+    if(session){
+      getPplToFollow()
+    }
+  }, [session])
+
   return (
     <main className='min-w-[280px] min-h-screen bg-background'>
       <div className='mx-auto flex max-w-[1280px]'>
@@ -436,7 +453,16 @@ const Page = () => {
                 </button>
               </div>
               <div className="mt-5 flex flex-col gap-4">
-                {[['SA','Samira Ali','@samira','bg-[#eadfdb] text-[#754d42]'],['TW','Theo Wang','@theow','bg-[#dbe5e8] text-[#45616a]'],['RP','Rae Patel','@raep','bg-[#e7e4d4] text-[#69603a]']].map(([initials, name, handle, tone]) => <div key={handle} className="flex items-center gap-3"><div className={`${tone} size-9 grid shrink-0 place-items-center rounded-full text-xs font-semibold tracking-tight`}>{initials}</div><div className="min-w-0 flex-1"><p className="truncate text-xs font-semibold">{name}</p><p className="truncate text-xs text-muted-foreground">{handle}</p></div><button className="rounded-lg border border-border px-2.5 py-1 text-[11px] font-medium hover:bg-secondary">Follow</button></div>)}
+                {pplToFollow.length>0 && pplToFollow.map((person) => 
+                  <Link href={`/users/${person.handle}`} target='_blank' key={person.handle} className="flex items-center gap-3 hover:bg-black/7 hover:cursor-pointer duration-200 p-2 rounded-xl">
+                    <img src={person.image} className={`size-9 grid shrink-0 place-items-center rounded-full text-xs font-semibold tracking-tight`} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-xs font-semibold">{person.name}</p>
+                      <p className="truncate text-xs text-muted-foreground">{person.handle}</p>
+                    </div>
+                    <button className="rounded-lg border border-border px-2.5 py-1 text-[11px] font-medium hover:bg-secondary">Follow</button>
+                  </Link>
+                )}
               </div>
             </div>
             <div className="px-1 text-[11px] leading-5 text-muted-foreground">

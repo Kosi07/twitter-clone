@@ -158,7 +158,7 @@ const Tweet = (
                   window.setTimeout(() => setCopied(false), 1800);
                 }} 
                   aria-label={copied ? 'Copied link' : 'Share post'} 
-                  className={`relative flex h-8 w-[88px] items-center justify-center rounded-lg p-1.5 text-xs transition-colors duration-200 hover:bg-secondary hover:text-foreground ${copied ? 'text-foreground' : 'text-muted-foreground'}`}
+                  className={`relative flex h-8 min-w-[75px] items-center justify-center rounded-lg p-1.5 text-xs transition-colors duration-200 hover:bg-secondary hover:text-foreground ${copied ? 'text-foreground' : 'text-muted-foreground'}`}
                 >
                   <span className={`absolute inset-0 flex items-center justify-center gap-1.5 transition-all duration-200 ${copied ? 'scale-100 opacity-100' : 'scale-75 opacity-0'}`} aria-hidden={!copied}>
                     <Check className="size-4" />
