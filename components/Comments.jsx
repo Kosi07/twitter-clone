@@ -1,5 +1,4 @@
 
-import { tweetType } from "@/lib/types"
 import Tweet from "./Tweet"
 
 
