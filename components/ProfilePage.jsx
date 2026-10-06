@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { MapPin, Bell, Bookmark, Check, Grid2X2, Heart, Link2, MoreHorizontal, Pencil, Plus, Settings, Share2, Sparkles, UserPlus } from 'lucide-react'
+import { MapPin, Bell, Bookmark, Check, Grid2X2, Heart, Link2, MoreHorizontal, Pencil, Plus, Settings, Share2, Sparkles, UserPlus, ArrowLeft } from 'lucide-react'
 import Tweet from './Tweet'
 import Link from 'next/link'
+import base_url from '@/lib/base_url'
 
 const highlights = [
   { label: 'Studio', color: 'bg-[#e9e2d8]', icon: Sparkles },
@@ -12,9 +13,12 @@ const highlights = [
   { label: 'Mood', color: 'bg-[#eadfda]', icon: Heart },
 ]
 
-const ProfilePage = ({userDetailsAndPosts, urProfilePic, isFollowing}) => {
+const ProfilePage = ({signedInUserId, userDetailsAndPosts, urProfilePic, isFollowing}) => {
+
     const [following, setFollowing] = useState(isFollowing)
     const [activeTab, setActiveTab] = useState('posts')
+
+    const [copied, setCopied] = useState(false)
 
     const {name, _id:profile_id, handle, image:profilePic, followerCount, followingCount, postCount=86, userPosts, bio='Designing quiet spaces and thoughtful objects. Finding beauty in the everyday.', website_link='mayachen.studio', location='Based in Copenhagen'} = userDetailsAndPosts
 
@@ -60,10 +64,14 @@ const ProfilePage = ({userDetailsAndPosts, urProfilePic, isFollowing}) => {
         <main className="min-h-screen bg-[#fafaf9] text-[#242321] min-w-0">
             <nav className="sticky top-0 z-20 border-b border-black/[0.06] bg-[#fafaf9]/90 backdrop-blur-xl">
                 <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
+                    <div className='flex flex-row gap-3'>
+                    <Link href="/" aria-label="Back to feed" className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"><ArrowLeft className="size-5" /></Link>
+
                     <Link href='/home' className="flex items-center gap-2.5" aria-label="Twitt3r home">
                         <span className="grid size-8 place-items-center rounded-[10px] bg-[#242321] text-sm font-semibold tracking-tight text-white">t</span>
                         <span className="text-[15px] font-semibold tracking-[-0.03em]">twitt3r</span>
                     </Link>
+                    </div>
                     <div className="flex items-center gap-1">
                         <button 
                             className="grid size-9 place-items-center rounded-full text-[#77736d] transition hover:bg-black/5 hover:text-[#242321]" 
@@ -101,13 +109,36 @@ const ProfilePage = ({userDetailsAndPosts, urProfilePic, isFollowing}) => {
                             <span className='flex items-center gap-1.5'><MapPin size={14} /> {location}</span>
                         </div>
                         <div className="mt-6 flex flex-wrap gap-2.5">
+                            {signedInUserId && signedInUserId==profile_id?
+                                <Link
+                                    href='/'
+                                    target='_blank'
+                                    className={`inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-sm font-medium transition bg-[#242321] text-white hover:bg-[#3d3b38] hover:cursor-pointer`}
+                                >
+                                    Edit Profile
+                                </Link>
+                            :
+                                <button 
+                                    onClick={() => handleFollowBtnClick()} 
+                                    className={`inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-sm font-medium transition ${following ? 'bg-[#ebe9e5] text-[#4f4b45]' : 'bg-[#242321] text-white hover:bg-[#3d3b38] hover:cursor-pointer'}`}
+                                >
+                                    {following ? <><Check size={15} /> Following</> : <><UserPlus size={15} /> Follow</>}
+                                </button>
+                            }
                             <button 
-                                onClick={() => handleFollowBtnClick()} 
-                                className={`inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-sm font-medium transition ${following ? 'bg-[#ebe9e5] text-[#4f4b45]' : 'bg-[#242321] text-white hover:bg-[#3d3b38] hover:cursor-pointer'}`}
+                                className={`relative flex min-w-[75px] items-center justify-center rounded-lg p-1.5 text-xs transition-colors duration-200 hover:bg-secondary hover:text-foreground `}                                
+                                onClick={()=>{
+                                    navigator.clipboard.writeText(base_url()+'/users/'+handle);
+                                    setCopied(true);
+                                    window.setTimeout(() => setCopied(false), 1800);
+                                }}
                             >
-                                {following ? <><Check size={15} /> Following</> : <><UserPlus size={15} /> Follow</>}
+                                <span className={`absolute inset-0 flex items-center justify-center gap-1.5 transition-all duration-200 ${copied ? 'scale-100 opacity-100' : 'scale-75 opacity-0'}`} aria-hidden={!copied}>
+                                    <Check className="size-6" />
+                                    <span>Copied</span>
+                                </span>
+                                <Share2 size={20} className={`transition-all duration-200 ${copied ? 'scale-75 opacity-0' : 'scale-100 opacity-100'}`} />
                             </button>
-                            <button className="grid size-10 place-items-center rounded-full border border-black/10 text-[#55514b] transition hover:bg-black/5" aria-label="Share profile"><Share2 size={17} /></button>
                             <button className="grid size-10 place-items-center rounded-full border border-black/10 text-[#55514b] transition hover:bg-black/5" aria-label="More options"><MoreHorizontal size={18} /></button>
                         </div>
                         </div>

@@ -1,11 +1,12 @@
 export const dynamic = 'force-dynamic' //This page depends on request data — don’t try to statically render it.
 
 import { client } from '@/app/api/tweets/route'
-import BackButton from '@/components/BackButton'
+
 import Comments from '@/components/Comments'
 import PostComment from '@/components/PostComment'
 import Tweet from '@/components/Tweet'
 import { auth } from '@/lib/auth'
+import { ArrowLeft } from 'lucide-react'
 import { ObjectId } from 'mongodb'
 import { headers } from 'next/headers'
 import Link from 'next/link'
@@ -33,8 +34,8 @@ const Page = async({params}) => {
             { 
               $lookup: {
                 from: 'user',              // The collection we're joining with
-                localField: 'email',       // Field in tweets collection
-                foreignField: 'email',     // Matching field in user collection
+                localField: 'userId',       // Field in tweets collection
+                foreignField: '_id',     // Matching field in user collection
                 as: 'userDetails'          // Put the result here
               }
             },
@@ -98,8 +99,7 @@ const Page = async({params}) => {
       try{
         const db = client.db(process.env.DB_NAME)
 
-        const result = await db.collection('tweets')
-            .aggregate([
+        const pipeline = [
               // Step 1: Find all comments for this tweet
               { $match: { commentOf: new ObjectId(id) } },
             
@@ -110,8 +110,8 @@ const Page = async({params}) => {
               { 
                 $lookup: {
                   from: 'user',
-                  localField: 'email',
-                  foreignField: 'email',
+                  localField: 'userId',
+                  foreignField: '_id',
                   as: 'userDetails'
                 }
               },
@@ -127,8 +127,11 @@ const Page = async({params}) => {
             
               // Step 5: Clean up
               { $project: { userDetails: 0, email: 0 } }
-          ])
-          .toArray()
+          ]
+
+          const result = await db.collection('tweets')
+            .aggregate(pipeline)
+            .toArray()
 
         return result
       }
@@ -144,52 +147,65 @@ const Page = async({params}) => {
     ])
 
   return (
-    <div className='w-full max-w-[700px] min-w-[280px] min-h-screen'>
-      <div className='sticky top-0 bg-gray-50/30 backdrop-blur-xl rounded-lg w-full flex flex-row p-2 text-2xl'>
-        <BackButton />
-        
-        <span className='w-7/10 text-center font-bold'>Tweet</span>
-      </div>
+    <main className='min-h-screen bg-background'>
+      <div className="mx-auto w-full max-w-[720px] px-4 py-5 sm:px-8 sm:py-8">
+        <header className="flex items-center gap-3 border-b border-border/70 pb-5 sticky top-0 bg-background backdrop-blur-xl">
+          <Link href="/" aria-label="Back to feed" className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"><ArrowLeft className="size-5" /></Link>
 
-      {tweet && 
-        <>
-          <Tweet 
-            id={`${tweet._id}`} 
-            username={tweet.username} 
-            handle={tweet.handle} 
-            profilePic={tweet.profilePic} 
-            createdAt={tweet.createdAt}
-            tweetText={tweet.tweetText}
-            commentCounter={tweet.commentCounter}
-            likeCounter={tweet.likeCounter}
-            imgSrc={tweet.imgSrc}
-            isLiked={tweet.isLiked}
-          />
-
-          {user?
-            <PostComment user={user} idOfOriginalTweet={id} />
-          :
-          <Link
-            href='/sign-in'
-          >
-            <div
-              className='w-full p-2 mt-4 mb-7 text-xl text-center font-bold
-                      hover:cursor-pointer hover:text-gray-700'
-            >
-              Sign In to join the conversation
-            </div>
+          <Link href='/home' className="flex items-center gap-2.5" aria-label="Twitt3r home">
+            <span className="grid size-8 place-items-center rounded-[10px] bg-[#242321] text-sm font-semibold tracking-tight text-white">t</span>
+            <span className="text-[15px] font-semibold tracking-[-0.03em]">twitt3r</span>
           </Link>
-          }
+        </header>
 
-          {comments &&  comments.length>0?
-            <Comments comments={comments} />
-          :
-            <div className='w-full p-4 text-center text-gray-400'>No convo yet? Start one</div>
-          }
+        <div className="py-8">
+          <div className="mt-4 rounded-2xl border border-border/80 border-l-2 border-l-[#a9c7b9] bg-card p-5 shadow-[0_6px_24px_rgba(47,43,36,0.035)] sm:p-7">
+            {tweet && 
+              <Tweet 
+                id={`${tweet._id}`} 
+                username={tweet.username} 
+                handle={tweet.handle} 
+                profilePic={tweet.profilePic} 
+                createdAt={tweet.createdAt}
+                tweetText={tweet.tweetText}
+                commentCounter={tweet.commentCounter}
+                likeCounter={tweet.likeCounter}
+                imgSrc={tweet.imgSrc}
+                isLiked={tweet.isLiked}
+              />
+            }
+          </div>
 
-        </>
-      }
-    </div>
+          <section id="comments" className="mt-8 scroll-mt-6">
+            <h2 className="text-sm font-semibold">Comments <span className="font-normal text-muted-foreground">{comments.length}</span></h2>
+            {user?
+              <PostComment user={user} idOfOriginalTweet={id} />
+            :
+              <Link
+                href='/sign-in'
+              >
+                <div
+                  className='w-full p-2 mt-4 mb-7 text-xl text-center font-bold
+                          hover:cursor-pointer hover:text-gray-700'
+                >
+                  Sign In to join the conversation
+                </div>
+              </Link>
+            }
+
+            {comments &&  comments.length>0?
+              <div className='mt-4 flex flex-col gap-3'>
+                <Comments comments={comments} />
+              </div>
+            :
+              <div className='w-full p-4 text-center text-gray-400'>No convo yet? Start one</div>
+            }
+
+          </section>
+        </div>
+
+      </div>
+    </main>
   )
 }
 

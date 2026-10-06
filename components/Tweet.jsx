@@ -5,7 +5,8 @@ import Image from 'next/image';
 import { useState } from 'react';
 import ImgViewer from './ImgViewer';
 import Link from 'next/link';
-import { Bookmark, Heart, MessageCircle, MoreHorizontal, Send, CircleUserRound } from 'lucide-react';
+import { Bookmark, Heart, MessageCircle, MoreHorizontal, Send, CircleUserRound, Check } from 'lucide-react';
+import base_url from '@/lib/base_url';
 
 const Tweet = (
     { id, username, handle, profilePic, createdAt, tweetText, commentCounter, likeCounter, imgSrc, isLiked }
@@ -83,6 +84,8 @@ const Tweet = (
 
   const [saved, setSaved] = useState(false)
 
+  const [copied, setCopied] = useState(false)
+
   return (
     <article
       className={`border-l-2 ${border_accents[Math.round(Math.random()*4)]} rounded-2xl border border-border/80 bg-card p-5 shadow-[0_6px_24px_rgba(47,43,36,0.035)] transition-shadow hover:shadow-[0_10px_30px_rgba(47,43,36,0.07)] sm:p-6`}
@@ -149,10 +152,19 @@ const Tweet = (
                   <Bookmark className={`size-4 ${saved ? 'fill-current' : ''}`} />
                 </button>
 
-                <button aria-label="Share post" 
-                  className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                <button onClick={()=>{
+                  navigator.clipboard.writeText(base_url()+'/tweets/'+id);
+                  setCopied(true);
+                  window.setTimeout(() => setCopied(false), 1800);
+                }} 
+                  aria-label={copied ? 'Copied link' : 'Share post'} 
+                  className={`relative flex h-8 min-w-[75px] items-center justify-center rounded-lg p-1.5 text-xs transition-colors duration-200 hover:bg-secondary hover:text-foreground ${copied ? 'text-foreground' : 'text-muted-foreground'}`}
                 >
-                  <Send className="size-4" />
+                  <span className={`absolute inset-0 flex items-center justify-center gap-1.5 transition-all duration-200 ${copied ? 'scale-100 opacity-100' : 'scale-75 opacity-0'}`} aria-hidden={!copied}>
+                    <Check className="size-4" />
+                    <span>Copied</span>
+                  </span>
+                  <Send className={`size-4 transition-all duration-200 ${copied ? 'scale-75 opacity-0' : 'scale-100 opacity-100'}`} aria-hidden={copied} />
                 </button>
               </div>
 
