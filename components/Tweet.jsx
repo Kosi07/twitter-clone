@@ -139,7 +139,7 @@ const Tweet = (
                 </button>
 
                 <button aria-label="Comment on post" className="flex items-center rounded-lg transition-colors hover:bg-secondary hover:text-foreground">
-                  <Link href={`/tweet/${id}`} className='flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs text-muted-foreground hover:cursor-default'>
+                  <Link href={`/tweets/${id}`} className='flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs text-muted-foreground hover:cursor-default'>
                     <MessageCircle className="size-4" />
                     {newCommentCounter}
                   </Link>
