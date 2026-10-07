@@ -76,11 +76,11 @@ const Page = async({params}) => {
             //Join with tweets collection to get what I assume is an array of all posts by a user
             { $lookup: {
                from: 'tweets',
-               let: { userEmail: "$email" },
+               let: { userId: "$_id" },
                pipeline: [
                 {
                   $match: {
-                    $expr: { $eq: ["$email", "$$userEmail"] }
+                    $expr: { $eq: ["$userId", "$$userId"] }
                   }
                 },
                 { $sort: { createdAt: -1 } },   // newest first
