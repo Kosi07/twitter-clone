@@ -20,7 +20,7 @@ const ProfilePage = ({signedInUserId, userDetailsAndPosts, urProfilePic, isFollo
 
     const [copied, setCopied] = useState(false)
 
-    const {name, _id:profile_id, handle, image:profilePic, followerCount, followingCount, postCount=86, userPosts, bio='Designing quiet spaces and thoughtful objects. Finding beauty in the everyday.', website_link='mayachen.studio', location='Based in Copenhagen'} = userDetailsAndPosts
+    const {name, _id:profile_id, handle, image:profilePic, followerCount=0, followingCount=0, postCount=86, userPosts, bio='Designing quiet spaces and thoughtful objects. Finding beauty in the everyday.', website_link='mayachen.studio', location='Based in Copenhagen'} = userDetailsAndPosts
 
     function formatCounter(counter){
         if (counter >= 1000000){ return `${(counter/1000000).toFixed(1)}M`}

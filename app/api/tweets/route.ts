@@ -69,6 +69,10 @@ export async function GET() {
     //Connect to MongoDB
     const db = client.db(process.env.DB_NAME as string)
 
+    //Go to tweets collection.
+    //Each tweet contains a 'userId' field
+    //For each tweet, create the field postCount in the 'user' collection and increment it based on how many tweets have a userId field that matches the _id field of the user
+
     const session = await auth.api.getSession({
       headers: await headers()
     })

@@ -1,8 +1,7 @@
 import { auth } from "@/lib/auth"
-import { MongoClient, ObjectId } from "mongodb"
+import { ObjectId } from "mongodb"
 import { headers } from "next/headers"
-
-export const client = new MongoClient(process.env.MONGODB_CONNECTION_STRING as string)
+import { client } from "../tweets/route"
 
 
 export async function GET() {
