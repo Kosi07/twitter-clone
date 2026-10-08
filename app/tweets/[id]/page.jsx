@@ -149,7 +149,7 @@ const Page = async({params}) => {
   return (
     <main className='min-h-screen bg-background'>
       <div className="mx-auto w-full max-w-[720px] px-4 py-5 sm:px-8 sm:py-8">
-        <header className="flex items-center gap-3 border-b border-border/70 pb-5 sticky top-0 bg-background backdrop-blur-xl">
+        <header className="flex items-center gap-3 border-b border-border/70 pb-5 sticky top-0 z-2 bg-background backdrop-blur-xl">
           <Link href="/" aria-label="Back to feed" className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"><ArrowLeft className="size-5" /></Link>
 
           <Link href='/home' className="flex items-center gap-2.5" aria-label="Twitt3r home">

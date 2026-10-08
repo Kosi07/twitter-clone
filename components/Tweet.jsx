@@ -1,7 +1,5 @@
 'use client'
 
-import Image from 'next/image';
-
 import { useState } from 'react';
 import ImgViewer from './ImgViewer';
 import Link from 'next/link';
@@ -80,8 +78,6 @@ const Tweet = (
   const newCommentCounter = formatCounter(commentCounter);
   const newLikeCounter = formatCounter(likes)
 
-  const [viewImg, setViewImg] = useState(false)
-
   const [saved, setSaved] = useState(false)
 
   const [copied, setCopied] = useState(false)
@@ -121,12 +117,8 @@ const Tweet = (
                 </p>
               </Link>
               {imgSrc &&
-                <div>
-                  <div>
-                    <Image alt='' onClick={()=>setViewImg(true)} className='max-w-full max-h-80 aspect-[4/5] object-cover rounded-2xl' src={imgSrc} quality={100} width={500} height={500} />
-
-                    <ImgViewer imgSrc={imgSrc} viewImg={viewImg} setViewImg={setViewImg} />
-                  </div>
+                <div className="mt-5 max-w-[54ch]">
+                  <ImgViewer src={imgSrc} alt={`Image shared by ${username}`} />
                 </div>
               }
               <div className="mt-6 flex flex-wrap items-center gap-1 border-t border-border/70 pt-3">
