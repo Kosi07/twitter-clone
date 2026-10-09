@@ -41,6 +41,13 @@ export async function POST(req:Request){
           userId: new ObjectId(session.user.id),
       })
 
+      if(!commentOf){
+        await db.collection('user').updateOne(
+          { _id: new ObjectId(session.user.id) },
+          { $inc: { postCount: 1 } }
+        )
+      }
+
       if(commentOf){
         await db.collection('tweets')
           .updateOne(
@@ -68,10 +75,6 @@ export async function GET() {
   try{
     //Connect to MongoDB
     const db = client.db(process.env.DB_NAME as string)
-
-    //Go to tweets collection.
-    //Each tweet contains a 'userId' field
-    //For each tweet, create the field postCount in the 'user' collection and increment it based on how many tweets have a userId field that matches the _id field of the user
 
     const session = await auth.api.getSession({
       headers: await headers()

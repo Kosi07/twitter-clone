@@ -78,9 +78,13 @@ const Page = async({params}) => {
                from: 'tweets',
                let: { userId: "$_id" },
                pipeline: [
-                {
-                  $match: {
-                    $expr: { $eq: ["$userId", "$$userId"] }
+                {$match: {
+                    $expr: {
+                      $and: [
+                        { $eq: ["$userId", "$$userId"] },
+                        { $eq: [{ $type: "$commentOf" }, "missing"] }
+                      ]
+                    }
                   }
                 },
                 { $sort: { createdAt: -1 } },   // newest first
