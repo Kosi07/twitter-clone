@@ -20,7 +20,7 @@ const ProfilePage = ({signedInUserId, userDetailsAndPosts, urProfilePic, isFollo
 
     const [copied, setCopied] = useState(false)
 
-    const {name, _id:profile_id, handle, image:profilePic, followerCount=0, followingCount=0, postCount=86, userPosts, bio='Designing quiet spaces and thoughtful objects. Finding beauty in the everyday.', website_link='mayachen.studio', location='Based in Copenhagen'} = userDetailsAndPosts
+    const {name, _id:profile_id, handle, image:profilePic, followerCount=0, followingCount=0, postCount, userPosts, bio='Designing quiet spaces and thoughtful objects. Finding beauty in the everyday.', website_link='mayachen.studio', location='Based in Copenhagen'} = userDetailsAndPosts
 
     function formatCounter(counter){
         if (counter >= 1000000){ return `${(counter/1000000).toFixed(1)}M`}
@@ -100,7 +100,7 @@ const ProfilePage = ({signedInUserId, userDetailsAndPosts, urProfilePic, isFollo
                         <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-3">
                             <h1 className="text-2xl font-semibold tracking-[-0.045em] sm:text-[30px]">{name}</h1>
-                            <span className="inline-flex items-center gap-1 rounded-full bg-[#ebe9e5] px-2.5 py-1 text-[11px] font-medium text-[#68655f]"><Check size={12} strokeWidth={2.5} /> Creator</span>
+                            <span className={`items-center gap-1 rounded-full bg-[#ebe9e5] px-2.5 py-1 text-[11px] font-medium text-[#68655f] ${postCount< 3? 'hidden': 'inline-flex'}`}><Check size={12} strokeWidth={2.5} /> Creator</span>
                         </div>
                         <p className="mt-1 text-[14px] text-[#77736d]">@{handle}</p>
                         <p className="mt-4 max-w-lg text-[15px] leading-6 text-[#4f4b45]">{bio}</p>
