@@ -10,15 +10,17 @@ This is a [Twitter clone](https://trytwitter.vercel.app/) project bootstrapped w
 - [Deployed with Netlify](https://twitt3r-clone.netlify.app/)
 
 ## ToDo
-Imagine open Whatsapp/Discord
-Whatsapp but with a feed to dicover new people to DM
-TagLine: Fight social anxiety. DM Strangers.
+Imagine open Discord
+Built around communities
 
-- [ ] Rebuild the homepage
+- [ ] Robust notification system including sending emails
 - [ ] Add middleware, only '/' and '/sign-in', and '/home' and '/tweets/[id]' and '/users/[handle]' are allowed for unauthenticated users
 
 - [ ] Update postCount for all users
 - [ ] If postCount > 3, isCreator = true
+
+## Nice to do
+efootball Gift icon at the top of homepage and Daily login rewards
 
 No time limits on adding features
 Purely experimental. Feel free to play around
