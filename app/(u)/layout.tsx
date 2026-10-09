@@ -1,7 +1,6 @@
 'use client';
 
-import NavBar from '@/components/NavBar';
-import { NavBarContext } from '@/contexts/NavBarContext';
+import AppSidebar from '@/components/AppSidebar'
 
 export default function RootLayout({
   children,
@@ -10,17 +9,10 @@ export default function RootLayout({
 }>) {
   
   return (
-      <NavBarContext>
-       <>
-          {children}
-
-          {/* <div
-            className='w-full max-w-[700px] m-auto flex justify-center fixed bottom-0 left-1 right-1 bg-gray-50/60 backdrop-blur-2xl border-t border-t-gray-400 p-2 rounded-xl'
-          >
-            <NavBar /> 
-          </div> */}
-       </>
-      </NavBarContext>
+    <div className="mx-auto flex max-w-[1280px]">
+      <AppSidebar />
+      <div className="min-w-0 flex-1">{children}</div>
+    </div>
   );
 }
 
