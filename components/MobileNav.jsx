@@ -10,10 +10,10 @@ const MobileNav = () => {
     const pathname = usePathname()
 
     const navItems = [
-        {title: 'Home', icon: Home},
-        {title: 'Discover', icon: Compass},
-        {title: 'Notifications', icon: Bell},
-        {title: 'Settings', icon: Settings}
+        {title: 'home', icon: Home},
+        {title: 'discover', icon: Compass},
+        {title: 'notifications', icon: Bell},
+        {title: 'settings', icon: Settings}
     ]
 
     const {data:session } = authClient.useSession()
@@ -33,7 +33,7 @@ const MobileNav = () => {
   return (
     <nav aria-label='Mobile navigation' className='fixed inset-x-0 bottom-0 z-20 flex justify-around border-t border-border/80 bg-background/95 px-5 py-3 backdrop-blur-md lg:hidden'>
         {navItems.map((navItem) => 
-            <button key={navItem.title} aria-label={navItem.title}><Link href={`/${navItem.title.toLowerCase()}`}><navItem.icon className='size-5' strokeWidth={pathname === `/${navItem.title.toLowerCase()}` ? 2.2 : 1.8} /></Link></button>
+            <button key={navItem.title} aria-label={navItem.title}><Link href={`/${navItem.title}`}><navItem.icon className='size-5' strokeWidth={pathname === `/${navItem.title}` ? 2.2 : 1.8} /></Link></button>
         )}
         
         <button aria-label="Profile" className="text-muted-foreground">
