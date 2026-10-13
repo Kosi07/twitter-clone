@@ -46,7 +46,9 @@ export default function SettingsPage() {
             <section className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-[0_6px_24px_rgba(47,43,36,0.035)]" aria-labelledby="account-heading">
               <h3 id="account-heading" className="border-b border-border/70 px-5 py-4 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground sm:px-6">Account</h3>
               <div className="divide-y divide-border/70">
-                <SettingRow icon={UserRound} label="Profile" detail="Update your name, handle, and photo" />
+                <Link href='/edit-profile'>
+                  <SettingRow icon={UserRound} label="Profile" detail="Update your name, handle, and photo" />
+                </Link>
                 <SettingRow icon={Lock} label="Privacy and safety" detail="Control who can see and interact with you" />
                 <SettingRow icon={Bell} label="Notifications" detail="Choose what you want to hear about" /></div>
             </section>

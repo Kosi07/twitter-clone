@@ -111,7 +111,7 @@ const ProfilePage = ({signedInUserId, userDetailsAndPosts, urProfilePic, isFollo
                         <div className="mt-6 flex flex-wrap gap-2.5">
                             {signedInUserId && signedInUserId==profile_id?
                                 <Link
-                                    href='/'
+                                    href='/edit-profile'
                                     target='_blank'
                                     className={`inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-sm font-medium transition bg-[#242321] text-white hover:bg-[#3d3b38] hover:cursor-pointer`}
                                 >
