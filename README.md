@@ -17,7 +17,6 @@ Built around communities
 - [ ] Add middleware, only '/' and '/sign-in', and '/home' and '/tweets/[id]' and '/users/[handle]' are allowed for unauthenticated users
 
 - [ ] Update postCount for all users
-- [ ] If postCount > 3, isCreator = true
 
 ## Nice to do
 efootball Gift icon at the top of homepage and Daily login rewards
