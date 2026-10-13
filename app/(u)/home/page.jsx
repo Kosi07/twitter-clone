@@ -5,7 +5,7 @@ import { authClient } from '@/lib/client-side-auth-client'
 
 import Tweet from '@/components/Tweet';
 
-import { Bell, CircleUserRound, Compass, FaceSlightlySmilingPlus, Gift, Home, ImageIcon, PenLine, Search } from 'lucide-react';
+import { CircleUserRound, FaceSlightlySmilingPlus, Gift, ImageIcon, PenLine, Search } from 'lucide-react';
 import Link from 'next/link'
 import EmojiPicker from 'emoji-picker-react';
 
@@ -429,32 +429,6 @@ const Page = () => {
       >
         <PenLine className="size-5" />
       </button>
-
-      <nav aria-label='Mobile navigation' className='fixed inset-x-0 bottom-0 z-20 flex justify-around border-t border-border/80 bg-background/95 px-5 py-3 backdrop-blur-md lg:hidden'>
-        <button aria-label="Home" className="text-foreground">
-          <Home className="size-5" />
-        </button>
-        <button aria-label="Discover" className="text-muted-foreground">
-          <Compass className="size-5" />
-        </button>
-        <button aria-label="Create post" className="grid size-9 place-items-center rounded-xl bg-foreground text-background">
-          <PenLine className="size-4" />
-        </button>
-        <button aria-label="Notifications" className="text-muted-foreground">
-          <Bell className="size-5" />
-        </button>
-        <button aria-label="Profile" className="text-muted-foreground">
-          {profilePic?
-            <Link href={`/users/${handle}`}>
-              <img src={profilePic} id='Avatar' className='bg-[#d9e0ea] text-[#40546e] grid shrink-0 place-items-center rounded-full text-xs font-semibold tracking-tight size-5' />
-            </Link>
-            :
-            <Link href='/sign-in'>
-              <CircleUserRound className='size-5'/>
-            </Link>
-          }
-        </button>
-      </nav>
 
     </main>
   )
