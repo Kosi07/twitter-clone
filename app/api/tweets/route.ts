@@ -72,13 +72,16 @@ export async function POST(req:Request){
 }
 
 export async function GET() {
+  //< 200ms
   try{
     //Connect to MongoDB
     const db = client.db(process.env.DB_NAME as string)
 
+    console.time('session')
     const session = await auth.api.getSession({
       headers: await headers()
     })
+    console.timeEnd('session')
     
     // Get all tweets, sorted by newest first
     const pipeline: Document[] = [
@@ -118,10 +121,6 @@ export async function GET() {
       if(session){
         const signedInUser = new ObjectId(session.user.id)
 
-        //In the process of getting tweets, if lookup likesCollection for each tweet 
-        // localField:_id  foreignField:  tweetId
-        //If userId = signedInUser, isLiked = true for that specific tweet
-
         pipeline.push(
           // Step 1: search the likes collection
           {
@@ -148,9 +147,11 @@ export async function GET() {
         )
       }
 
+      console.time('pipeline')
       const tweets = await db.collection('tweets')
       .aggregate(pipeline)
       .toArray()
+      console.timeEnd('pipeline')
 
     return Response.json(tweets);
     
