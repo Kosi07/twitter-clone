@@ -10,6 +10,10 @@ import Link from 'next/link'
 import EmojiPicker from 'emoji-picker-react';
 
 const Page = () => {
+  useEffect(()=>{
+    fetchTweets()
+  }, [])
+  
   const {data:session } = authClient.useSession()
 
   const [name, setName] = useState('')
@@ -89,10 +93,6 @@ const Page = () => {
     console.error('Failed to fetch tweets')
     }
   }
-
-  useEffect(()=>{
-    fetchTweets()
-  }, [])
 
   let newTweet
 
