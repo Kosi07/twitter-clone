@@ -384,7 +384,7 @@ const Page = () => {
           </div>
         </section>
 
-        <aside className="hidden w-[352px] shrink-0 space-y-6 px-6 py-24 xl:block">
+        <aside className="sticky top-0 h-screen hidden w-[352px] shrink-0 space-y-6 px-6 py-24 xl:block">
           {session &&
             <>
             <div className="rounded-2xl border border-border/70 bg-card p-5">
