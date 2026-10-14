@@ -71,6 +71,7 @@ export async function POST(req:Request){
 
 export async function GET() {
   //< 200ms
+  console.log('')
   try{
     console.time('session')
     const session = await auth.api.getSession({
@@ -143,6 +144,7 @@ export async function GET() {
       }
 
       console.time('pipeline')
+      
       const tweets = await db.collection('tweets')
       .aggregate(pipeline)
       .toArray()
