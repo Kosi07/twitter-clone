@@ -3,6 +3,7 @@ import { Document, MongoClient, ObjectId } from "mongodb"
 import { headers } from "next/headers"
 
 export const client = new MongoClient(process.env.MONGODB_CONNECTION_STRING as string)
+const db = client.db(process.env.DB_NAME as string)
 
 export async function POST(req:Request){
     let session
@@ -27,9 +28,6 @@ export async function POST(req:Request){
               imgSrc=null,
               commentOf=null,
             } = newTweet
-
-      //Connect to MongoDB
-      const db = client.db(process.env.DB_NAME as string)
 
       const result = await db.collection('tweets').insertOne({
           tweetText,
@@ -74,9 +72,6 @@ export async function POST(req:Request){
 export async function GET() {
   //< 200ms
   try{
-    //Connect to MongoDB
-    const db = client.db(process.env.DB_NAME as string)
-
     console.time('session')
     const session = await auth.api.getSession({
       headers: await headers()
@@ -92,7 +87,7 @@ export async function GET() {
         { $sort: {createdAt: -1}},
 
         //limit to 55
-        { $limit: 55},
+        { $limit: 35},
 
         //lookup userdetails
         { 
