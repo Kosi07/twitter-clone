@@ -7,9 +7,12 @@ import { ArrowLeft, Bell, ChevronRight, LogOut, Lock, UserRound } from 'lucide-r
 import { useEffect, useState } from 'react'
 import { authClient } from '@/lib/client-side-auth-client'
 
-function SettingRow({ icon: Icon, label, detail, destructive = false }) {
+function SettingRow({ icon: Icon, label, detail, destructive = false, func }) {
   return (
-    <button className="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-secondary/60 sm:px-6">
+    <button 
+      onClick={func? ()=>func(): ()=> console.log()}
+      className="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-secondary/60 sm:px-6"
+    >
       <Icon className={`size-[18px] ${destructive ? 'text-red-700' : 'text-muted-foreground'}`} strokeWidth={1.8} />
       <span className="min-w-0 flex-1">
         <span className={`block text-sm font-medium ${destructive ? 'text-red-700' : ''}`}>{label}</span>
@@ -56,9 +59,7 @@ export default function SettingsPage() {
             <section className="mt-5 overflow-hidden rounded-2xl border border-border/80 bg-card shadow-[0_6px_24px_rgba(47,43,36,0.035)]" aria-labelledby="session-heading">
                 <h3 id="session-heading" className="border-b border-border/70 px-5 py-4 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground sm:px-6">Session</h3>
                 <div className="divide-y divide-border/70">
-                    <button className='w-full' onClick={()=>signOut()}>
-                        <SettingRow icon={LogOut} label="Log out" detail={`Sign out of @${handle} on this device`} destructive />
-                    </button>
+                    <SettingRow icon={LogOut} label="Log out" detail={`Sign out of @${handle} on this device`} destructive func={signOut} />
                 </div>
             </section>
             <p className="mt-6 px-1 text-[11px] leading-5 text-muted-foreground">twitt3r keeps things simple. You can always come back and change these choices later.</p>

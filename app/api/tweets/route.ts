@@ -79,7 +79,7 @@ export async function GET() {
     })
     console.timeEnd('session')
     
-    // Get all tweets, sorted by newest first
+    // pipeline <100ms
     const pipeline: Document[] = [
         //Find where commentOf is null
         { $match: {commentOf: {$eq: null}} },
@@ -96,6 +96,16 @@ export async function GET() {
             from: 'user',
             localField: 'userId',
             foreignField: '_id',
+            pipeline: [
+              {
+                $project: {
+                  name: 1,
+                  _id: 0,
+                  image: 1,
+                  handle: 1,
+                }
+              }
+            ],
             as: 'userDetails',
           }
         },
@@ -130,6 +140,10 @@ export async function GET() {
                     userId: signedInUser,
                   },
                 },
+
+                //only need one like check
+                {$limit: 1},
+                {$project: {_id: 1} },
               ],
               as: 'myLikes',
             },
@@ -144,7 +158,7 @@ export async function GET() {
       }
 
       console.time('pipeline')
-      
+
       const tweets = await db.collection('tweets')
       .aggregate(pipeline)
       .toArray()

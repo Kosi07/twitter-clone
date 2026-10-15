@@ -44,8 +44,8 @@ const Page = () => {
 
   const time = new Date()
   // 1. Get the full month name (e.g., "October")
-  const day = time.toLocaleDateString('default', { weekday: 'long' })
-  const fullMonth = time.toLocaleString('default', { month: 'long' })
+  const day = time.toLocaleDateString('fr-FR', { weekday: 'long' })
+  const fullMonth = time.toLocaleString('fr-FR', { month: 'long' })
   const date = time.getDate()
   const year = time.getFullYear()
 
