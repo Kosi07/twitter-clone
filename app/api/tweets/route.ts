@@ -87,7 +87,7 @@ export async function GET() {
         //sort by newest first
         { $sort: {createdAt: -1}},
 
-        //limit to 55
+        //limit to 35
         { $limit: 35},
 
         //lookup userdetails
