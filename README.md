@@ -16,8 +16,6 @@ Built around communities
 - [ ] Robust notification system including sending emails
 - [ ] Add middleware, only '/' and '/sign-in', and '/home' and '/tweets/[id]' and '/users/[handle]' are allowed for unauthenticated users
 
-- [ ] Update postCount for all users
-
 ## Nice to do
 efootball Gift icon at the top of homepage and Daily login rewards
 
