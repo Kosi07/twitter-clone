@@ -15,7 +15,6 @@ Built around communities
 
 - [ ] Make it downloadable
 - [ ] Robust notification system including sending emails
-- [ ] Add proxy, only '/' and '/sign-in', and '/home' and '/tweets/[id]' and '/users/[handle]' are allowed for unauthenticated users
 
 ## Nice to do
 efootball Gift icon at the top of homepage and Daily login rewards
