@@ -11,6 +11,55 @@ import { ObjectId } from 'mongodb'
 import { headers } from 'next/headers'
 import Link from 'next/link'
 
+export async function generateMetadata(
+  { params },
+  parent
+){
+  // read route params
+  const { id } = await params
+  // fetch data
+  const db = client.db(process.env.DB_NAME)
+
+  const pipeline = [
+            // Step 1: Find the specific tweet we want
+            { $match: { _id: new ObjectId(id) } },
+            
+            // Step 2: Join with the user collection to get author details
+            { 
+              $lookup: {
+                from: 'user',              // The collection we're joining with
+                localField: 'userId',       // Field in tweets collection
+                foreignField: '_id',     // Matching field in user collection
+                as: 'userDetails'          // Put the result here
+              }
+            },
+            
+            // Step 3: Clean up the data - extract user info from array
+            {
+              $addFields: {
+                username: { $arrayElemAt: ['$userDetails.name', 0] },
+                profilePic: { $arrayElemAt: ['$userDetails.image', 0] },
+                handle: { $arrayElemAt: ['$userDetails.handle', 0]},
+              }
+            },
+            
+            // Step 4: Remove the temporary userDetails array
+            { $project: { userDetails: 0 } }
+          ]
+
+  const result = await db.collection('tweets').aggregate(pipeline).toArray()
+  const tweet = result[0]
+  console.log(tweet, 'METAAAAADAAAAAAAAATA')
+  
+  return {
+    title: tweet.username,
+    description: tweet.tweetText,
+    openGraph: {
+      images: [tweet.imgSrc],
+    },
+  }
+}
+
 const Page = async({params}) => {
     const { id } = await params //id is correct
 
@@ -85,8 +134,6 @@ const Page = async({params}) => {
           let result = await db.collection('tweets')
           .aggregate(pipeline)
           .toArray()
-
-          console.log(result)
 
         return result[0]
       }

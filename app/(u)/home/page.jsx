@@ -50,13 +50,6 @@ const Page = () => {
   const year = time.getFullYear()
 
   const textAreaRef = useRef(null)
-  
-  useEffect(() => {
-    const pause = setTimeout(() => {
-      textAreaRef.current?.focus()
-    }, 100)
-    return ()=>clearTimeout(pause)
-  }, [])
 
   const [isScrollingDown, setIsScrollingDown] = useState(false)
   const previousScrollY = useRef(0)
