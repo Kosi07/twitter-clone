@@ -88,7 +88,7 @@ const Tweet = (
       id={id}
     >
         <div className='flex items-start gap-3'>
-            <div id='profilePic' className='w-8 h-8 sm:w-9 sm:h-9'>
+            <Link href={`/users/${handle}`} id='profilePic' className='w-8 h-8 sm:w-9 sm:h-9'>
               {profilePic?
                 <img
                   src={profilePic}
@@ -98,7 +98,7 @@ const Tweet = (
                 :
                 <CircleUserRound className='w-full h-full'/>
               }
-            </div>
+            </Link>
             
             <div className='min-w-0 flex-1'>
               <div className="flex items-start justify-between gap-3">

@@ -118,12 +118,24 @@ const ProfilePage = ({signedInUserId, userDetailsAndPosts, urProfilePic, isFollo
                                     Edit Profile
                                 </Link>
                             :
-                                <button 
-                                    onClick={() => handleFollowBtnClick()} 
-                                    className={`inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-sm font-medium transition ${following ? 'bg-[#ebe9e5] text-[#4f4b45]' : 'bg-[#242321] text-white hover:bg-[#3d3b38] hover:cursor-pointer'}`}
-                                >
-                                    {following ? <><Check size={15} /> Following</> : <><UserPlus size={15} /> Follow</>}
-                                </button>
+                                <>
+                                {signedInUserId?
+                                    <button 
+                                        onClick={() => handleFollowBtnClick()} 
+                                        className={`inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-sm font-medium transition ${following ? 'bg-[#ebe9e5] text-[#4f4b45]' : 'bg-[#242321] text-white hover:bg-[#3d3b38] hover:cursor-pointer'}`}
+                                    >
+                                        {following ? <><Check size={15} /> Following</> : <><UserPlus size={15} /> Follow</>}
+                                    </button>
+                                    :
+                                    <Link
+                                        href='/sign-in'
+                                        target='_blank'
+                                        className={`inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-sm font-medium transition bg-[#242321] text-white hover:bg-[#3d3b38] hover:cursor-pointer`}
+                                    >
+                                        Sign In
+                                    </Link>
+                                }
+                                </>
                             }
                             <button 
                                 className={`relative flex min-w-[75px] items-center justify-center rounded-lg p-1.5 text-xs transition-colors duration-200 hover:bg-secondary hover:text-foreground `}                                

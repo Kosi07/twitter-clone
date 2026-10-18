@@ -10,9 +10,10 @@ This is a [Twitter clone](https://trytwitter.vercel.app/) project bootstrapped w
 - [Deployed with Netlify](https://twitt3r-clone.netlify.app/)
 
 ## ToDo
-Imagine open Discord
-Built around communities
+Social media for memes
+What you're selling: A feed that guesses the memes, the user will like the most
 
+- [ ] Add delete functionality. Delete likes and comments related to a tweet
 - [ ] Make it downloadable
 - [ ] Robust notification system including sending emails
 
